@@ -1,6 +1,6 @@
 (function(root){
  // Optional visual work has a deadline; it must never own the combat turn.
- function create(clock={setTimeout,clearTimeout}){
+ function create(clock={setTimeout:(...args)=>root.setTimeout(...args),clearTimeout:id=>root.clearTimeout(id)}){
   const active=new Set();
   function run(task,{timeout=6000,cancel=()=>{}}={}){return new Promise(resolve=>{
    let timer,done=false;
