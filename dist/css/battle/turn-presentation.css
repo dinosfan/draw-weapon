@@ -1,0 +1,15 @@
+.live-battle .dialogue{position:relative;min-height:140px;padding-bottom:32px;cursor:default}
+.live-battle .dialogue-text{min-height:60px;white-space:pre-line;overflow-wrap:anywhere}
+.live-battle .turn-busy .battle-console{grid-template-columns:1fr}
+.live-battle .turn-busy .command-area{display:none}
+.live-battle .turn-busy .game-dialogue{width:100%;border-right:0}
+.live-battle .turn-busy .dialogue{min-height:142px;padding-bottom:0;justify-content:flex-start}
+.live-battle .turn-busy .dialogue-text{max-width:100%;min-height:60px}
+.live-battle .turn-busy #commands,.live-battle .turn-busy #move-menu{display:none}
+.live-battle .hp-fill{transition:none}
+.live-battle .fighter:not(.defeated):not([data-condition="sleep"]):not([data-condition="freeze"])>canvas{animation:battle-breathe 1s ease-in-out infinite}
+.live-battle .enemy-fighter:not(.defeated)>canvas{animation-delay:-.7s}
+.live-battle .fighter.acting>canvas{animation:none;translate:0 0}
+@keyframes battle-breathe{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@media(prefers-reduced-motion:reduce){.live-battle .fighter>canvas{animation:none!important}}
+@media(max-width:700px){.live-battle .dialogue{min-height:126px}.live-battle .dialogue-text{font-size:16px}}

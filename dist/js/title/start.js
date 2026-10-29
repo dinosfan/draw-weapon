@@ -1,0 +1,8 @@
+(()=>{const $=id=>document.getElementById(id),field=$('weapon-field'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let timer=null,progress=0;
+ for(let i=0;i<80;i++){const dot=document.createElement('i');dot.style.left=((i*37+11)%100)+'%';dot.style.top=((i*53+7)%100)+'%';document.querySelector('.field-dots').append(dot);}
+ for(const [index,item]of TitleSprites.items.entries()){const button=document.createElement('button'),canvas=document.createElement('canvas'),label=document.createElement('span');button.type='button';button.className='floating-weapon';button.setAttribute('aria-label',item.name);for(const [key,value]of Object.entries({x:item.x+'%',y:item.y+'%','mobile-x':item.mx+'%','mobile-y':item.my+'%',size:item.size+'px',angle:item.angle+'deg',speed:(3+index*.23)+'s',delay:(-index*.7)+'s'}))button.style.setProperty('--'+key,value);canvas.setAttribute('aria-hidden','true');TitleSprites.draw(canvas,item.id);label.className='weapon-label';label.textContent=item.name;button.append(canvas,label);button.addEventListener('click',()=>{button.classList.remove('popped');void button.offsetWidth;button.classList.add('popped');});field.append(button);}
+ const entry=WorkshopEntry.mount(document.querySelector('.title-scene'),{onComplete:()=>location.assign('craft.html')});
+ function enter(){const button=$('start-preview');if(button.disabled)return;button.disabled=true;button.setAttribute('aria-busy','true');entry.play();}
+ $('start-preview').addEventListener('click',enter);
+ document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target===document.body){event.preventDefault();enter();}});
+})();

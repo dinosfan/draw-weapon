@@ -1,0 +1,2 @@
+function order(weapon){const moves=require('../../../dist/js/weapons/moves.js').forWeapon(weapon),attack=m=>m.damage>0||m.mechanic?.kind==='release',ultimate=moves.findIndex(m=>m.ultimate),main=moves.map((m,i)=>({m,i})).filter(x=>attack(x.m)&&!x.m.ultimate).sort((a,b)=>b.m.pp-a.m.pp||b.m.damage-a.m.damage)[0]?.i;return[...new Set([main,ultimate,...moves.map((_,i)=>i)].filter(i=>Number.isInteger(i)&&i>=0))];}
+module.exports={order};

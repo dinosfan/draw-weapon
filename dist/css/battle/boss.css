@@ -1,0 +1,6 @@
+.live-battle .enemy-fighter[data-boss="true"],.live-battle .enemy-fighter[data-boss="true"] canvas{width:min(192px,var(--boss-limit,192px));height:min(192px,var(--boss-limit,192px))}
+.live-battle .enemy-fighter[data-boss="true"][data-phase="1"],.live-battle .enemy-fighter[data-boss="true"][data-phase="1"] canvas{width:min(224px,var(--boss-limit,224px));height:min(224px,var(--boss-limit,224px))}
+.enemy-fighter.boss-awakening{animation:boss-awakening 1.4s steps(6) both}
+@keyframes boss-awakening{0%,40%{opacity:.2;transform:translateY(3px)}20%,60%,100%{opacity:1;transform:translateY(0)}80%{transform:translateY(-8px)}}
+@media(prefers-reduced-motion:reduce){.enemy-fighter.boss-awakening{animation:none}}
+@media(max-width:700px){.live-battle .enemy-fighter[data-boss="true"],.live-battle .enemy-fighter[data-boss="true"] canvas{width:144px;height:144px}.live-battle .enemy-fighter[data-boss="true"][data-phase="1"],.live-battle .enemy-fighter[data-boss="true"][data-phase="1"] canvas{width:160px;height:160px}}

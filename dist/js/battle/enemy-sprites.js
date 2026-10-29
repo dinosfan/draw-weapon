@@ -1,0 +1,15 @@
+// Original enemy artwork. Each character is one logical pixel, displayed at 2×.
+window.BattleEnemySprites=(()=>{
+ const art={
+  spark:['....b.....b.....','...bbb...bbb....','...bwb...bwb....','....bbbbbbb....','...bbbbbbbbb...','...bwkbbbkwb...','...bbbbbbbbb...','....bbbwbbb....','..b..bbbbb.....','.bbb.bbbbbbb...','..b.bbbbbbbbb..','....bbbbbbbbb..','.....bbbbb.b...','....bbb.bbb....'],
+  beetle:['.......b.......','......bbb......','.......b.......','....bbbbbbb....','...bbmbmbmbb...','..bbbmbmbmbbb..','..bwbmbmbmbwb..','..bbbmbmbmbbb..','..bbbmbmbmbbb..','..bbbmbmbmbbb..','...bbmbmbmbb...','....bbbbbbb....','...bb.....bb...','..bb.......bb..'],
+  ember:['.......b.......','.......bb......','....b.bbb......','....bbbbbb.b...','...bbbbbbbbb...','...bbwwbbbbb...','..bbbwwbbbbbb..','..bbbbbbwwbbb..','..bwkbbbkwbbb..','..bbbbbbbbbbb..','...bbbbbbbbb...','....bbbbbbb....','.....bbbbb.....','....bbb.bbb....'],
+  jelly:['.....bbbbb.....','...bbbbbbbbb...','..bbbbwwbbbbb..','.bbbbwwbbbbbbb.','.bwkbbbbbkwbbb.','.bbbbbbbbbbbbb.','..bbbbbbbbbbb..','...bbbbbbbbb...','....b.b.b.b....','....b.b.b.b....','...bb.b.b.bb...','...b..b.b..b...','......b.b......','.....bb.bb.....'],
+  ghost:['......bbb......','.....bbbbb.....','....bbbbbbb....','...bbbbwwbbb...','..bbbwkbbkwbb..','..bbbbbbbbbbb..','..bbbbwwbbbbb..','...bbbbbbbbb...','..bbbbbbbbbbb..','.bbbbbbbbbbbbb.','.bbb.bbbbb.bbb.','..b...bbb...b..','.......b.......'],
+  crystal:['.......b.......','......bwb......','.....bwwbb.....','....bwwwbbb....','...bwwwwbbbb...','..bwwwwwbbbbb..','.bwwwwwwbbbbbb.','..bwwkwbbkwbb..','...bwwwbbbbb...','....bwwbbbb....','.....bwbbb.....','......bbb......','.......b.......'],
+  sprout:['.....bbbbb.....','...bbbwwbbbb...','..bbbbwwbbbbb..','.bbbbbbbbbbbbb.','.bbwbbbbbbwbbb.','..bbbbbbbbbbb..','......mmm......','.....bmmmb.....','.....bwkwb.....','.....bbbbb.....','......bbb......','....bbbbbbb....','...bbb...bbb...'],
+  dragon:['.......b.b.....','.......bbbbb...','..b....bbwbbb..','.bbb...bbbbbbbb','.bbbb..bbbbwwbb','.bbbbb..bbbbbb.','..bbbbb.bbbbb..','...bbbbbbbbbb..','....bbbbbbbbb..','...bbbbbbbbbb..','..bbbbbbbbbbb..','.bbb..bbbbbbb..','..b...bbbbbbb..','.....bbb.bbb...']
+ };
+ function draw(canvas,encounter){if(window.BattleBossSprites?.draw(canvas,encounter))return true;const rows=art[encounter.sprite];if(!rows)return false;const ctx=canvas.getContext('2d'),colors={k:GamePalette.tokens.ink,b:Craft.Types.color(encounter.types[0]),w:GamePalette.tokens.paper,m:GamePalette.tokens.metal};ctx.clearRect(0,0,32,32);ctx.imageSmoothingEnabled=false;const at=(x,y)=>rows[y]?.[x]&&rows[y][x]!=='.';ctx.fillStyle=colors.k;for(let y=0;y<rows.length;y++)for(let x=0;x<rows[y].length;x++)if(at(x,y))for(const[dx,dy]of [[-1,0],[1,0],[0,-1],[0,1]])ctx.fillRect((x+dx)*2,(y+dy+1)*2,2,2);for(let y=0;y<rows.length;y++)for(let x=0;x<rows[y].length;x++)if(at(x,y)){ctx.fillStyle=colors[rows[y][x]]||colors.b;ctx.fillRect(x*2,(y+1)*2,2,2);}canvas.setAttribute('aria-label',encounter.name+' 도트 캐릭터');return true;}
+ return{draw};
+})();

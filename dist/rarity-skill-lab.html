@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>용의 낫 · 등급별 기술 시범</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/battle/base.css">
+  <link rel="stylesheet" href="css/battle/arena.css">
+  <link rel="stylesheet" href="css/battle/impact.css">
+<link rel="stylesheet" href="css/battle/rarity.css">
+<link rel="stylesheet" href="css/battle/dragon-cinematic.css">
+<link rel="stylesheet" href="css/battle/vfx-study.css">
+  <link rel="stylesheet" href="css/battle/panels.css">
+  <link rel="stylesheet" href="css/battle/status-badge.css">
+  <link rel="stylesheet" href="css/types.css">
+<script defer src="js/weapons/catalog.js"></script>
+<script defer src="js/weapons/types.js"></script>
+<script defer src="js/weapons/rarity.js"></script>
+<script defer src="js/weapons/scythe-ascension.js"></script>
+<script defer src="js/weapons/type-guide.js"></script>
+<script defer src="js/weapons/tactics.js"></script>
+<script defer src="js/weapons/story.js"></script>
+<script defer src="js/weapons/effect-plan.js"></script>
+<script defer src="js/weapons/conditions.js"></script><script defer src="js/weapons/move-rules.js"></script><script defer src="js/weapons/weapon-rig.js"></script><script defer src="js/weapons/hit-feel.js"></script><script defer src="js/weapons/motion-plan.js"></script><script defer src="js/weapons/ultimate.js"></script><script defer src="js/weapons/moves.js"></script>
+  <script defer src="js/battle/bosses.js"></script><script defer src="js/battle/journey.js"></script>
+<script defer src="js/weapons/chronicle.js"></script><script defer src="js/weapons/library.js"></script>
+<script defer src="js/weapons/transfer.js"></script>
+  <script defer src="js/labs/dragon-scythe.js"></script>
+<script defer src="js/labs/rarity-skill-setup.js"></script>
+<script defer src="js/battle/data.js"></script>
+  <script defer src="js/battle/icons.js"></script>
+  <script defer src="js/battle/encounters.js"></script>
+  <script defer src="js/battle/results.js"></script>
+  <script defer src="js/battle/state.js"></script>
+  <script defer src="js/trainers/study-sprite.js"></script>
+  <script defer src="js/weapons/artwork.js"></script>
+  <script defer src="js/battle/sprites.js"></script>
+  <script defer src="js/battle/status-badge.js"></script>
+  <script defer src="js/battle/status-panel.js"></script>
+  <script defer src="js/battle/command-menu.js"></script>
+  <script defer src="js/battle/dialogue.js"></script>
+  <script defer src="js/battle/artwork.js"></script>
+  <script defer src="js/battle/move-menu.js"></script>
+  <script defer src="js/battle/effects/paths.js"></script>
+  <script defer src="js/battle/effects/story-renderer.js"></script>
+  <script defer src="js/battle/effects/weapon-pose.js"></script>
+  <script defer src="js/battle/effects/payloads.js"></script>
+  <script defer src="js/battle/effects/action-renderer.js"></script>
+  <script defer src="js/battle/effects/rarity-contact.js"></script>
+<script defer src="js/battle/effects/sprite-atlas.js"></script>
+<script defer src="js/battle/effects/dragon-timeline.js"></script>
+<script defer src="js/battle/effects/vfx-sound.js"></script>
+<script defer src="js/battle/effects/sprite-cinematic.js"></script>
+<script defer src="js/battle/effects/generated-overlay.js"></script>
+<script defer src="js/battle/effects/renderer.js"></script>
+  <script defer src="js/battle/effects/impact.js"></script>
+  <script defer src="js/battle/tactics-ui.js"></script>
+  <script defer src="js/weapons/rarity-effects.js"></script><script defer src="js/battle/effects/motion-material.js"></script><script defer src="js/battle/effects/rarity-director.js"></script><script defer src="js/battle/effects/mythic-finisher.js"></script><script defer src="js/battle/turn-flow.js"></script><script defer src="js/battle/app.js"></script>
+<link rel="stylesheet" href="css/battle/mythic-finisher.css"></head>
+<body>
+  <main class="workbench">
+    <header class="page-header"><a class="wordmark" href="craft.html">DRAW / WEAPON</a><span class="prototype-label">BATTLE SCREEN · 01</span></header>
+    <div class="page-title"><div><p class="eyebrow">한 장의 낙서, 하나의 모험.</p><h1>용의 낫 · 등급별 기술</h1></div><span id="stage-counter" class="preview-tag">STAGE 1 / 3</span></div>
+    <section class="skill-study" aria-label="등급 비교"><nav id="skill-grade-choices" class="skill-grade-choices" aria-label="등급 선택"></nav><div class="vfx-study-controls"><nav id="vfx-variant-choices" aria-label="AI 생성 연출 비교"></nav><button id="vfx-sound-toggle" type="button" aria-pressed="false">효과음 켜기</button><a href="vfx-credits.html">레퍼런스·제작 과정</a></div><p id="skill-grade-note"></p><p>싸운다에서 기술을 골라보세요. 신화의 네 번째 기술은 궁극기입니다. 재대결하면 사용 횟수가 돌아옵니다.</p></section><section class="game-shell" aria-label="레트로 전투 화면">
+      <div class="game-topline"><span id="encounter-label">낙서의 숲 · 첫 번째 만남</span><span id="turn-counter">TURN 01</span></div>
+      <div id="tactics-hud" class="tactics-hud" hidden><div><b id="resource-name"></b><span id="resource-gauge"></span><strong id="resource-count"></strong></div><small id="tactics-memory"></small></div>
+      <div class="arena" id="arena"><div id="tactical-field" class="tactical-field" hidden></div>
+        <div class="arena-grid" aria-hidden="true"></div>
+        <div id="enemy-status" class="status-slot enemy-status"></div>
+        <div class="fighter enemy-fighter"><div class="ground enemy-ground"></div><canvas id="enemy-sprite" width="32" height="32" aria-label="잉크로 만들어진 낙서 수호자"></canvas><span class="fighter-caption">WILD GUARDIAN</span></div>
+        <div class="fighter player-fighter"><div class="ground player-ground"></div><canvas id="held-battle-weapon" width="96" height="96" aria-label="손에 든 무기"></canvas><canvas id="player-sprite" width="56" height="64" aria-label="빨간 모자의 도트 트레이너"></canvas></div>
+        <section id="battle-result" class="battle-result pixel-panel" aria-labelledby="result-title" hidden>
+          <span id="result-icon" class="tossface" aria-hidden="true">🏆</span><h2 id="result-title"></h2><p id="result-summary"></p><p id="result-note"></p>
+          <div class="result-actions"><button id="next-encounter" type="button">다음 상대에게</button><button id="result-retry" type="button">재대결</button><a href="craft.html">새 무기 그리기</a></div>
+        </section>
+        <div id="player-status" class="status-slot player-status"></div>
+      </div>
+      <div id="move-description" class="move-description" role="status" hidden></div><div class="battle-console"><div id="dialogue" class="dialogue pixel-panel" role="status" aria-live="polite"></div><div class="command-area"><div id="commands" class="commands pixel-panel" aria-label="전투 명령"></div><div id="move-menu" class="move-menu pixel-panel" aria-label="기술 4개" hidden></div></div></div>
+      <div class="game-bottomline"><span id="equipped-weapon"><i></i> 꽃잎 지팡이 장착 중</span><span>YOUR DRAWING. YOUR POWER.</span></div>
+    </section>
+    <footer class="preview-footer"><p>내 낙서로 세 명의 수호자에게 도전하세요.<br><span>방향키로 명령 선택 · Enter로 실행</span></p><div class="battle-navigation"><button id="retry-battle" class="reset-button" type="button">재대결</button><a id="reset-preview" class="reset-button" href="craft.html"><span class="tossface" aria-hidden="true">🔄</span> 다시 시작</a></div></footer>
+  </main>
+</body>
+</html>
+
+
+
+
+
+
+

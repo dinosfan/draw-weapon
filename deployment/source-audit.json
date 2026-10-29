@@ -1,0 +1,1967 @@
+{
+  "repository": "dinosfan/draw-weapon",
+  "visibility": "private",
+  "secretMatches": 0,
+  "embeddedPlayerImages": 0,
+  "files": [
+    {
+      "path": ".dockerignore",
+      "bytes": 117,
+      "sha256": "61d838e69731019fe1d9a2749bea334e9b8f33a9281ef18d3d423c852d20230c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "COLOR_PALETTE.md",
+      "bytes": 2574,
+      "sha256": "f5b456a94e41cb9458ccdb4d2ff5d7db7fff5bfc86d147afd9ea5b3845db3014",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 634,
+      "sha256": "89bbf094625a3254d2e7891abcbb56937da4be9f16df6853a0d0de338ec449d3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/analyze.cjs",
+      "bytes": 4178,
+      "sha256": "cdbae8e7c2e3a95d5c56fbf8fb5b876bb64b8dabb08649c2ce53fec2e6215456",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/baze.cjs",
+      "bytes": 5134,
+      "sha256": "63162bef5d75fc83cb298a49a0582dddc239c643230340d454630db7da1b98bb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/concept.cjs",
+      "bytes": 1235,
+      "sha256": "45b3ee928b1083a4890f13c67cb80fa58459b4daece519bb18a4acf9d555c0f6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/http.cjs",
+      "bytes": 1648,
+      "sha256": "75995f644dc9d52ed03717b0e4b6c3a3af8ceb3ef19246eb0263e1c19826e63f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/images.py",
+      "bytes": 1694,
+      "sha256": "472b283f6732e327fbc48534763b9c945daec061568fe259579b53b8d921cc87",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/local.cjs",
+      "bytes": 3792,
+      "sha256": "53df8144827ea159d6d7acedc9de4fce533b5eb6bf998520bd720fc4f843ac41",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/merge.cjs",
+      "bytes": 1184,
+      "sha256": "bfa27a3791864f6105d70d1a7555f59c554834fc4f14d320c9df29e2091b8ad8",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/plan.cjs",
+      "bytes": 5402,
+      "sha256": "2d2ca19287e51f385cf9bcf6a5781097a5a27ce7f3691210d7f1bf476a466013",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/planner.cjs",
+      "bytes": 1959,
+      "sha256": "233e742eed2472697565702a29fd1c2ee337276186a9539e481e6202bb2ce208",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/service.cjs",
+      "bytes": 8313,
+      "sha256": "3f7f7d0d4e685ddabf89b601bfebc68e6a5585028f88e92b9975d11e05362941",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/evolution/weapon.cjs",
+      "bytes": 1909,
+      "sha256": "2382806ab86463efb9f78828cb245e62afa8beab48137b3fe899c40303273cd1",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/generate.cjs",
+      "bytes": 5417,
+      "sha256": "3117f5da98ec848e26c0e1a43bace5fa234436abc6dbb9c57ec2e12fcb9e7329",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/client.cjs",
+      "bytes": 3786,
+      "sha256": "a9edfbdd158fa7fd192fa872371dfe40457a08e2c7f13ead66de640f53dedd1b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/http.cjs",
+      "bytes": 2776,
+      "sha256": "1d816ef5005cc784f84de840357c91b818c403d6c39f7f9ff6e9ba2955f6bbdf",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/inheritance.cjs",
+      "bytes": 1804,
+      "sha256": "543276b07c258d1910b48717e148e6af17a110e4f7196655e428a760b78fb414",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/jobs.cjs",
+      "bytes": 4721,
+      "sha256": "8eab0ea947045061e5075bb9dfd6cb9a9eb7e9934058c150b9abcb5ba3e40e12",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/client.cjs",
+      "bytes": 11528,
+      "sha256": "e1cad516e9d86c4cae7927a7d402fd519dc7fc49056dc5a0a5c0c8f0e71935a3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/fast-path.cjs",
+      "bytes": 673,
+      "sha256": "1f7f6c91feea4056d21baa04e7dff0de5bff29451444a21cd1048b9e2e6796d5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/frame-cache.cjs",
+      "bytes": 1589,
+      "sha256": "0d442321a1730f8e119f96760868362eaae05e6c77b66d0b94226d1f910c6f2f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/gpu-queue.cjs",
+      "bytes": 898,
+      "sha256": "0fab334008004fcb0f3bab70f08198a3eeafa9c3ddc21360983752141e065ecb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/images.py",
+      "bytes": 2258,
+      "sha256": "e445aeb1b37339b73291a0c0a873ec21bf5cf95a0512cc55a155eb93874e1f1e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/matte.py",
+      "bytes": 6711,
+      "sha256": "411b8a46383a8882b2f3e4e5d0c4974ce5bfd914c3e4c790890842d7f0dee34e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/process.cjs",
+      "bytes": 1422,
+      "sha256": "a9bc9edfdb17c82449a581239f32c66e1cfe4a98ba5c3279d58c56935ebe7d98",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/prompt.cjs",
+      "bytes": 3919,
+      "sha256": "d7a6836276690031c5313d085c799607270d99c8df77d8d181423bee072ecffd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/resident.cjs",
+      "bytes": 5716,
+      "sha256": "bbcbac459205f475d3bbcd64c617e167b4e326c81a5b6510f601736c3b68e34d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/runtime-check.cjs",
+      "bytes": 1496,
+      "sha256": "13917e91810d7bc11276b36ab0c3eacc1e706a0d114b8ac7654ace1375496244",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/schedule.cjs",
+      "bytes": 436,
+      "sha256": "69d76f8d76e993d8654caace96a3049715eb818ab3a31292c382905261e83839",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/skill-images.py",
+      "bytes": 4841,
+      "sha256": "11b8b04ecd8c43b3b69e4ae0c6bd0213a5d2474315e4664c85bf96c173324e5f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/local/skill-prompts.cjs",
+      "bytes": 7190,
+      "sha256": "70d323a42b9321d910ad0152acbf2469e539b21db874b0e92c335cc9b6e00d3b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/materials.cjs",
+      "bytes": 5525,
+      "sha256": "e34b56c0faec3a31c7efc06794afe791d67d96e1f663f06b3a27332466712271",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/partial.cjs",
+      "bytes": 1249,
+      "sha256": "2f06c5a3c768b3e8c6f198dcb5a4e4fee0f1ffed79900909d9315404d21081cb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/semantic-review.cjs",
+      "bytes": 3757,
+      "sha256": "984a8875b70af9eb2cd5e5f8e82618395697f5a6bd63643569be1d25219d0c07",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/images/service.cjs",
+      "bytes": 5801,
+      "sha256": "728788308ff20b236f47d6bb7b2b7fbeffbe87653b1334e0f8426163972209bc",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/motion-guidance.cjs",
+      "bytes": 4351,
+      "sha256": "9c944d04ba415c1c2e2f9e3b74dd59b3fac6ea95896dddaacf1dd41c11cd4c79",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/parse-json.cjs",
+      "bytes": 433,
+      "sha256": "5ce23ccb49fe61e23f23219ded067b37cdd1c6a648364723f1816cd3b4b136ca",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/prompt.cjs",
+      "bytes": 11167,
+      "sha256": "7f0e55fd1927bbaca68fe9689774b5fbe7747addccfdca4b9bfdd73924e73447",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/schema.cjs",
+      "bytes": 2870,
+      "sha256": "340fa83c006f8a57eb3fb239ad6306327d6da66efb5dd524bb19238a931738ce",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/type-guidance.cjs",
+      "bytes": 2184,
+      "sha256": "6889c25f49bba09ddaf4eff2eadbdc2bae335a3112ff01944507a8a668a92e64",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/usage.cjs",
+      "bytes": 1015,
+      "sha256": "8f81d67208496b336e73ef5d08f97d5ce70550ef9017e08ff9045c635e3c5cb1",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "ai/weapon.cjs",
+      "bytes": 3594,
+      "sha256": "5b7c2ad6c01422ba29af1b0335907ee5cbb3d85da94dee29a66b2b0f60acebbf",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "cloud-server.cjs",
+      "bytes": 888,
+      "sha256": "3bba57c98bb51d236aa8fcb930b3d489df6095a2026e1ddd9d886d045423b6fb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "deployment/README.md",
+      "bytes": 1748,
+      "sha256": "5a25c0dbc4a0d33cd092370d01fa9d5e02df6aeebf4a6e35907cdec541028494",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "deployment/storage.cjs",
+      "bytes": 1295,
+      "sha256": "45256c40f4b265f97407288f0593e932149908d004c64239d43b0ddc74877178",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/battle-mockup.html",
+      "bytes": 4728,
+      "sha256": "d14811f54c33c3606e528854b1b40c49e3b741690fb7076bb6fcfa39aa899f03",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/battle.html",
+      "bytes": 9824,
+      "sha256": "219edb1c7f19322ab0f9c645a32ca815db11e552662e4d7b7ee8eb4995e09775",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/blueprint-lab.html",
+      "bytes": 1853,
+      "sha256": "36cfc18112c172923777c47be3e2ed58a889f4498941d6e1cfff7dc49d0979b4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/clock-lab.html",
+      "bytes": 3475,
+      "sha256": "a0901b0e90810a24f23e1c2da88690313df7da283dded71c0bde06112902eeb1",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/craft-mockup.html",
+      "bytes": 4321,
+      "sha256": "2eff4b74b6276acfd207bea420aeca06db6719a098e7e1b7b7cb044093e58e86",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/craft.html",
+      "bytes": 8719,
+      "sha256": "fd5eb5de8b3c48ac1b6e70c373b56c40e11a9dafa617803f0bf424c599e80aaa",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/api-loading.css",
+      "bytes": 3508,
+      "sha256": "c411abbfc65a8886816eb0849ef361b6fee1ec588ae5a7460f4f6cc7baec0209",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/arena.css",
+      "bytes": 3857,
+      "sha256": "3751ec0e8cff4a1272df2dcc1027d38118d93c36e6a278d96c9272f55690942f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/base.css",
+      "bytes": 3079,
+      "sha256": "2a9d22f3f398011f3b88fa0a8d5cd59dd26e646a2988b9dda74165c4e84b8542",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/boss.css",
+      "bytes": 1020,
+      "sha256": "efde4aefeb733875c4c5d4f76c1af9dd5efebb1634e155923e54ea15e9855647",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/dragon-cinematic.css",
+      "bytes": 1432,
+      "sha256": "67d929bf219c399a2d3e57c51ef3221fbb28369a330d70157310b0dcbdde6b2c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/impact.css",
+      "bytes": 426,
+      "sha256": "d38524542e29587076beba100ba9510bf9e4164d576781ccf2a0a97bd71174a0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/mythic-finisher.css",
+      "bytes": 789,
+      "sha256": "10329def4842b9d953fde732580b381294f988d1da4e7783c05e6975f89421b9",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/panels.css",
+      "bytes": 7182,
+      "sha256": "eaa31312d6d20dc9219ab15dd6e9294178e8df4680791c2387a06f3024877f9d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/polish.css",
+      "bytes": 2607,
+      "sha256": "6984cbdff570df684d71d6682ad3089d3d1344d2fc213f95e38ebadd14f22628",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/rarity-director.css",
+      "bytes": 738,
+      "sha256": "504e49c6a5318382f2289983ef7e24cd520936d9d121562bb432d74daff1d3cb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/rarity.css",
+      "bytes": 456,
+      "sha256": "c6b26f5a1847cda92b2ebcaba05c5bc140d772a84d859df2518fa7fe5d868590",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/status-badge.css",
+      "bytes": 771,
+      "sha256": "368fce3e93ed578147e68f8af0fb2e47f0b6130f0789b38c2fbf9503689ddb5c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/strategy.css",
+      "bytes": 1067,
+      "sha256": "bbd7cde5a422a0e2adddf4b42a4c5dd783880bedd46ea47d23b72132e302973b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/turn-presentation.css",
+      "bytes": 1239,
+      "sha256": "791cb6e0e76568ff001c93642b4edd630020db0fba192748b82188c153455b04",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/battle/vfx-study.css",
+      "bytes": 1468,
+      "sha256": "d5792499c9808909a362ebedab9ece8d4728ad9862f525fcb759c3de9a755ffb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/clock-lab/screen.css",
+      "bytes": 5956,
+      "sha256": "effc7534b7b237932f8d5a0ca469fcde0eb0d6ae8b5b32b9439db9a69f184bee",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/craft/drawing.css",
+      "bytes": 1954,
+      "sha256": "b89dc0dd62bfce898fd7f48df5b90092c7931c12056b005358db0277245d6412",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/craft/layout.css",
+      "bytes": 5018,
+      "sha256": "5e969a34a685d250769c579e3c22565ae15bc0d39b273904f0ac3a377a662c8b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/craft/rarity.css",
+      "bytes": 4730,
+      "sha256": "0d3e4f3f0c121acc18267fd620e05762f3a5ccade68a0bab66a0579e78a430e2",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/craft/weapon.css",
+      "bytes": 2716,
+      "sha256": "f74939f11d0e56a8adc911f2523085e5134a429254c673f8e56f1216675fece1",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/evolution-lab.css",
+      "bytes": 5575,
+      "sha256": "e2c517e0bc50a738360b855476d14f5e4c1d147ea78b280a4be8d4b896d0c9e2",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/evolution-live.css",
+      "bytes": 1311,
+      "sha256": "e4d84cd66da1d12527bb90725f83e5c8b20d5affa3c1da5aa56f96ceb885aa94",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/fonts.css",
+      "bytes": 451,
+      "sha256": "3c50448f6656e4c933b4518bbaa8689a699739948f21a7a19d39c0bab203558e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/game/audio.css",
+      "bytes": 1150,
+      "sha256": "c68c0c98308fdd3fa391df3c251d62a28132bd281b76d7cee136b2b333c4263e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/game/battle.css",
+      "bytes": 6560,
+      "sha256": "979ff73a42e85f9ce8712fc0925491b0771c4dc580c3d67d65b13681ed0be2c5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/game/frame.css",
+      "bytes": 5096,
+      "sha256": "b900bc79e47e8771765dec96b476dbc07c7e8938dcdf45cc188d5beff8d831ce",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/game/workshop.css",
+      "bytes": 7383,
+      "sha256": "5eac7830fb3c32a76bd24968391ac57f22029681b31041857bd44767ea599bca",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/generation-speed.css",
+      "bytes": 720,
+      "sha256": "c018b0409bc1167bfc9d87cad591dd168641016778c255345fc84645f60dc49e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/identity-lab.css",
+      "bytes": 4348,
+      "sha256": "2212950055a9e19aae694f6ea92a2c5bffd3c29a0a2ec4f6c22e5389af815ae0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/library.css",
+      "bytes": 5091,
+      "sha256": "cb05c533864a628f35569bc8f54a2812296b834ca69dd1abe0bfd53611d00d43",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/local-pixel-lab.css",
+      "bytes": 1040,
+      "sha256": "1bec51f9a4cdb8f99d0ca35498f0723ec91fb71227142dd38d75b54112733408",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/mockups/battle.css",
+      "bytes": 3494,
+      "sha256": "49c7586e261d1cf4427272a986d0d5332c8f2358b343282e35ddd207a598c71c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/mockups/game.css",
+      "bytes": 4490,
+      "sha256": "e39115bbcc99507d32c3288781a3804c0746a282042829c35ac43f9ec12679e9",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/mockups/workshop.css",
+      "bytes": 4274,
+      "sha256": "b73d9d2c9470e1eed724462f0b1363cef13dfaf1ec92d0d024849081df07ca34",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/palette-guide.css",
+      "bytes": 1457,
+      "sha256": "145fa901b6a207027a8e0b0991db30ac45139129dc6b4429d35f6348a1d43372",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/palette.css",
+      "bytes": 768,
+      "sha256": "e8439d9eddc0a1822c6b5ce940fae136fd1f2e2a4b7b203357cdc450cb7f381b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/playtest.css",
+      "bytes": 1337,
+      "sha256": "fa2f927bb47acf86f17ac3b72bbbcf51e93881da4f05f9e5f3e7795b41d14f21",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/rarity-effects-lab.css",
+      "bytes": 2691,
+      "sha256": "c82b70d49e79c13b528489ce8b29bab763a6c488c4c1bc22de52c03cc668b6c4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/title-mockup.css",
+      "bytes": 10356,
+      "sha256": "1f6b080b92d4771e2e4d2c1950d1c2003ea4020b1fcb460d461f9190bf679379",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/trainers/roster.css",
+      "bytes": 928,
+      "sha256": "03de1ec9c82c564841ca53f88581f2a49626acb5850560f352b5398801a92a94",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/trainers/screen.css",
+      "bytes": 3686,
+      "sha256": "c70374817f9d18170aad73414024335906930eab77a9cbd6f1df2d8bf39bfc1b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/types.css",
+      "bytes": 1175,
+      "sha256": "e5b5f48528d2ff73ed819cb166f63c8612fd7cb80c9469d813d7341db4d0cde4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/weapon-lab.css",
+      "bytes": 625,
+      "sha256": "5b37751a9cd5f5753678e09dc8acf6ba1bc61a80c67a6d1736490cc2d587f2ea",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/css/workshop-entry.css",
+      "bytes": 2726,
+      "sha256": "091ce13c764c0861b33aad276e9fed4e93380423c0bf23df400d4430c0ac9528",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/evolution-lab.html",
+      "bytes": 3567,
+      "sha256": "3bc665669ed907ed1a94512186c4c9ce7c496d9f403e99eceea5d017075fbb1b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/evolve.html",
+      "bytes": 4959,
+      "sha256": "b25b86fbe7dc0223d8ddeee812c234ca8b54d2b9b8e0433a96c3359c7f2cbe92",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/feedback.html",
+      "bytes": 1399,
+      "sha256": "15a37a675a73c12388152705f5e6089c0f5f60e64e0a8e996989319312397ef5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/game.js",
+      "bytes": 5913,
+      "sha256": "7651b508ea21abd4636f848a64b0dd380aa5fab67730abe5b519ec420b2aaa3d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/generation-speed-lab.html",
+      "bytes": 1210,
+      "sha256": "128336c5b4db40e0126278f324d60cc0db2b7a9cac82d0b0411d7e5eebbe6aa0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/identity-lab.html",
+      "bytes": 2413,
+      "sha256": "b04de6ebd5ebf52533e3c90089e2c3a1052513ea524ec44dfaf5e3d6d4d8a147",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 7037,
+      "sha256": "38218e63bb0209108d3e0e7ce968a04590a230371e8e7b34f9da6acb7a3f444d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/animation-task.js",
+      "bytes": 867,
+      "sha256": "24cfeed265e10cb28d48a362026ed00393a3226cef8a09da343878b61271bcb2",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/app.js",
+      "bytes": 11287,
+      "sha256": "45d7f8cad6eeeb4425026bc994bf79c8a24ff1eab3104013ce595b499bf060df",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/artwork.js",
+      "bytes": 807,
+      "sha256": "9c4100e08165fcda45292db52990caf87b026e6d69f44804fa08496f4320c704",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/boss-art.js",
+      "bytes": 7096,
+      "sha256": "ec7d11c07155c0347fa0d877b6e04b2bd9a7d35ea3027469143ec50fa861d38e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/bosses.js",
+      "bytes": 3430,
+      "sha256": "8eb6d651144910cc1d68b824edcd8b52568733348a3bb3e55673004ba9cb2dc0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/combat-math.js",
+      "bytes": 901,
+      "sha256": "061158fd2b17c18f93583eeef3dc71c63741a139555a16b468f8cd486c181be5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/combat-sound.js",
+      "bytes": 851,
+      "sha256": "7551532b04d3ae9fe0378e99b55592bfde604a538785ac0974ee18ec0cc81339",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/command-menu.js",
+      "bytes": 1638,
+      "sha256": "00f23f2bc0f374976b175af212aa16ec9ae29cbcfd8f3c71f3664b8550a28e93",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/condition-feedback.js",
+      "bytes": 2187,
+      "sha256": "f36987a05bbcafcaf3339fb79a61c988bcd7a166172f25e00266c8f812d2417f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/data.js",
+      "bytes": 1298,
+      "sha256": "df3d9b60e10645649a665deaf0efef3960201ed81b9608b5e59c26fd9a87be01",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/dialogue-player.js",
+      "bytes": 2420,
+      "sha256": "9e7ddde2d3b0c3444ccf15a6dd71e6a42745decde35856da101de734e52334b3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/dialogue.js",
+      "bytes": 343,
+      "sha256": "6a8e3442b63cf9023dc623995b5fd70877b7f101d63a402c1046be9b5137cb20",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effect-job.js",
+      "bytes": 1560,
+      "sha256": "c3f65cd5609560d4255223a3643d924033c97bad45fad9633bdf1dfe2b1c21d7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/action-renderer.js",
+      "bytes": 10376,
+      "sha256": "97941d332f680240a8ff48501f6328c12d8e1c5647fceee836ce466a2710c554",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/dragon-cinematic.js",
+      "bytes": 6054,
+      "sha256": "4557cd4590059a288cb53906e2d8af7dea0387fc3bfe1a83ee7ae112f8aafcab",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/dragon-shapes.js",
+      "bytes": 1677,
+      "sha256": "42f24975adfe8440b3254047325e75924dc1a3743abd49e2f6cd459b2478dd36",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/dragon-timeline.js",
+      "bytes": 776,
+      "sha256": "1fad2c020b9c04fb061831a88930b39977251386cf60a4832e849c324cd9e5c8",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/generated-overlay.js",
+      "bytes": 3443,
+      "sha256": "6f9007e3b4eaa671f9a3f740c6e5d0c0429a3fb0078d5b245f0aaf1803838af7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/generated-staging.js",
+      "bytes": 2246,
+      "sha256": "ec9c62b45971b4ce12a3e8f367cdab6d3010052b80565b88a82c867cff84703a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/impact.js",
+      "bytes": 4959,
+      "sha256": "8e0172992fda94ad2f76a315b294da3cc97df7be849bc96f57d7db580c38dcb5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/motion-material.js",
+      "bytes": 1976,
+      "sha256": "63cb07735e101beb78535f02d8674e38de3f7b928cca1a8bcd2f1f875e3bde23",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/motion-renderer.js",
+      "bytes": 10877,
+      "sha256": "4ca448bf0d13b9952db01d4f27981efad31fb9ce4f287c354b4946f2ca9da311",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/mythic-finisher.js",
+      "bytes": 6159,
+      "sha256": "36ff711878ce4b170ecfb16ce6d5ca54b44234c5fc818ee6b390c2c4a90627cd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/paths.js",
+      "bytes": 688,
+      "sha256": "fe5578b8e131ea0a74282713e8e214600b774fdd5dd92274692f79cc6f9a46fb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/payloads.js",
+      "bytes": 2913,
+      "sha256": "21b33fc1321070fa3b510d02b196c53821434729101924d48a60bae3192c9b06",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/rarity-contact.js",
+      "bytes": 1051,
+      "sha256": "c6fe70e7d8390f90bd2b2fea617daf509c1f50238bb1e5659102acc9d75d00e7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/rarity-director.js",
+      "bytes": 3067,
+      "sha256": "4d0525cbd46638b8ab311916ade8fcfe0dfa4a5589203dc996368fed506274fb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/renderer.js",
+      "bytes": 1662,
+      "sha256": "8f0aae30ac5a1826ad096c88f2289b08bdff07405f1dabc8a7ec87408a361cf8",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/sprite-atlas.js",
+      "bytes": 14064,
+      "sha256": "51df739be888a539c2d730d39269b9e9efbbdcc45d6d7b0db2252b56265e7a1a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/sprite-cinematic.js",
+      "bytes": 5325,
+      "sha256": "1ce51fc401f9633c50807a7a257ad4ad8dea44a15559641bce3fcf0d19e1f949",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/story-renderer.js",
+      "bytes": 8321,
+      "sha256": "3553f86fc3aefc04e939b759199bdaa7347923760c20efbcd3136839b82fc828",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/vfx-sound.js",
+      "bytes": 2036,
+      "sha256": "283c5c9746d69ee4d3ab87747eaa15e5ed0a7f0c30c9de13dbf7d7427016f5d3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/effects/weapon-pose.js",
+      "bytes": 2085,
+      "sha256": "1e0fabc35671ad27d847d40506981d70dc150f11d82a4ba481e49883b760f21f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/encounters.js",
+      "bytes": 1723,
+      "sha256": "e8e5234574469f851a1a43a64a5264bd642134f9d785856a224cae1b27f5ec77",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/enemy-sprites.js",
+      "bytes": 3057,
+      "sha256": "047ae34da5b459f1f344d89d977ed83618d4d336ed4bd3cedc2489380d496961",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/hp-animation.js",
+      "bytes": 1739,
+      "sha256": "01bef5a7c328ad227f831b4b58a2f233950e6e8c89041a474cf843e09e40391c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/icons.js",
+      "bytes": 397,
+      "sha256": "41e2c052de6ecdef71b5858fd12ac193950bc0a9c8be8febf9910803ee896b35",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/intent-ui.js",
+      "bytes": 292,
+      "sha256": "54c14c3b826fce263d510c79c905768f54d336ce0c11b88180392a317332d595",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/journey.js",
+      "bytes": 4629,
+      "sha256": "1c0878b997f7a045488493fa2002bf9baed96bc3dcfce6d37c8f84e628f9ef84",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/move-details.js",
+      "bytes": 815,
+      "sha256": "b5d6b85af5a599d50274598c5e18e611e16caa1d6610d2eb4610338dae7f26e9",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/move-insight.js",
+      "bytes": 1421,
+      "sha256": "61342d092fadfb32ad3c300cf418f7dabbae57049ae4c1532e930e3071cd42a6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/move-menu.js",
+      "bytes": 4705,
+      "sha256": "0dce179adc58d0a54f57e80908986d8e5890c3ad832d8c8e5c90ed81a1f9bdf4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/recovery.js",
+      "bytes": 719,
+      "sha256": "7410f0050474c8139cd67befb47eae745ef8661a3c220810b4d6fb57607bdd69",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/results.js",
+      "bytes": 3330,
+      "sha256": "f0fb10fb42ee5bc671bb1cf6e6ee9071c0f912da62bac465a038a23db63e6d20",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/run-record.js",
+      "bytes": 1125,
+      "sha256": "b7ee4ee9ac75461ad2e252a0f53ff1832eae66f3987034f4d874f2c33e092ed7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/save.js",
+      "bytes": 2659,
+      "sha256": "fad206b9ea3ce9730de1168888d19cb6e7fe0bda63f9a560913b3ad972c9d204",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/sprites.js",
+      "bytes": 1885,
+      "sha256": "21e34864f17c45e15bbc4f01477d3f1d2bddd458851bff238f67b0b30785ee86",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/state.js",
+      "bytes": 9861,
+      "sha256": "406229777a525ec5993535c61b03e7d4129d1ce3260710f5b002591b949f2619",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/status-badge.js",
+      "bytes": 898,
+      "sha256": "634ace6c290f3f8ef8640f20b578add7eb867284565ea978b4061b65b7c5a08c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/status-panel.js",
+      "bytes": 1344,
+      "sha256": "e44aceb8d3b0d75c0e4b8ef6404f33c253a5e02dfa675a7ff7c019ad3f34e8e1",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/tactics-ui.js",
+      "bytes": 1585,
+      "sha256": "bb766770ebe035eddc58f07d762725c2449051db61f1daf339019e52b7cf1fbe",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/turn-flow.js",
+      "bytes": 625,
+      "sha256": "e9310929ca4db197c2f5d87d7f45b8f311cbe78ab1f52dedc536645c752b3777",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/turn-presentation.js",
+      "bytes": 4874,
+      "sha256": "1c53577f97d866f67084b9364741f1dce4ca6c437bf9af2762fcd0109cf24ae4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/battle/victory-card.js",
+      "bytes": 1689,
+      "sha256": "81a471ea73a6a825a77d28e34c6e12343ed980cd883920ae42053f2a629d3c33",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/blueprint-lab.js",
+      "bytes": 1500,
+      "sha256": "293a44826884f56a97d86d6019a3cc45d98d41d3f0ba17b853a93154e006693e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/clock-lab/app.js",
+      "bytes": 3375,
+      "sha256": "191fc073259384dce738fc421b9459a39bd5a2859ab21328718b29effef5da40",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/clock-lab/clock.js",
+      "bytes": 1356,
+      "sha256": "a3db95b7741d481adfe5d1e131b8ea2e1f506dffe8f853047942f45c27801252",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/clock-lab/data.js",
+      "bytes": 1643,
+      "sha256": "7fa7d785381c1bc533bcaab52b321ef47763082299da7860b60cb4381d54b384",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/clock-lab/sequences.js",
+      "bytes": 6198,
+      "sha256": "b661dff5eddae1840ba91cfff3b324fdb6b2d36991b496dcb663304ff8c7975c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/clock-lab/state.js",
+      "bytes": 1862,
+      "sha256": "0f9100d195a6dfa6cfb332810aef1aee58fbef3908be49dac4bdca569789c32f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/analysis.js",
+      "bytes": 2935,
+      "sha256": "acf457b1f0021e811bbda43663b4ce870b1b9cc22bcc010e323f6c2029211980",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/app.js",
+      "bytes": 12757,
+      "sha256": "d93bdfff215d82b690078df29156b69a85964a49bb2bc746d3f8413b2e45b141",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/effects.js",
+      "bytes": 1841,
+      "sha256": "416f661804f5a6e5fe910f3112f79b77038103311f131485e671ff6da6da345a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/rarity-choice.js",
+      "bytes": 893,
+      "sha256": "f988b14934c6450d191e13d7c3e11349d9907d1a772afcb5fc2bd7e8b15af4c9",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/rarity-lab.js",
+      "bytes": 1362,
+      "sha256": "0423b060635d5ffb54468c1f200bb2490c6b4cc52735b58cc81557aa73b4b55b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/rarity-reveal.js",
+      "bytes": 2091,
+      "sha256": "d41ab12c8422145238a9b59a8577212e71b7d3a59d41a1f2e8a9bc0383f84d66",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/craft/scene.js",
+      "bytes": 1106,
+      "sha256": "c69f27a2535bb8c444e2f8af09ac8424872874ac34071e99f60cf074d90b977d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/drawing/canvas.js",
+      "bytes": 1771,
+      "sha256": "cbeef20c218466edc32610342942ab533386cd9c72246009c0b8c91a8d383bc6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/drawing/examples.js",
+      "bytes": 840,
+      "sha256": "8cd0ddf1d78fc395e67908a6f4fe821653573ec178645e542620c286541f3f9e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/api.js",
+      "bytes": 2295,
+      "sha256": "45afe01ca796a436efdb9192b86d1f50995a713966bb71220bbe64f127f0e120",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/lab.js",
+      "bytes": 4062,
+      "sha256": "8d9db49eea0a1080e1bad65fb357f1dfb47438fe17da53538330e03d95a4a65f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/live.js",
+      "bytes": 5609,
+      "sha256": "c67bddf0f60563ad97cef339fd085dff93248618bb192ac1399d3b5b052c7161",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/reveal.js",
+      "bytes": 717,
+      "sha256": "75ec3ad03dc190ea41ab60a714b5a5e2f53f8597ae18606d0ce0b10855f39716",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/screen.js",
+      "bytes": 3843,
+      "sha256": "c014ec86f5c6113362b0fcee33cc569c8759f42bd4a1e1a39f431cab5c1e358b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/evolution/transfer.js",
+      "bytes": 1885,
+      "sha256": "509f2e7ea4129b8e8459bdc26558782a430271b53f119fba3a0e13dab102936a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/audio-manifest.js",
+      "bytes": 1661,
+      "sha256": "ecb004f1aff67191a1e985c9ea170ebf632b812f539b7b515b6ed7014794ffd4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/audio.js",
+      "bytes": 7468,
+      "sha256": "d0f53da25300c70095a38654c2911cea479e4149ceb74090231276f51f1e4e75",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/feedback.js",
+      "bytes": 764,
+      "sha256": "987be13127f551a525fcc17c7ad941d964d5a7885dadf6342def2724eb061494",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/http.js",
+      "bytes": 516,
+      "sha256": "8ea1dfaf02f8468bfe59b954f0f99d0a0f1295bff372a5a2aa2ba6ab50dd8b0d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/loading-screen.js",
+      "bytes": 6290,
+      "sha256": "d4f3927e1ee5d903fe48cc406bb90733d5c102b4e244288e6018e109d8efee44",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/new-game.js",
+      "bytes": 648,
+      "sha256": "50cdcbbb823e32a56f673e1e3fd07816209e179805e6e6d9a10ac498e298949a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/public-playtest.js",
+      "bytes": 1494,
+      "sha256": "801a4acbf4c0be3fb96150542af3ea7688ca2ccc48a44c1e68a777f89ea819b7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/scenery.js",
+      "bytes": 3687,
+      "sha256": "edb100097b20a514ff7f04ac31c94f74f88fd47a315760b2342da8884fa4ebc0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/scenes.js",
+      "bytes": 1949,
+      "sha256": "242163805a7aa879c674665365f9b40158981913da5516bbd69a8ee15c94a783",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/game/stage-layout.js",
+      "bytes": 2092,
+      "sha256": "8bc414ef7359e1a2e7374fcefc72a94df0e7cdfe847988936911bdaeadf9c022",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/identity-lab/app.js",
+      "bytes": 2714,
+      "sha256": "5e8058041d6af4de03903fb36f7488e7ac95130cabebdae5abda492b5ccf5bdb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/identity-lab/assets.js",
+      "bytes": 2157,
+      "sha256": "f0b6305d5b87f6cfb83339fe7a0a74289886261db17a9879cfbb472fabea0cb7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/identity-lab/motion.js",
+      "bytes": 1393,
+      "sha256": "0b1f92b49a32c99ce6983e430f2788c3fee663ff785b348a4e61cbce818fab43",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/identity-lab/plans.js",
+      "bytes": 3524,
+      "sha256": "17322c20ac679d5af68ffbb10f823149492513ce123267175e1892312f49f9cf",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/identity-lab/scene.js",
+      "bytes": 6400,
+      "sha256": "195323ac48c505ffd18feb9e590f184a17615be15eefb5bbb2645c3db47f037d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/labs/dragon-scythe.js",
+      "bytes": 2222,
+      "sha256": "593fa439ad6d96a16f85e5f9a04e2253a79da4fc3b73f1858c0828467a9696ee",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/labs/generation-speed.js",
+      "bytes": 2229,
+      "sha256": "91face530cc202965f35fd13860834a1dd062ab75cb595636401d768c49a4966",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/labs/rarity-skill-setup.js",
+      "bytes": 1737,
+      "sha256": "d6379a99933e30afba336d5c7751cf3ecffcbb99a55c19424bc331ee0bd9cb16",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/labs/vfx-gallery.js",
+      "bytes": 914,
+      "sha256": "deb750b8b9fa5e5367e5d60153c10572ef5fa19619d75ba8f5ea2d8128cd3177",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/library/screen.js",
+      "bytes": 5364,
+      "sha256": "4b3085ab7753d3b176523d9affc96946086c74861e4a062fc59a3b70f7a7fc33",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/local-pixel-lab.js",
+      "bytes": 3424,
+      "sha256": "c1a8bac3a1d4ed8d44023142c5238d7c8a012e15ce245f9d6447371d6a7e3481",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/mockups/scenery.js",
+      "bytes": 120,
+      "sha256": "7ee862a38e30e17465354bbcbb3ad834346ade6c186c0fc906b654c9ed2dd757",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/mockups/screen.js",
+      "bytes": 6341,
+      "sha256": "a72e4f5d05064f1676d1c79f02948f3636946aa68c1df49b228ac8b1c3d3e20b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/palette-guide.js",
+      "bytes": 1769,
+      "sha256": "8ddaf349bb947e68eda84c8f32d9f9ce38bcf8363aeed1a2db07c20218fa4a87",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/palette.js",
+      "bytes": 1284,
+      "sha256": "d80475a79225d1d03d93f38524e868c3c2cd55fbc8a16aa852b02f154e10fe62",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/rarity-effects-lab.js",
+      "bytes": 5945,
+      "sha256": "cd154a8bdccd062428d7d7c1bf21b8a3ae66baaf99f4914dae6b02e8bc776de6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/title/entry-mockup.js",
+      "bytes": 1435,
+      "sha256": "36eedd6a4ea1c77e3d0918da5131e237bfdda64250ee8b5dcd40604250619def",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/title/mockup.js",
+      "bytes": 3974,
+      "sha256": "7f51b2d646e6ff4a323df17a5f1459292e73be3a525bb2d5367676f8841d988f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/title/sprites.js",
+      "bytes": 5271,
+      "sha256": "e13c576fe30ac882b26076d4051282c3f58539b5d65d37bbf4fa6cd5a3936cc8",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/title/start.js",
+      "bytes": 1645,
+      "sha256": "19d7d9f2c095c0d110b435ddf02a8647d47d61b3b92ffbd1419ff1a796a09e98",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/title/workshop-entry.js",
+      "bytes": 4549,
+      "sha256": "12f3093859e84dcb18f09da30cab06692bb951a4806a3858c905d44c2e0557dd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/app.js",
+      "bytes": 2815,
+      "sha256": "ec4cade42e9e84ed647953cbc3bd93c3c5d46802688b461ba81d6f344cffa828",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/catalog.js",
+      "bytes": 1382,
+      "sha256": "08241f88808987a6e240572efce67898714d8e3f1a5641d91006f9c0247b7742",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/held-weapon.js",
+      "bytes": 1431,
+      "sha256": "a4e111c737e9c27e7786b5cc3cb4a8b12c6eda1374c85a78ca5298483d2a3183",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/sprite.js",
+      "bytes": 2725,
+      "sha256": "962aa3d30fe2044d8812e419b87c812b9545032d2a266d2359ad4b17f80607e3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/study-sprite.js",
+      "bytes": 5698,
+      "sha256": "2741aefa43b599319da700a9c051a7bd5f95789cc7eac53a9c6a09c5718b377a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/trainers/study.js",
+      "bytes": 120,
+      "sha256": "3c539ab1ced3fdedc5795e68600630f375d2cdb869fa5c3c61a2414e96672c1a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapon-lab.js",
+      "bytes": 5618,
+      "sha256": "adfd7180a3f8e32e250ca173235aa1b415c0108b1b930fab3c31fe60b60e4f0f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/artwork.js",
+      "bytes": 2010,
+      "sha256": "e06506a991e5a2af293fd6fdf731621bd8ce875d9e9e7facafd14e5e50408e8b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/catalog.js",
+      "bytes": 5677,
+      "sha256": "081283aeb2c24ae652b530147626d4287c10cebe8c4cf9be2479b95fc73ce604",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/chronicle.js",
+      "bytes": 3202,
+      "sha256": "894a57f144d2e01640afd014676018de6d800546ccf53d1dbc51f1e668256a68",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/conditions.js",
+      "bytes": 4830,
+      "sha256": "79c18b7e62281f41f60e2eaa7265102a38e22f6e7ef386d737aeedbe55a8b06e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/effect-jobs.js",
+      "bytes": 8421,
+      "sha256": "c18f11609d7dd0b1e65b692f1154ea3aca198fbcf94a710cbc612d4b9644ef64",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/effect-plan.js",
+      "bytes": 1206,
+      "sha256": "6ed9d249fcd8f52d0dff3870d6b5deba5ceee8bfd6b56624609040b464519d01",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/effect-progress.js",
+      "bytes": 822,
+      "sha256": "4cb6e9c4df71f6a87e163eb31d0f8c6b2654c1a15e9e7c6e6ba8ed57a4f771a6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/hit-feel.js",
+      "bytes": 1234,
+      "sha256": "e1b2a776eb0ef71552cda2992c491d40c73fa0b8fed71cdf3952d374ab09b6f3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/library.js",
+      "bytes": 5210,
+      "sha256": "80d974be3b2f360bf60ab33d2577a2647443681f0aa51bb37d42208a096dcceb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/motion-examples.js",
+      "bytes": 4430,
+      "sha256": "a4616227a7374c1eb6ce102b42bf8c5f07ec24b594d3d1c683bff12c84234dfd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/motion-plan.js",
+      "bytes": 4200,
+      "sha256": "2a379d736562e708bc87428a3a960f1d58abb4f8ea7675daa582b3b7138dfa6c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/move-rules.js",
+      "bytes": 5532,
+      "sha256": "4354837a4dbfd6d39509402ac2c74560cf2b5649e722ee46c81f4065b442165f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/moves.js",
+      "bytes": 6969,
+      "sha256": "b111dcf70098cec695740b4173b8445539c9fa1e190a9be3605a80fac115b4dd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/preview.js",
+      "bytes": 2183,
+      "sha256": "0006d8728e98671a914bf865588ed5647eae18d5ec5bd2fcfb9ff197d7d872f9",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/rarity-effects.js",
+      "bytes": 2760,
+      "sha256": "af56b138b5cd5ad0816d79a6e01ea60b35624ace76dffe92c02eedd13fa9eff5",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/rarity.js",
+      "bytes": 1753,
+      "sha256": "ad61ac88935bde53bf82454251e7565d53454d4e292322f28f677805410c62e0",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/scythe-ascension.js",
+      "bytes": 962,
+      "sha256": "2d304ccac97ad6bbdee5954efc3257dab9cc41091c4b03789ce683018ae17774",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/storage-cleanup.js",
+      "bytes": 3212,
+      "sha256": "fc7c488e4fa1eb5946e807c6b886ff4c6739e158656295c61b991c4a9ad692e7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/story.js",
+      "bytes": 1185,
+      "sha256": "44af3c27fb555504b72b808b9841cb9bec410861e767bfa38bf180b746126194",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/tactics.js",
+      "bytes": 4520,
+      "sha256": "383b6bbe8dff748dbc1f6fe3ae160c8b4c99ca813100d077736c4037fe81affb",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/transfer.js",
+      "bytes": 3982,
+      "sha256": "c5ed4ed90c2c7d76212ce7b7ff064ab3f6fa8229dc90094a33fcaac9404f0509",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/type-guide.js",
+      "bytes": 1271,
+      "sha256": "1a2e8a37675bd1c40da879c41a42bf7ab755969b615d0c2dc8ea7da3f383053c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/types.js",
+      "bytes": 4407,
+      "sha256": "17efcf4715e8026a8af859b91b26d4c613aa7c53eed2bb54a5e7a599ff01aa2d",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/ultimate.js",
+      "bytes": 1616,
+      "sha256": "cafb7554a1f57d8148a6b1d3c79fb9221b21698bbdcf829a94784a058040a55c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/js/weapons/weapon-rig.js",
+      "bytes": 4718,
+      "sha256": "0b0913a5ba43e5427318ca6fa662928d73e146a1ec780ae54a61b98b4f7c201e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/library.html",
+      "bytes": 3417,
+      "sha256": "4e6f9c072b4ed7c76472fa5f70e94833a6866a71cf64ea23adeed12031c20daa",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/local-pixel-lab.html",
+      "bytes": 2010,
+      "sha256": "6d2134056d385f1bd04c5099463cbfc50fe52882cf7d0e2e827205c671a3a0bd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/palette.html",
+      "bytes": 2019,
+      "sha256": "283efdc04851bd562d7e213d9a015e756d208c3da642e01b38523d9c5e4ad7e8",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/rarity-effects-lab.html",
+      "bytes": 4040,
+      "sha256": "a421d52ac7fec6714030c3230fd0cbefe0c06b6011eaef17c82457f6725ece39",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/rarity-lab.html",
+      "bytes": 3097,
+      "sha256": "5110a5a34c6f3e815c90b4c203c1007b9a52c0398acdf2018843959e8d9870e2",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/rarity-skill-lab.html",
+      "bytes": 7964,
+      "sha256": "6a5031a34c1b9f8d3ede35cd8cc4d8f6fc2f3c2d1999b68d3b6723c25411aa7b",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/start.html",
+      "bytes": 2404,
+      "sha256": "af1a4b2917784920859d46f28174de521ab75f5c9617052b1fe6761453df88ca",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/title-mockup.html",
+      "bytes": 4240,
+      "sha256": "6d854a8dfef66391547dd75f928cf8c90e42db595151ae69e42a904261595c44",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/trainer-study.html",
+      "bytes": 2336,
+      "sha256": "9810dddd82305f318dcbf7c9472c800ce014ff835c5d4a165f3d87d944feb9d2",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/trainers.html",
+      "bytes": 2416,
+      "sha256": "1db59149117ff88c8c97f60faadb7ff5afcb24b61605f363c3dba19435d07216",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/vfx-credits.html",
+      "bytes": 3918,
+      "sha256": "fbd5fa47a508453aab5a917eac787026147d90b5cef2210c25d9a36737e57bf7",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/weapon-lab.html",
+      "bytes": 2120,
+      "sha256": "16a44a14943bdd876cc0f89da01f00708298b2604623abd5c363766bbc33ce30",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "dist/workshop-entry-mockup.html",
+      "bytes": 2242,
+      "sha256": "12e4dca1154d6b2f615119bc60a747ed7f22de764496dd29f3bf70c903deac30",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "package.json",
+      "bytes": 211,
+      "sha256": "230448d381d292703332e6ba9877c05ea2c98817a580baf64e40773e04d6cdea",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "public-server.cjs",
+      "bytes": 6257,
+      "sha256": "38eb56091ee18cd2d2974d095855084937591627599ce7908c6d64f546904aa4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "references/vfx/nyknck-fx062/LightFX/FX003/FX003_03.png",
+      "bytes": 227,
+      "sha256": "88f057fe588ab7104c8f821a77234aecde6e83d62bfc12bf948498120a805d8e",
+      "kind": "public-style-reference",
+      "secretMatches": 0
+    },
+    {
+      "path": "render.yaml",
+      "bytes": 609,
+      "sha256": "b2a8ee9de1e8e61e4c71fdc1d1019fbffb47fe0ebcbebeff445492be8ea41ef3",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "requirements-cloud.txt",
+      "bytes": 28,
+      "sha256": "cf3854f0756890279eede94ca624ec6ad224e6c5b044331060548799f44de09a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "retry.cjs",
+      "bytes": 776,
+      "sha256": "c8c4abedf14983d621f509fa656780df5bb9198452be56cb8ac97d8ac063a52c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "scripts/download-game-audio.cjs",
+      "bytes": 1525,
+      "sha256": "267f089e903f051f031f3acc64fef78f3242c89eb110396d7e30086aba0d159c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "scripts/import-game-audio.py",
+      "bytes": 1800,
+      "sha256": "69843eb0939f4f2ef652aaa5a8e00cb4114aaad1f9f528ee5cd2189b56046e01",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "scripts/local-ai/klein-profiles.cjs",
+      "bytes": 537,
+      "sha256": "8ba9df5cecabd659a23f9b01c99d3bc68bd8270167c0e77d1848e0b3c56e8951",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "serve.cjs",
+      "bytes": 8363,
+      "sha256": "1e294694ace984c93f43552b1bf7ded0e0e1e96ff12dca258acaf9c2f2f7431c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "static.cjs",
+      "bytes": 1223,
+      "sha256": "115903caeccdcb6ba174d81757df62bb8219e6e2c7214bfd32f2e637da987c8f",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/LICENSE.md",
+      "bytes": 740,
+      "sha256": "fd50f5abb7eeb614c8d1293b9f239a5238d7536e3a9a9a8929a082c82d12b3fd",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/index.js",
+      "bytes": 506,
+      "sha256": "1ced11eaae74715eaf6f0de41371f3a8daa255a591a57de5012edebb42f0770e",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/package.json",
+      "bytes": 25,
+      "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/regular/jsonrepair.js",
+      "bytes": 26640,
+      "sha256": "87f0ca2966e9eae62dd9e51a3b32c46d09a12caf920422fd454a54c7f2044e39",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/stream.js",
+      "bytes": 307,
+      "sha256": "18f938d71492fa0af9dba0c55ff568bc362682125ef9317a4cd223cf987dee84",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/streaming/buffer/InputBuffer.js",
+      "bytes": 1769,
+      "sha256": "d4db04d359c169180bab5393a58a01a09259d17ec7d0407d386a5d2848deedd4",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/streaming/buffer/OutputBuffer.js",
+      "bytes": 3300,
+      "sha256": "25ca2a6732da395e5803ed9e26231053c6001a5e75176b3e755d9e15082c4877",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/streaming/core.js",
+      "bytes": 30128,
+      "sha256": "a5730c56c6fb188d2e8ac9658fb7b4e19bd6e7863786ae7294caca53d42417a6",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/streaming/stack.js",
+      "bytes": 1186,
+      "sha256": "105038957cf24f7d28785e56d861b905e2a02b8d33d8352e98a5d0690c003849",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/streaming/stream.js",
+      "bytes": 896,
+      "sha256": "a75afb41af0cdf072f335bfbbde3bf26ec41236495bd86972c20628e6fe8fd56",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/utils/JSONRepairError.js",
+      "bytes": 358,
+      "sha256": "dd4966a593d6fa516d20fdfbb7767cc3af267f08ed8cec1482bc5be5fcebf892",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/lib/cjs/utils/stringUtils.js",
+      "bytes": 9452,
+      "sha256": "c4c2db2d8c29f72662d73634b475bf197ae7ac9dbd376637dc0a1544704b124c",
+      "kind": "source",
+      "secretMatches": 0
+    },
+    {
+      "path": "vendor/jsonrepair/package.json",
+      "bytes": 2978,
+      "sha256": "9e366a13dddb4ff27a97135c862c6cdbe2791e1f467d423f0c0512f81c1439ba",
+      "kind": "source",
+      "secretMatches": 0
+    }
+  ],
+  "excluded": [
+    "all existing player and generated image data",
+    "all development study manifests",
+    "all tests and fixture images",
+    ".env",
+    "output",
+    ".local-ai",
+    "compressed payloads",
+    "logs",
+    "model weights"
+  ],
+  "binaryProvenance": "One 227-byte public NYKNCK FX003 style reference only, original author source https://nyknck.itch.io/fx062; used privately by server as pixel-style reference. No player drawing or generated weapon is uploaded.",
+  "textBatches": 11
+}

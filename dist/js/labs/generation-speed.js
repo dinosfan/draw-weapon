@@ -1,0 +1,10 @@
+(async()=>{
+ const entries=[
+  {title:'같은 무기 · 개선 전',id:'05cec7faafca857c5c75f5c1cbe1f76b6684f6081c53537ba52f9f41029feb87',seconds:178,calls:9,first:40,fixture:'spring-hand'},
+  {title:'같은 무기 · 개선 후',id:'fd28675cb128ba70d312172b75656ff24a67c9b0da660fc7e6f95b52169ca24a',seconds:128,calls:6,first:43,fixture:'spring-hand'},
+  {title:'새 AI 무기 · 빠른 생성 (노말 색 미리보기)',id:'5323d60ae286e368ad822c1a6d4c8c35da387b498945e50bf8085dc1628f4b7c',seconds:127,calls:6,first:23,elements:['normal','normal','normal','normal']},
+  {title:'세 기술 계승 · 한 기술 교체 (노말 색 미리보기)',id:'050fa73b1ef05c8918ecebb062b0a0a393c6fa370be31750bf592833e5d341e8',seconds:30,calls:1,first:1.4,elements:['normal','normal','normal','normal']}
+ ];
+ try{for(const entry of entries){const meta=await(await fetch('assets/vfx/generated/'+entry.id+'.json')).json(),elements=entry.elements||(await(await fetch('assets/studies/blueprints/'+entry.fixture+'.json')).json()).weapon.moves.map(m=>m.element);const card=document.createElement('article'),title=document.createElement('h2'),timing=document.createElement('p'),detail=document.createElement('p'),canvas=document.createElement('canvas');title.textContent=entry.title;timing.className='qa-timing';timing.textContent=entry.seconds+'초 · GPU 생성 '+entry.calls+'회';detail.className='qa-detail';detail.textContent='첫 도트 '+entry.first+'초 · '+meta.local.transparencyChecked+'개 장면 검증';canvas.width=canvas.height=384;canvas.setAttribute('aria-label',entry.title+'의 네 기술 도트');const ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;for(let row=0;row<4;row++){const atlas=await BattleSpriteAtlas.loadGenerated(entry.id,elements[row],{allowFadeEmpty:true});for(let col=0;col<4;col++)BattleSpriteAtlas.drawFrame(ctx,atlas,row,col,col*96+48,row*96+48,96);}card.append(title,timing,detail,canvas);document.getElementById('qa-results').append(card);}document.getElementById('qa-status').textContent='검증 완료 · 기존 178초 → 개선 128초 (이번 비교 샘플 약 28% 단축)';}
+ catch(error){document.getElementById('qa-status').textContent='결과 확인 실패: '+error.message;}
+})();

@@ -1,0 +1,12 @@
+{
+  "name": "draw-weapon",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node --env-file-if-exists=.env serve.cjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,18 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script><meta name="viewport" content="width=device-width,initial-scale=1"><title>시계 기술 · 플레이 목업</title>
+<link rel="stylesheet" href="css/fonts.css"><link rel="stylesheet" href="css/clock-lab/screen.css">
+<script defer src="js/clock-lab/data.js"></script><script defer src="js/clock-lab/state.js"></script><script defer src="js/trainers/study-sprite.js"></script><script defer src="js/battle/sprites.js"></script><script defer src="js/clock-lab/clock.js"></script><script defer src="js/clock-lab/sequences.js"></script><script defer src="js/clock-lab/app.js"></script>
+</head><body><main class="lab-screen">
+<header><h1>시간을 다루는 시계</h1><span>기술 차별화 · 플레이 목업</span><a href="craft.html">기존 공방으로</a></header>
+<div class="battle-top"><span id="turn-label">TURN 01</span><div class="time-resource"><span>저장 시간</span><div id="time-gauge" aria-label="저장 시간"></div><b id="time-count">2 / 6</b></div><button id="reset-lab" type="button">처음 상태로</button></div>
+<section id="lab-arena" class="lab-arena" aria-label="시계 기술 시연 전장">
+  <div class="enemy-hud hud"><strong>잉크 수호자</strong><span>Lv.7</span><div class="hp-row"><b>HP</b><div class="hp-track"><i id="enemy-bar"></i></div><small id="enemy-hp">100 / 100</small></div><p id="enemy-intent">다음 공격 16 피해</p></div>
+  <div class="enemy-actor"><canvas id="enemy-sprite" width="32" height="32" aria-label="잉크 수호자"></canvas></div>
+  <div id="installed-field" class="installed-field" hidden aria-label="설치한 시간장"><span>12</span><span>3</span><span>6</span><span>9</span><b id="field-count"></b></div>
+  <div class="player-actor"><canvas id="player-sprite" width="56" height="64" aria-label="시계를 든 트레이너"></canvas><canvas id="lab-held" width="96" height="96" aria-label="손으로 그린 시계"></canvas></div>
+  <div class="player-hud hud"><strong>빌린 시간의 회중시계</strong><span>환상</span><div class="hp-row"><b>HP</b><div class="hp-track"><i id="player-bar"></i></div><small id="player-hp">76 / 100</small></div><p id="damage-memory">되감을 수 있는 피해 24</p></div>
+  <canvas id="sequence-canvas" aria-hidden="true"></canvas><div id="sequence-caption" class="sequence-caption" hidden><small id="sequence-step"></small><strong id="sequence-title"></strong></div>
+</section>
+<div class="lab-console"><section class="dialogue pixel-panel"><span id="dialogue-speaker">빌린 시간의 회중시계</span><p id="lab-dialogue" aria-live="polite">시간을 모아둘까, 지금 써버릴까?<br>이번에는 네 기술의 쓰임새부터 달라.</p><small id="lab-hint">기술 위에 올리면 비용과 효과를 볼 수 있어요.</small></section><section class="moves-panel pixel-panel" aria-label="서로 다르게 사용하는 시계 기술"><div id="lab-moves" class="lab-moves"></div></section></div>
+<section id="move-explanation" class="move-explanation" aria-live="polite"><strong id="explained-name">초침 감기</strong><p id="explained-text"></p></section>
+<footer>AI 호출 없는 별도 시범판 · 네 기술의 운용과 연출을 먼저 검토합니다.<br>모든 기술을 바로 비교할 수 있도록 시간 2칸·체력 76·직전 피해 24에서 시작합니다.</footer>
+</main></body></html>

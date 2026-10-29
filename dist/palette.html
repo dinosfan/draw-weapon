@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>앱 색표 · DRAW / WEAPON</title>
+<link rel="stylesheet" href="css/fonts.css"><link rel="stylesheet" href="css/palette.css"><link rel="stylesheet" href="css/palette-guide.css"><link rel="stylesheet" href="css/types.css"><link rel="stylesheet" href="css/battle/status-badge.css">
+<script src="js/palette.js"></script><script defer src="js/weapons/types.js"></script><script defer src="js/weapons/conditions.js"></script><script defer src="js/battle/status-badge.js"></script><script defer src="js/palette-guide.js"></script>
+</head><body><main>
+<header><a href="craft.html">DRAW / WEAPON</a><a href="battle.html">전투 화면</a></header>
+<p class="eyebrow">COLOR PALETTE · 01</p><h1>우리 앱은 이 색만 씁니다.</h1>
+<p>Open Color에서 고른 <span id="palette-count"></span>개 색. 타입 배지, 기술 테두리, 전투 연출까지 같은 색을 공유합니다.</p>
+<h2>타입 색상 · 기술 테두리</h2><div id="type-swatches" class="swatch-grid"></div>
+<h2>기본 화면 · 상태 색상</h2><div id="base-swatches" class="swatch-grid"></div>
+<h2>상태이상 8종 · 이름 옆 배지</h2><div id="condition-swatches" class="swatch-grid"></div>
+<section class="palette-rules"><h2>사용 규칙</h2><p>기술 테두리는 네 면 모두 타입 색. 배경은 흰색, 글자는 검정. 복합 타입은 배지를 각각 표시합니다.</p><p>임의 색상·혼합 색상·새 농도는 추가하지 않습니다. AI도 타입만 결정하며 색은 이 표를 따릅니다.</p><p>체력은 자연색, 주의·포커스·시간 자원은 전기색, 위험·피해는 빨강을 사용합니다.</p><p>사용자의 원본 낙서, 토스페이스, 기존 도트 그림은 원래 색을 보존합니다.</p></section>
+<footer><a href="https://yeun.github.io/open-color/">Open Color · MIT</a><span>단일 원본: palette.js</span></footer>
+</main></body></html>
+

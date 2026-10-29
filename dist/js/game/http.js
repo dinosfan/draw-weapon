@@ -1,0 +1,1 @@
+Craft.Http={async json(response){const raw=await response.text();try{return JSON.parse(raw);}catch{const error=Error(response.status===530?'공개 연결이 끊겼어. 게임 실행 파일로 연결을 다시 열어 줘.':response.status===524?'공개 서버의 응답 대기가 길어졌어. 같은 작업을 다시 확인할 수 있어.':'서버 연결이 잠시 불안정해. 같은 작업으로 다시 연결해 줘.');error.status=response.status;error.resumable=true;error.connectionOnly=true;throw error;}}};

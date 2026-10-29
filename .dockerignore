@@ -1,0 +1,10 @@
+.env
+.env.*
+.git
+node_modules
+.local-ai
+output
+*.log
+ai-usage.jsonl
+dist/assets/vfx/generated
+dist/assets/evolutions

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: draw-weapon-khu-2026
+    runtime: docker
+    region: singapore
+    plan: free
+    repo: https://github.com/dinosfan/draw-weapon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    envVars:
+      - key: AI_ENDPOINT
+        value: https://factchat-cloud.mindlogic.ai/v1/gateway/chat/completions/
+      - key: AI_MODEL
+        value: gemini-3.5-flash
+      - key: AI_IMAGE_PROVIDER
+        value: chatkhu
+      - key: AI_IMAGE_MODEL
+        value: gemini-nano-banana-2.1
+      - key: BAZE_API_KEY
+        sync: false

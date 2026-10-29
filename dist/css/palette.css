@@ -1,0 +1,30 @@
+/* Generated from dist/js/palette.js. Do not edit colors here. */
+:root{
+  --color-ink:#000000;
+  --color-paper:#f8f9fa;
+  --color-surface:#ffffff;
+  --color-muted:#495057;
+  --color-subtle:#e9ecef;
+  --color-fire:#fd7e14;
+  --color-water:#339af0;
+  --color-nature:#40c057;
+  --color-electric:#fcc419;
+  --color-metal:#adb5bd;
+  --color-ice:#3bc9db;
+  --color-illusion:#f06595;
+  --color-normal:#868e96;
+  --color-danger:#fa5252;
+  --color-fighting:#e8590c;
+  --color-flying:#a5d8ff;
+  --color-poison:#9c36b5;
+  --color-ground:#d9480f;
+  --color-rock:#e67700;
+  --color-bug:#74b816;
+  --color-ghost:#5f3dc4;
+  --color-dragon:#4263eb;
+  --color-dark:#343a40;
+  --color-fairy:#fcc2d7;
+  --color-stellar:#38d9a9;
+  --paper:var(--color-paper);
+  --ink:var(--color-ink);
+}

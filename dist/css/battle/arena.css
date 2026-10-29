@@ -1,0 +1,19 @@
+.arena{position:relative;height:390px;overflow:hidden}.arena-grid{position:absolute;inset:0;background:transparent;pointer-events:none}.status-slot{position:absolute;width:36%;z-index:2}.enemy-status{top:28px;left:15px}.player-status{right:10px;bottom:23px;width:40%}.fighter{position:absolute;display:grid;place-items:center}.fighter canvas{image-rendering:pixelated;position:relative;z-index:1;width:170px;height:170px}.enemy-fighter{right:9%;top:28px}.player-fighter{left:11%;bottom:5px}.player-fighter canvas{width:210px;height:210px}.ground{position:absolute;bottom:3px;border-radius:50%;height:35px;width:190px;background:var(--color-paper);border-bottom:4px solid var(--color-ink)}.player-ground{width:240px;height:40px;background:var(--color-paper)}.fighter-caption{position:absolute;bottom:-22px;font:8px 'Pretendard';letter-spacing:2px;color:var(--color-ink)}.arena-spark{position:absolute;color:var(--color-ink);font-size:20px}.spark-one{top:43%;left:48%}.spark-two{right:5%;top:14%;font-size:16px}.fighter.hit canvas{animation:hit .35s steps(2)}.fighter.strike canvas{animation:strike .3s steps(3)}@keyframes hit{25%,75%{opacity:.25;transform:translateX(8px)}50%{opacity:1;transform:translateX(-8px)}}@keyframes strike{50%{transform:translate(16px,-12px)}}@media(prefers-reduced-motion:reduce){.fighter.hit canvas,.fighter.strike canvas{animation:none}}@media(max-width:600px){.arena{height:310px}.status-slot{width:48%}.enemy-status{top:25px;left:0}.player-status{width:51%;bottom:24px;right:0}.enemy-fighter{right:0;top:50px}.fighter canvas{width:125px;height:125px}.player-fighter{left:-8px;bottom:18px}.player-fighter canvas{width:150px;height:150px}.ground{width:125px;height:23px}.player-ground{width:155px}.fighter-caption{font-size:6px;letter-spacing:1px}}
+
+/* The reference battlefield has no platform or ambient decoration. */
+.ground,.arena-spark{display:none}
+
+.drawn-weapon{position:relative;z-index:1;width:210px;height:210px;object-fit:contain;image-rendering:auto}.player-fighter canvas[hidden]{display:none}.fighter.strike .drawn-weapon{animation:strike .3s steps(3)}@media(max-width:600px){.drawn-weapon{width:150px;height:150px}}@media(prefers-reduced-motion:reduce){.fighter.strike .drawn-weapon{animation:none}}
+
+/* Single approved trainer: weapon and trainer move as one unit. */
+.player-fighter{display:block;width:280px;height:256px;left:8%;bottom:10px}
+.player-fighter #player-sprite{position:absolute;left:0;top:0;width:224px;height:256px;z-index:2;image-rendering:pixelated}
+.player-fighter #held-battle-weapon{position:absolute;left:134px;top:44px;width:96px;height:96px;z-index:1;image-rendering:auto;transform:rotate(14deg);transform-origin:50% 100%}
+.player-fighter.strike{animation:trainer-lunge .3s steps(3)}.player-fighter.strike canvas{animation:none}
+@keyframes trainer-lunge{50%{translate:14px -7px}}
+@media(max-width:600px){.player-fighter{width:210px;height:192px;left:-10px;bottom:12px}.player-fighter #player-sprite{width:168px;height:192px}.player-fighter #held-battle-weapon{left:100.5px;top:33px;width:72px;height:72px}}
+@media(prefers-reduced-motion:reduce){.player-fighter.strike{animation:none}}
+
+.battle-effect-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;image-rendering:auto}.game-shell[aria-busy="true"] .commands{opacity:.65}
+
+.story-caption{position:absolute;top:8px;left:0;right:0;z-index:5;display:flex;align-items:center;flex-direction:column;gap:6px;pointer-events:none}.story-caption small{font-size:10px;background:var(--color-ink);color:var(--color-paper);padding:5px 10px}.story-caption strong{font-size:16px;background:var(--color-paper);border:1px solid var(--color-ink);padding:5px 12px}.enemy-fighter.story-frozen canvas{filter:grayscale(1)}@media(max-width:600px){.story-caption strong{font-size:12px}.story-caption small{font-size:8px}}

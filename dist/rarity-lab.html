@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>무기 탄생 · 희귀도 시범</title>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/craft/layout.css">
+<link rel="stylesheet" href="css/craft/drawing.css">
+<link rel="stylesheet" href="css/craft/weapon.css">
+<link rel="stylesheet" href="css/craft/rarity.css">
+<link rel="stylesheet" href="css/types.css">
+<script defer src="js/weapons/catalog.js"></script>
+<script defer src="js/weapons/types.js"></script>
+<script defer src="js/weapons/rarity.js"></script>
+<script defer src="js/weapons/scythe-ascension.js"></script>
+<script defer src="js/weapons/type-guide.js"></script>
+<script defer src="js/weapons/tactics.js"></script>
+<script defer src="js/weapons/story.js"></script>
+<script defer src="js/weapons/effect-plan.js"></script>
+<script defer src="js/weapons/conditions.js"></script><script defer src="js/weapons/move-rules.js"></script><script defer src="js/weapons/weapon-rig.js"></script><script defer src="js/weapons/hit-feel.js"></script><script defer src="js/weapons/motion-plan.js"></script><script defer src="js/weapons/ultimate.js"></script><script defer src="js/weapons/moves.js"></script>
+<script defer src="js/battle/bosses.js"></script><script defer src="js/battle/journey.js"></script>
+<script defer src="js/weapons/chronicle.js"></script><script defer src="js/weapons/library.js"></script>
+<script defer src="js/weapons/transfer.js"></script>
+
+
+<script defer src="js/weapons/preview.js"></script>
+
+
+<script defer src="js/craft/rarity-reveal.js"></script>
+
+<script defer src="js/labs/dragon-scythe.js"></script>
+<script defer src="js/craft/rarity-lab.js"></script></head>
+<body><main class="rarity-lab"><a href="craft.html">공방으로 돌아가기</a><h1>낙서 하나, 다섯 가지 탄생.</h1><p><a href="rarity-skill-lab.html">등급별 기술 · 신화 궁극기 시범 보기</a></p><p>그림 실력과 관계없이, 모든 낙서에 신화의 가능성이 있다.<br>등급을 선택해 같은 용 낫의 탄생 순간과 성능 차이를 확인해보세요.</p><div id="rarity-choices" class="rarity-choices" aria-label="시범 등급 선택"></div><div class="rarity-choices"><button id="birth-test"><span id="lab-grade">전설 등급 공개</span></button><button id="random-test">실제 확률로 추첨</button><a id="try-battle" href="battle.html">이 등급으로 전투하기</a></div><p class="lab-note">시범 화면은 등급을 직접 선택할 수 있습니다. 실제 공방에서는 제작 성공 후 한 번만 추첨합니다. API 호출 없음.</p><section class="lab-desk reveal-view"><div id="weapon-preview" class="weapon-preview"><span class="reveal-heading">시범용 원본 낙서</span><span class="weapon-art tossface">✨</span><span class="preview-caption"></span></div><div id="weapon-result" class="weapon-result"></div></section></main></body></html>

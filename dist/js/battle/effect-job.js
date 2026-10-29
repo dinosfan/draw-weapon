@@ -1,0 +1,6 @@
+(()=>{const weapon=BattlePreview.weapon;if(!weapon.effectJob)return;
+ const note=document.createElement('small');note.className='effect-job-note';note.setAttribute('aria-live','polite');note.textContent='전용 도트 생성 중 · 지금도 모든 기술을 사용할 수 있어';document.querySelector('.game-shell').after(note);
+ const retry=document.createElement('button');retry.type='button';retry.className='reset-button';retry.textContent='도트만 다시 만들기';retry.hidden=true;note.after(retry);
+ async function watch(){try{const meta=await Craft.EffectJobs.watch(weapon,{onProgress:message=>{note.textContent=message+' · 전투 가능';}});if(!meta)return;Craft.EffectJobs.persistBattle(weapon);note.textContent='기술별 도트 완성 · 다음 기술부터 적용돼';retry.hidden=true;}catch(error){note.textContent=error.cancelled?'이전 게임의 도트 생성 종료 · 저장된 무기와 기술은 그대로야':error.connectionOnly?'진행 조회 연결이 끊겼어 · 같은 작업을 다시 확인할 수 있어':'도트 생성 확인 필요 · '+error.message+' · 완성된 기술은 보존돼';retry.hidden=!!error.cancelled;}}
+ retry.addEventListener('click',async()=>{retry.disabled=true;retry.hidden=true;try{await Craft.EffectJobs.submit({weapon,image:weapon.artwork,retry:true,...(weapon.effectRetryRows?.length?{retryRows:weapon.effectRetryRows}:{})});Craft.EffectJobs.persistBattle(weapon);await watch();}catch(error){note.textContent=error.message;retry.hidden=false;}finally{retry.disabled=false;}});watch();
+})();
