@@ -36,7 +36,7 @@
   async function act(action) {
     if(animating)return;
     const previous=state,next=BattlePreview.reduce(state,action);
-    if(previous.turn===next.turn){state=next;render();return;}
+    if(previous.turn===next.turn){state=next;render();if(next!==previous)dialogue.idle(next.message);return;}
     const token=++revision;animating=true;dialogue.cancel();setMoveMenu(false);lockCommands();
     const index=action.startsWith('move:')?Number(action.slice(5)):-1;
     const move=next.feedback?.prevented?null:index>=0?Craft.Moves.forWeapon(BattlePreview.weapon)[index]:action==='attack'?{damage:BattlePreview.weapon.attack,heal:0}:null;
