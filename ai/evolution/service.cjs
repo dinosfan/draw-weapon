@@ -28,12 +28,13 @@ function createService(config={}){
 
    for(const change of option.changes){const move=preview.moves[change.index];delete move.effectGlyph;if(move.motionPlan)for(const layer of move.motionPlan.layers)if(layer.source==='effect')delete layer.glyph;}
    const previewInheritance=require('../images/inheritance.cjs').create(root).issue(weapon,atlas,preview,option.changes.map(c=>c.index));if(previewInheritance)preview.effectInheritance=previewInheritance;
-   const prepareEffects=config.effectPreparer|| (async({weapon:preview,onProgress})=>{if(config.test)return null;try{
+   const workController=new AbortController(),workSignal=AbortSignal.any([signal,workController.signal]);
+   const prepareEffects=config.effectPreparer|| (async({weapon:preview,onProgress,signal})=>{if(config.test)return null;try{
     const effectService=require('../images/service.cjs').createService({provider:process.env.AI_IMAGE_PROVIDER==='chatkhu'?'chatkhu':'local',root:path.join(root,'dist/assets/vfx/generated'),vision:config.endpoint&&config.key?{endpoint:config.endpoint,model:config.model,key:config.key,fallbackModel:config.fallbackModel,fetchImpl:config.fetchImpl,meter:(status,usage,actualModel=config.model)=>meter(status,usage,actualModel)}:undefined,onUsage:entry=>meter(entry.status,entry.usage,entry.model)});
     const meta=await effectService.create({weapon:preview,image:preview.artwork},{onProgress:p=>onProgress({...p,message:'도트 · '+p.message}),signal});return meta?.id?{id:meta.id,rarity:preview.rarity,layout:meta.local?.layout,inheritedRows:meta.local?.skills?.flatMap((skill,index)=>skill.inherited?[index]:[])||[]}:null;
    }catch{return null;}});
-   const effectTask=Promise.resolve().then(()=>prepareEffects({weapon:preview,drawing:artwork,option,onProgress:progress,signal})).catch(()=>null);
-   const evolveTask=evolver({weapon,option,drawing:artwork,...config,meter,signal}),[evolved,effectAtlas]=await Promise.all([evolveTask,effectTask]);signal.throwIfAborted();
+   const effectTask=Promise.resolve().then(()=>prepareEffects({weapon:preview,drawing:artwork,option,onProgress:progress,signal:workSignal})).catch(()=>null);
+   const evolveTask=Promise.resolve().then(()=>evolver({weapon,option,drawing:artwork,...config,meter,signal:workSignal}));let evolved,effectAtlas;try{[evolved,effectAtlas]=await Promise.all([evolveTask,effectTask]);}catch(error){workController.abort(error);await effectTask;throw error;}signal.throwIfAborted();
    // Always construct lineage and rarity here, never trust a model or client to reroll them.
    evolved.rarity=weapon.rarity;evolved.evolution={stage:(weapon.evolution?.stage||0)+1,rootName:weapon.evolution?.rootName||weapon.name,previousName:weapon.name};delete evolved.effectAtlas;delete evolved.effectJob;
    const changes=option.changes.map(c=>c.index),inheritance=require('../images/inheritance.cjs').create(root).issue(weapon,atlas,evolved,changes);if(inheritance)evolved.effectInheritance=inheritance;if(effectAtlas)evolved.effectAtlas=effectAtlas;const data={weapon:evolved,image:option.image,changes,reusedSlots:effectAtlas?.inheritedRows||[]};write(file,data);return data;
