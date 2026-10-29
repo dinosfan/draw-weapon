@@ -6,4 +6,4 @@
 /* Keep captions clear of the fish and bottom-edge weapon. */
 .caption-right{top:8%;right:8%}
 .floating-weapon:hover,.floating-weapon:focus-visible{z-index:3}
-.floating-weapon[data-label-side="above"] .weapon-label{top:auto;bottom:100%;margin-top:0;margin-bottom:18px}
+.floating-weapon[data-label-side="above"] .weapon-label{left:100%;top:50%;transform:translateY(-50%) rotate(calc(-1 * var(--angle)));margin-top:0;margin-left:14px}
