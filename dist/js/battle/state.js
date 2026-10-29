@@ -32,12 +32,12 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
       if(chosen.heal){const healed=Math.min(chosen.heal,100-next.hp);next.hp+=healed;extra='체력을 '+healed+' 회복했다.';}
     }
     next.message=weapon.name+'의 '+chosen.name+'!';
-    if(chosen.damage&&affinity===0)next.message+='\n상대에게 효과가 없다!';
+    if(!missed&&chosen.damage&&affinity===0)next.message+='\n상대에게 효과가 없다!';
     if(damage){next.message+='\n'+damage+' 피해!';if(affinity!==1)next.message+=' '+(affinity>1?'효과가 굉장하다!':'효과가 약하다…')+' (×'+affinity+')';}
-    if(extra)next.message+='\n'+extra;
+    if(extra&&extra!=='상대에게 효과가 없다!')next.message+='\n'+extra;
     if(skip)next.message+='\n상대의 반격을 멈췄다!';
   }
-  if (action === 'attack'&&gate.allowed) { if(weapon.engine)next.resource=Math.min(6,next.resource+1);damage = Craft.Rarity?Craft.Rarity.attack(weapon):weapon.attack; next.message = weapon.name + '의 공격!\n수호자에게 ' + damage + ' 피해를 입혔다.'; }
+  if (action === 'attack'&&gate.allowed) { if(weapon.engine)next.resource=Math.min(6,next.resource+1);const base=Craft.Rarity?Craft.Rarity.attack(weapon):weapon.attack,power=(next.playerStatus==='burn'?.75:1)*rules.scale(next.playerStages.attack)/rules.scale(next.enemyStages.defense);damage=Math.max(1,Math.round(base*power)); next.message = weapon.name + '의 공격!\n수호자에게 ' + damage + ' 피해를 입혔다.'; }
   if (action === 'skill'&&gate.allowed) {
     next.skills--;
     damage = weapon.kind === 'custom' ? weapon.skillDamage : weapon.kind === 'flower' ? 26 : weapon.kind === 'clock' ? 28 : weapon.attack * 2;
