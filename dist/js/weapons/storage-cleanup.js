@@ -2,6 +2,7 @@
  const prefix='draw-weapon:',activeKey=prefix+'active-weapon',offerKey=prefix+'active-evolution';
  const params=url=>new URLSearchParams(String(url||'').split('#').pop());
  function create(storage){
+  let lastWarning='';
   function collect({reset=false}={}){
    // Fail closed if the collection is corrupt: never guess which saved art to delete.
    const entries=JSON.parse(storage.getItem(prefix+'library:v1')||'[]');
@@ -19,7 +20,11 @@
    const equipped=storage.getItem(prefix+'equipped');if(equipped){try{if(reset||JSON.parse(equipped).id!==current.get('art'))storage.removeItem(prefix+'equipped');}catch{storage.removeItem(prefix+'equipped');}}
    return removed;
   }
-  function activate(url,{offerId}={}){storage.setItem(activeKey,url);if(offerId)storage.setItem(offerKey,offerId);else storage.removeItem(offerKey);return collect();}
+  function activate(url,{offerId}={}){
+   storage.setItem(activeKey,url);if(offerId)storage.setItem(offerKey,offerId);else storage.removeItem(offerKey);
+   try{const removed=collect();lastWarning='';return{removed,deferred:false};}
+   catch(error){const warning='진열장 기록을 보호하려고 임시 정리를 보류했어. 무기 제작과 전투는 계속할 수 있어.';if(lastWarning!==warning){lastWarning=warning;try{root.console?.warn?.(warning);}catch{}}return{removed:0,deferred:true,warning};}
+  }
   return{collect,activate};
  }
  if(typeof module!=='undefined'&&module.exports)module.exports={create};else root.Craft.StorageCleanup=create(root.localStorage);
