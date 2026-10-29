@@ -1,6 +1,6 @@
 (function(root){
  const duration=(from,to)=>Math.min(1400,Math.max(600,Math.abs(to-from)*26));
- function create(clock={requestAnimationFrame,cancelAnimationFrame}){
+ function create(clock={requestAnimationFrame:fn=>root.requestAnimationFrame(fn),cancelAnimationFrame:id=>root.cancelAnimationFrame(id)}){
   const jobs=new Map();
   function cancel(key){const job=jobs.get(key);if(!job)return;clock.cancelAnimationFrame(job.raf);jobs.delete(key);job.resolve(false);}
   function play(key,from,to,paint,instant=false){cancel(key);if(instant||from===to){paint(to);return Promise.resolve(true);}paint(from);return new Promise(resolve=>{const job={resolve,raf:0,start:null};jobs.set(key,job);const frame=now=>{if(jobs.get(key)!==job)return;job.start??=now;const t=Math.min(1,(now-job.start)/duration(from,to));paint(from+(to-from)*t);if(t<1)job.raf=clock.requestAnimationFrame(frame);else{jobs.delete(key);paint(to);resolve(true);}};job.raf=clock.requestAnimationFrame(frame);});}
