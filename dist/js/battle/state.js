@@ -84,10 +84,11 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
     next.lastDamage=Math.min(next.hp,incoming);
     next.feedback.counter=next.lastDamage;next.feedback.blocked=protect&&move.damage>0;
     next.hp = Math.max(0, next.hp - incoming);
-    next.feedback.enemyActed=true;next.feedback.enemyMoveName=move.name;next.feedback.playerAfterCounter=next.hp;
+    next.feedback.enemyActed=true;next.feedback.enemyMoveName=move.name;next.feedback.playerAfterCounter=next.hp;next.feedback.enemyImmune=!!move.damage&&enemyAffinity===0;
     if(incoming>0&&move.status&&random()*100<(move.chance||0)){const notice=conditions.apply(next,'player',move.status,playerTypes,random,move.element);if(notice){next.message+='\n'+notice;next.feedback.enemyMessages.push(notice);}}
     const thawPlayer=conditions.afterHit(next,'player',move.element||'normal',incoming);if(thawPlayer){next.message+='\n'+thawPlayer;next.feedback.enemyMessages.push(thawPlayer);}
     next.message += move.damage ? '\n수호자의 ' + move.name + '! ' + incoming + ' 피해!'+(enemyAffinity!==1?' (상성 ×'+enemyAffinity+')':'') : '\n수호자는 잠시 숨을 고르고 있다.';
+    if(next.feedback.enemyImmune)next.message+='\n상대에게 효과가 없다!';
   }
   if(next.field&&next.enemyHp>0){next.field.remaining--;if(next.field.remaining<=0){next.message+='\n'+next.field.name+' 효과가 끝났다.';next.field=null;}}
   next.feedback.playerStatusAfterCounter=conditions.list(next,'player');next.feedback.enemyStatusAfterCounter=conditions.list(next,'enemy');next.feedback.enemyAfterCounter=next.enemyHp;
