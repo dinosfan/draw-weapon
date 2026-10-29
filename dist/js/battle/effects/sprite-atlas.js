@@ -97,10 +97,10 @@
   const generated=/^generated:([a-f0-9]{64})$/.exec(variant);if(!Object.hasOwn(variants,variant)&&!generated)variant='fang';if(!root.Craft.Types.valid(element))element='dragon';
   readyRows=validateReadyRows(readyRows);const key=variant+':'+element+':'+allowFadeEmpty+':'+readyRows.join(',');if(cache.has(key))return cache.get(key);
   const ready=(async()=>{
-   const image=new Image(),url=generated?'assets/vfx/generated/'+generated[1]+'.png':variants[variant];let objectUrl;
+   const image=new Image(),bundled=await root.GameDemo?.atlasSource(variant),url=bundled||(generated?'assets/vfx/generated/'+generated[1]+'.png':variants[variant]);let objectUrl;
    // Free cloud servers can lose generated files on restart. Keep recently used
    // immutable atlases in this browser, under this game's origin only.
-   if(generated&&root.caches&&root.fetch&&root.URL?.createObjectURL)try{
+   if(generated&&!bundled&&root.caches&&root.fetch&&root.URL?.createObjectURL)try{
     const saved=await root.caches.open('draw-weapon-atlases-v1');let response=await saved.match(url);
     if(!response){response=await root.fetch(url);if(response.ok&&response.headers.get('content-type')?.includes('image/png')){await saved.put(url,response.clone());const keys=await saved.keys();for(const key of keys.slice(0,Math.max(0,keys.length-40)))await saved.delete(key);}}
     if(response?.ok){const blob=await response.blob();if(blob.size<=12*1024*1024)objectUrl=root.URL.createObjectURL(blob);}
