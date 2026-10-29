@@ -28,7 +28,7 @@ async function generate(input){
  // ephemeral, so do not depend on a desktop-only approval file to select it.
  // Missing glyphs and failed frame checks still use the existing quality path.
  const onePass=model===MODEL&&(input.onePass===undefined||input.onePass==='auto')?'glyph':input.onePass;
- const result=await require('./images/local/client.cjs').generate({...input,onePass,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
+ const result=await require('./images/local/client.cjs').generate({...input,onePass,concurrency:4,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
 }
 function evolution(input){return require('./evolution/local.cjs').render({...input,checkAvailability:false,runCommand:runner({signal:input.signal})});}
 module.exports={BASE,MODEL,image,runner,generate,evolution};
