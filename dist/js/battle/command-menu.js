@@ -20,7 +20,7 @@ BattlePreview.mountCommands = (target, onAction) => {
   });
   select(0);
   return state => {
-    buttons.forEach(button => { button.disabled = state.ended; });
+    buttons.forEach(button => { button.disabled = state.ended||(button.dataset.action==='bag'&&!state.potions);if(button.dataset.action==='bag')button.title=state.potions?'':'물약을 모두 사용했어.'; });
     buttons.find(button=>button.dataset.action==='skill').querySelector('small').textContent = '기술 4개 · 능력 확인';
     buttons.find(button=>button.dataset.action==='bag').querySelector('small').textContent = `POTION · ${state.potions}/1`;
   };
