@@ -21,7 +21,7 @@ function createService({key,provider='gemini',model,fetchImpl,root=path.join(__d
   if(Date.now()<quotaUntil){const error=Error('이미지 생성 할당량을 사용할 수 없습니다. 무기는 유지되며 연출만 나중에 다시 만들 수 있습니다.');error.status=429;throw error;}
   if(running>=1){const error=Error('다른 연출을 만들고 있습니다. 잠시 후 다시 눌러주세요.');error.status=429;throw error;}
   const task=(async()=>{running++;try{
-   const onPartial=local?async partial=>{const meta=require('./partial.cjs').publish({root,owner:id,model,rarity:weapon.rarity,bytes:partial.bytes,rows:partial.rows,elapsedMs:partial.elapsedMs});if(meta){meta.local.skills=weapon.moves.map(move=>({name:move.name}));fs.writeFileSync(path.join(root,meta.id+'.json'),JSON.stringify(meta));}if(meta)onProgress?.({phase:'partial',message:meta.local.readyRows.length+'/4 기술 도트 준비 · 완성된 기술부터 사용할 수 있어',partial:meta});}:undefined;
+   const onPartial=local?async partial=>{const meta=require('./partial.cjs').publish({root,owner:id,model,rarity:weapon.rarity,bytes:partial.bytes,rows:partial.rows,elapsedMs:partial.elapsedMs});if(meta){meta.local.skills=weapon.moves.map(move=>({name:move.name}));fs.writeFileSync(path.join(root,meta.id+'.json'),JSON.stringify(meta));}if(meta)onProgress?.({phase:'partial',message:meta.local.readyRows.length+'/4 기술 도트 준비 · 공방에서 기술을 확인할 수 있어',partial:meta});}:undefined;
    // Live analysis already authored the four visual briefs and glyphs from this drawing.
    // Keep using a cached refinement, but do not run another vision call for the same complete design.
    const authored=weapon.moves.every(move=>move.effectBrief&&move.delivery&&move.motionPlan);
@@ -32,7 +32,7 @@ function createService({key,provider='gemini',model,fetchImpl,root=path.join(__d
    if(result.local)result.local.materialsPrepared=!!materials;
    if(!test||onUsage!==recordUsage)onUsage({model,status:200,usage:result.usage});
    const inputCost=model===MODEL&&Number.isFinite(result.usage?.promptTokenCount)?result.usage.promptTokenCount*.5/1e6:null;
-   const meta={id,provider,model,rarity:weapon.rarity,width:result.width,height:result.height,elapsedMs:result.elapsedMs,usage:result.usage||null,...(result.local?{local:result.local}:{}),estimateUSD:{imageOutput:local?0:model===MODEL?.0672:null,input:local?0:inputCost,note:local?'Local generation: no image API charge; hardware and electricity excluded':'1K image output estimate; text/thinking charges may be additional'},cached:false};
+   const meta={id,provider,model,rarity:weapon.rarity,width:result.width,height:result.height,elapsedMs:result.elapsedMs,usage:result.usage||null,...(result.local?{local:result.local}:{}),estimateUSD:{imageOutput:provider==='local'?0:provider==='chatkhu'?null:model===MODEL?.0672:null,input:provider==='local'?0:provider==='chatkhu'?null:inputCost,note:provider==='local'?'Local generation: no image API charge; hardware and electricity excluded':provider==='chatkhu'?'ChatKHU API credits apply; cost is not estimated here':'1K image output estimate; text/thinking charges may be additional'},cached:false};
    fs.mkdirSync(root,{recursive:true});fs.writeFileSync(file,result.bytes);fs.writeFileSync(metadata,JSON.stringify(meta));return meta;
   }catch(error){if([402,429].includes(error.status))quotaUntil=Date.now()+30000;if(!test||onUsage!==recordUsage)onUsage({model,status:error.status||'failed',usage:null});throw error;}finally{running--;pending.delete(id);}})();
   pending.set(id,task);return task;
