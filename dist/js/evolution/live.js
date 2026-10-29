@@ -4,7 +4,17 @@
  async function finish(data){const weapon=Craft.normalizeCreative(data.weapon);if(weapon.rarity!==base.rarity||weapon.evolution?.stage!==(base.evolution?.stage||0)+1)throw Error('진화 계승 정보 형식 오류');const changed=new Set(data.changes);if(changed.size<1||changed.size>3)throw Error('진화 교체 기술 형식 오류');
   for(let i=0;i<4;i++)if(!changed.has(i)&&JSON.stringify(weapon.moves[i])!==JSON.stringify(base.moves[i]))throw Error('계승 기술이 달라졌습니다. 기존 무기는 유지됩니다.');
   weapon.artwork=await API.artwork(data.image);
-  if(weapon.effectAtlas){$('evolution-dot-status').textContent=(data.reusedSlots?.length?'계승 기술 '+data.reusedSlots.length+'개 도트 재사용 · 새 기술 '+(4-data.reusedSlots.length)+'개 도트 완성':'진화 전용 도트 완성');}else try{await Craft.EffectJobs.submit({weapon,image:weapon.artwork});Craft.EffectJobs.watch(weapon,{onProgress:text=>{$('evolution-dot-status').textContent=text+' · 진화한 무기로 바로 전투 가능';}}).then(()=>{$('evolution-dot-status').textContent='진화 전용 도트 완성';}).catch(error=>{$('evolution-dot-status').textContent='기존 기술 동작으로 전투 가능 · '+error.message;});}catch(error){$('evolution-dot-status').textContent='진화한 무기로 전투 가능 · 도트 이미지는 다시 준비할 수 있어';}
+  try{
+   if(weapon.effectAtlas){const atlas=weapon.effectAtlas;await Craft.EffectJobs.apply(weapon,{...atlas,local:{layout:atlas.layout,...(atlas.readyRows?{readyRows:atlas.readyRows}:{})}});$('evolution-dot-status').textContent=(data.reusedSlots?.length?'계승 기술 '+data.reusedSlots.length+'개 도트 재사용 · 새 기술 '+(4-data.reusedSlots.length)+'개 도트 완성':'진화 전용 도트 완성');}
+   else{
+    if(record.effectJob)weapon.effectJob=record.effectJob;
+    else{await Craft.EffectJobs.submit({weapon,image:weapon.artwork});if(weapon.effectJob){record.effectJob=weapon.effectJob;save();}}
+    if(weapon.effectJob)await Craft.EffectJobs.watch(weapon,{onProgress:text=>{$('evolution-dot-status').textContent=text;}});
+    $('evolution-dot-status').textContent='진화 전용 도트 완성';
+   }
+   delete record.effectJob;
+  }catch(error){if(!error.connectionOnly)delete record.effectJob;save();const retry=Error('진화 도트를 완성하지 못했어. 같은 진화의 도트만 다시 준비해 줘. · '+error.message);retry.resumable=true;throw retry;}
+
   const url=Craft.Evolution.battleUrl(weapon,record.nextStage,record.complete?undefined:record.sourceHash);record.consumed=true;record.resultUrl=url;record.changedSlots=data.changes;save();Craft.StorageCleanup?.activate(url,{offerId:id});done=true;UI.changes(base,selected,weapon);
   const reveal=EvolutionReveal.mount({stage:$('evolution-stage'),before:$('evolution-before'),after:$('evolution-after'),onComplete:()=>UI.completed(weapon,url)});UI.message('네가 그린 선에, 새로운 힘이 깃들고 있어…');$('evolution-phase').textContent='진화 중…';reveal.play(data.image);
  }
