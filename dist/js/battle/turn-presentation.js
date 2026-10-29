@@ -28,7 +28,8 @@
     if(!await say(f.enemyPrevented?f.enemyPreventionMessage:enemy.name+'의 '+f.enemyMoveName+'!',!f.enemyPrevented))return false;
     if(f.enemyPrevented)d.conditions.blocked('enemy');
     if(f.enemySelfDamage){await visual(()=>d.impact.play({feel:'pulse',element:'normal'},{hit:f.enemySelfDamage}),()=>d.impact.cancel?.());if(!valid())return false;await status('enemy',f.enemyAfterCounter??(f.phaseChange?0:after.enemyHp),f.enemyStatusAfterCounter);}
-    if(f.counter||f.blocked){d.acting?.('enemy',true);try{d.sound.contact(enemyMove,f,true);const strike=visual(()=>d.impact.play({feel:'pulse',element:enemyMove.element},f,true),()=>d.impact.cancel?.());if(!await d.pause(130)||!valid())return false;await Promise.all([strike,status('player',f.playerAfterCounter??after.hp,f.playerStatusAfterCounter)]);}finally{d.acting?.('enemy',false);}
+    if(f.enemyImmune){if(!await say('상대에게 효과가 없다!'))return false;}
+    else if(f.counter||f.blocked){d.acting?.('enemy',true);try{d.sound.contact(enemyMove,f,true);const strike=visual(()=>d.impact.play({feel:'pulse',element:enemyMove.element},f,true),()=>d.impact.cancel?.());if(!await d.pause(130)||!valid())return false;await Promise.all([strike,status('player',f.playerAfterCounter??after.hp,f.playerStatusAfterCounter)]);}finally{d.acting?.('enemy',false);}
      d.conditions.update('player',f.playerStatusAfterCounter);
      if(!await say(f.blocked?'상대의 공격을 막았다!':f.counter+' 피해를 입었다!'))return false;
     }else if(f.enemyActed&&!await say(enemy.name+'는 잠시 숨을 고르고 있다.'))return false;
