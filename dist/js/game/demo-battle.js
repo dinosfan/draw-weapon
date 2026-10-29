@@ -1,7 +1,7 @@
 // Opt-in demonstration weapons use packaged artwork and the normal battle engine.
 (function(root){
  const entries=root.GameDemoCatalog||[],packs=new Map();
- async function pack(id){const entry=entries.find(e=>e.id===id);if(!entry)throw Error('시연 무기를 찾지 못했어.');if(!packs.has(id))packs.set(id,fetch('assets/demo/'+id+'.json').then(r=>{if(!r.ok)throw Error('시연 무기를 불러오지 못했어. 다시 선택해 줘.');return r.json();}).catch(e=>{packs.delete(id);throw e;}));return packs.get(id);}
+ async function pack(id){const entry=entries.find(e=>e.id===id);if(!entry)throw Error('시연 무기를 찾지 못했어.');if(!packs.has(id))packs.set(id,fetch('assets/demo/'+id+'.json?v=20261030-cutout1').then(r=>{if(!r.ok)throw Error('시연 무기를 불러오지 못했어. 다시 선택해 줘.');return r.json();}).catch(e=>{packs.delete(id);throw e;}));return packs.get(id);}
  async function atlasSource(variant){const entry=entries.find(e=>e.variant===variant||e.atlasId&&'generated:'+e.atlasId===variant);return entry?(await pack(entry.id)).atlas:null;}
  async function launch(id,rarity,stage){
   if(!Craft.Rarity.valid(rarity)||!Number.isInteger(stage)||stage<0||stage>2)throw Error('시연 설정을 확인해 줘.');
@@ -26,3 +26,4 @@
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })(window);
+
