@@ -11,6 +11,7 @@
   function saveBattle(){if(!window.BattleSave)return;const ok=BattleSave.save(BattlePreview.weapon,location.hash,{state,battleId,revision,lastFinisher,lastStrike});if(!ok){let note=document.getElementById('battle-save-warning');if(!note){note=document.createElement('p');note.id='battle-save-warning';note.setAttribute('role','status');document.querySelector('.game-shell').after(note);}note.textContent='전투 진행을 저장할 공간이 부족해. 현재 전투는 계속할 수 있어.';}}
   const updateIntent=BattlePreview.mountIntent?BattlePreview.mountIntent():()=>{};
   const effects=BattleEffects.mount(ui('arena'));
+  const entry=BattleEncounterEntry.mount(ui('arena'));
   const impact=BattleImpact.mount(ui('arena'));
   const finisher=BattleFinisher.mount(ui('arena'));
   const turnFlow=BattleTurnFlow.create(),visualTasks=BattleAnimationTask.create();
@@ -68,7 +69,7 @@
     weaponRecord=Craft.Library.finish(BattlePreview.weapon,location.hash,{id:battleId,won:state.enemyHp===0,stage:state.stage,lastStage:BattlePreview.encounters.length-1,turns:state.turn,hp:state.hp,enemy:BattlePreview.getEncounter(state.stage,state),finisher:lastFinisher});render();return true;
   } });
   function startEncounter(stage) {
-    revision++;dialogue.cancel();visualTasks.cancel();BattleHP.cancelAll();turnFlow.cancel();effects.cancel();impact.cancel();finisher.cancel();conditionFeedback.reset();combatSound.stop();animating=false;
+    revision++;entry.cancel();dialogue.cancel();visualTasks.cancel();BattleHP.cancelAll();turnFlow.cancel();effects.cancel();impact.cancel();finisher.cancel();conditionFeedback.reset();combatSound.stop();animating=false;
     battleId=Craft.Chronicle?.session();lastFinisher='';lastStrike='';
     state = BattlePreview.createState(stage);
     const params=new URLSearchParams(location.hash.slice(1));params.set("stage",String(stage));history.replaceState(null,"",location.pathname+location.search+"#"+params);
@@ -81,8 +82,8 @@
     encounterIntro();
   }
   async function encounterIntro(){
-    const token=++revision;animating=true;lockCommands();
-    try{await dialogue.say(BattlePreview.getEncounter(state.stage,state).name+' 등장!');}finally{if(token===revision){animating=false;render();if(!state.ended)ui('commands').querySelector('[data-action="attack"]').focus({preventScroll:true});}}
+    const token=++revision;animating=true;dialogue.cancel();dialogue.idle('전장에 들어서고 있어…');lockCommands();
+    try{const encounter=BattlePreview.getEncounter(state.stage,state);await entry.play({stage:state.stage,location:encounter.location});if(token!==revision)return;await dialogue.say(BattlePreview.getEncounter(state.stage,state).name+' 등장!');}finally{if(token===revision){animating=false;render();if(!state.ended)ui('commands').querySelector('[data-action="attack"]').focus({preventScroll:true});}}
   }
   function render() {
     const data = BattlePreview.data;
@@ -120,7 +121,7 @@
   try{weaponRecord=Craft.Library?.lookup(BattlePreview.weapon,location.hash);}catch{}
   BattlePreview.drawSprites(state.stage,state); BattlePreview.renderArtwork(); render();
   if(!restored&&!state.ended)encounterIntro();
-  function stopPresentation(){revision++;dialogue.cancel();visualTasks.cancel();BattleHP.cancelAll();turnFlow.cancel();effects.cancel();impact.cancel();finisher.cancel();combatSound.stop();animating=true;lockCommands();}
+  function stopPresentation(){revision++;entry.cancel();dialogue.cancel();visualTasks.cancel();BattleHP.cancelAll();turnFlow.cancel();effects.cancel();impact.cancel();finisher.cancel();combatSound.stop();animating=true;lockCommands();}
   window.addEventListener('game:new-game',stopPresentation);window.addEventListener('pagehide',stopPresentation);
 })();
 
