@@ -24,7 +24,7 @@ BattlePreview.mountResults = ({ retry, next, save }) => {
     const earned=weaponRecord&&Craft.Chronicle?.deeds(weaponRecord).filter(d=>weaponRecord.lastEarned?.includes(d.id)).sort((a,b)=>b.priority-a.priority),deed=earned?.[0]||Craft.Chronicle?.highlight(weaponRecord);memory.hidden=!won||!deed;memory.textContent=deed?(earned?.length?'새로 새긴 기록':'무기에 남은 기록')+' · 「'+deed.title+'」\n'+deed.detail:'';
     nextButton.hidden = !won || complete;
     const journey=document.getElementById('new-journey');if(journey){journey.hidden=!complete;if(complete&&Craft.Journey){const params=new URLSearchParams(location.hash.slice(1));params.set('journey',Craft.Journey.seed());params.set('stage','0');journey.href='battle.html#'+params;}}
-    if(evolutionLink){evolutionLink.hidden=true;if(won){try{const url=Craft.Evolution.offer(BattlePreview.weapon,state,location.hash,BattlePreview.encounters.length);if(url){evolutionLink.href=url;evolutionLink.hidden=false;}}catch(error){console.error('Evolution offer could not be saved:',error);}}}
+    if(evolutionLink){evolutionLink.hidden=true;if(won&&!new URLSearchParams(location.hash.slice(1)).has('demo')){try{const url=Craft.Evolution.offer(BattlePreview.weapon,state,location.hash,BattlePreview.encounters.length);if(url){evolutionLink.href=url;evolutionLink.hidden=false;}}catch(error){console.error('Evolution offer could not be saved:',error);}}}
     retryButton.textContent = won ? '같은 상대와 재대결' : '다시 도전';
     if (!wasEnded) { wasEnded = true; (nextButton.hidden ? retryButton : nextButton).focus({preventScroll:true}); }
   };
