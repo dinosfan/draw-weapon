@@ -13,11 +13,12 @@ Craft.cancelAnalysis=()=>drawingAnalysisController?.abort();
 Craft.analyzeDrawing = async ({ canvas, description, rarity, onProgress=()=>{} }) => {
   if (location.protocol === 'file:') throw Error('그림 분석은 서버에서 사용할 수 있어. README의 실행 방법을 확인해 줘.');
   drawingAnalysisController?.abort();const controller=new AbortController();drawingAnalysisController=controller;
+  const artwork=canvas.toDataURL('image/png'),image=Craft.captureDrawing(canvas);
   const started=Date.now(),progress=setInterval(()=>{const seconds=Math.floor((Date.now()-started)/1000);onProgress(seconds<90?'그림에서 기술 4개와 동작을 설계하고 있어… · '+seconds+'초':'AI 응답을 기다리거나 기술 구성을 보완하고 있어… · '+seconds+'초');},10000);
   try{let publicMode=false;try{publicMode=(await fetch('/api/public-info',{signal:AbortSignal.timeout(5000)})).ok;}catch{}
   const response = await fetch(publicMode?'/api/ai/analyze-jobs':'/api/ai/analyze', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ description, image: Craft.captureDrawing(canvas),...(rarity?{rarity}:{}) }),
+    body: JSON.stringify({ description, image,...(rarity?{rarity}:{}) }),
     signal: AbortSignal.any([controller.signal,AbortSignal.timeout(310000)])
   });
   let body = await Craft.Http.json(response);
@@ -27,7 +28,7 @@ Craft.analyzeDrawing = async ({ canvas, description, rarity, onProgress=()=>{} }
    if(!body.data)throw Error('분석 시간이 오래 걸리고 있어. 그림은 그대로야.');
   }
   const weapon = Craft.normalizeWeapon(body.data);
-  weapon.artwork = canvas.toDataURL('image/png');
+  weapon.artwork = artwork;
   return weapon;
   }finally{clearInterval(progress);if(drawingAnalysisController===controller)drawingAnalysisController=null;}
 };
