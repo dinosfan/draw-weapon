@@ -14,7 +14,7 @@ BattlePreview.mountResults = ({ retry, next, save }) => {
     trophy?.update(state,run);
     panel.hidden = !state.ended;
     if (!state.ended) { wasEnded = false; return; }
-    if(saveWeapon){const saved=Craft.Library.lookup(BattlePreview.weapon,location.hash);saveWeapon.hidden=false;saveWeapon.disabled=!!saved;saveWeapon.textContent=saved?'진열장에 저장됨':'무기 저장';}
+    if(saveWeapon){saveWeapon.hidden=false;try{const saved=Craft.Library.lookup(BattlePreview.weapon,location.hash);saveWeapon.disabled=!!saved;saveWeapon.textContent=saved?'진열장에 저장됨':'무기 저장';saveWeapon.title='';}catch(error){saveWeapon.disabled=true;saveWeapon.textContent='저장 기록 확인 필요';saveWeapon.title=error.message||'기존 저장 기록을 확인해 줘. 현재 무기는 그대로야.';}}
     const won = state.enemyHp === 0;
     const complete = won && state.stage === BattlePreview.encounters.length - 1;
     document.getElementById('result-icon').textContent = won ? '🏆' : '🩹';
