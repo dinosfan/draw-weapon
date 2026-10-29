@@ -22,6 +22,13 @@ function runner({key,model,fetchImpl,signal}={}){return async(exe,args,options={
  // Existing pixel validation consumes the same 512px source layout as the local model.
  fs.writeFileSync(arg('--output'),bytes);await require('./images/local/process.cjs').run(require('./images/local/client.cjs').paths().python,['-c',"from PIL import Image; import sys; p=sys.argv[1]; im=Image.open(p).convert('RGBA'); im.resize((512,512),Image.Resampling.NEAREST).save(p)",arg('--output')],{timeout:30000,signal});options.onEngine?.('ChatKHU/'+(model||MODEL));return'';
 };}
-async function generate(input){const result=await require('./images/local/client.cjs').generate({...input,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+(process.env.AI_IMAGE_MODEL||MODEL)});return{...result,model:process.env.AI_IMAGE_MODEL||MODEL};}
+async function generate(input){
+ const model=process.env.AI_IMAGE_MODEL||MODEL;
+ // This model already passed the four-skill one-pass QA. Cloud caches are
+ // ephemeral, so do not depend on a desktop-only approval file to select it.
+ // Missing glyphs and failed frame checks still use the existing quality path.
+ const onePass=model===MODEL&&(input.onePass===undefined||input.onePass==='auto')?'glyph':input.onePass;
+ const result=await require('./images/local/client.cjs').generate({...input,onePass,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
+}
 function evolution(input){return require('./evolution/local.cjs').render({...input,checkAvailability:false,runCommand:runner({signal:input.signal})});}
 module.exports={BASE,MODEL,image,runner,generate,evolution};
