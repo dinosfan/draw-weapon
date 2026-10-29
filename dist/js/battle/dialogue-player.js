@@ -1,5 +1,5 @@
 (function(root){
- function create(view,clock={setTimeout,clearTimeout},speed=22){
+ function create(view,clock={setTimeout:(...args)=>root.setTimeout(...args),clearTimeout:id=>root.clearTimeout(id)},speed=22){
   let timer=null,pending=null,letters=[],count=0,typing=false,auto=false,hold=450;
   function finish(value){if(timer!==null)clock.clearTimeout(timer);timer=null;typing=false;view.ready(false,false);const resolve=pending;pending=null;resolve?.(value);}
   function reveal(){if(timer!==null)clock.clearTimeout(timer);timer=null;count=letters.length;typing=false;view.draw(letters.join(''));view.ready(true,false);if(auto)timer=clock.setTimeout(()=>finish(true),hold);}
