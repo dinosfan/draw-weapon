@@ -1,5 +1,5 @@
 (function(root){
- function create({manifest,makeAudio,storage,clock={setTimeout,clearTimeout},onChange=()=>{}}){
+ function create({manifest,makeAudio,storage,clock={setTimeout:(...args)=>root.setTimeout(...args),clearTimeout:id=>root.clearTimeout(id)},onChange=()=>{}}){
   const key='draw-weapon:audio:v1';let enabled=true,volume=.35,unlocked=false,blocked=false,visible=true,current=null,revision=0,duck=1,duckTimer=null;
   const cues=new Set();try{const saved=JSON.parse(storage?.getItem(key)||'null');if(typeof saved?.enabled==='boolean')enabled=saved.enabled;if(Number.isFinite(saved?.volume))volume=Math.max(0,Math.min(1,saved.volume));}catch{}
   function persist(){try{storage?.setItem(key,JSON.stringify({enabled,volume}));}catch{}}
