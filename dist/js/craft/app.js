@@ -18,8 +18,8 @@
     document.querySelectorAll('.battle-exit').forEach(link=>link.href=currentBattleUrl);
   }
   const preparation=Craft.BattlePreparation.create({loading,
-    async startEffects(weapon,{regenerate,onRegistered,onProgress}){
-      const id=await Craft.EffectJobs.submit({weapon,image:weapon.artwork,regenerate,...(weapon.effectRetryRows?.length?{retryRows:weapon.effectRetryRows}:{})});
+    async startEffects(weapon,{regenerate,resume,onRegistered,onProgress}){
+      const id=resume&&weapon.effectJob?weapon.effectJob:await Craft.EffectJobs.submit({weapon,image:weapon.artwork,regenerate,...(weapon.effectRetryRows?.length?{retryRows:weapon.effectRetryRows}:{})});
       onRegistered();if(id)await Craft.EffectJobs.watch(weapon,{onProgress});
     },
     onUpdate(weapon,message){refreshWeapon(weapon);if(message)ui('effect-status').textContent=message+' · 기술을 읽어보는 동안에도 계속 준비돼';},
@@ -78,7 +78,7 @@
     if (busy || created || (live ? !points : (!points && !ui('weapon-description').value.trim()))) return;
     const token=++craftEpoch,chosenRarity=rarityChoice.choose();
     const controls = [...document.querySelectorAll('button,input,select')].filter(control=>!control.matches('[data-new-game],[data-loading-action]'));
-    const previousDisabled = controls.map(control => control.disabled);
+    const previousDisabled = controls.map(control => control.disabled);let saveBlocked=false;
     preparation.reset();equippedWeapon=null;busy = true;ui('drawing-canvas').inert=true;
     controls.forEach(control => { control.disabled = true; });
     document.querySelector('.workshop').setAttribute('aria-busy', 'true');
@@ -95,7 +95,7 @@
       const battleUrl = Craft.weaponBattleUrl(weapon);currentBattleUrl=battleUrl;Craft.StorageCleanup?.activate(battleUrl);
       
       Craft.renderWeapon(ui('weapon-preview'), ui('weapon-result'), weapon);
-      created = true;const saved=Craft.Library.lookup(weapon,battleUrl);ui('save-weapon').hidden=false;ui('save-weapon').disabled=!!saved;ui('save-weapon').textContent=saved?'진열장에 저장됨':'무기 저장'; scene.reveal();
+      created = true;let saved,saveError;try{saved=Craft.Library.lookup(weapon,battleUrl);}catch(error){saveError=error;}saveBlocked=!!saved||!!saveError;ui('save-weapon').hidden=false;ui('save-weapon').disabled=saveBlocked;ui('save-weapon').textContent=saveError?'저장 기록 확인 필요':saved?'진열장에 저장됨':'무기 저장';ui('save-weapon').title=saveError?.message||''; scene.reveal();
       document.querySelectorAll('.battle-exit').forEach(link => { link.href = battleUrl; });
       if(live)preparation.prepare(weapon);else preparation.prepare(weapon,{effects:false});
       await birth.play(weapon);if(token!==craftEpoch)return;
@@ -108,6 +108,7 @@
       if(token!==craftEpoch)return;
       ui('drawing-canvas').inert=false;busy = false;
       controls.forEach((control,index) => { control.disabled = previousDisabled[index]; });
+      if(created)ui('save-weapon').disabled=saveBlocked;
       document.querySelector('.workshop').setAttribute('aria-busy', 'false');
       update();
     }
