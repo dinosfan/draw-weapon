@@ -1,5 +1,6 @@
 // Approved pixel scenery, drawn at a fixed logical resolution using only the app palette.
-window.GameScenery={paint(canvas,kind){
+window.GameScenery={paint(canvas,kind,{stage=0,phase=0}={}){
+ if(kind==='battle'&&stage>0&&window.GameBattleScenery)return GameBattleScenery.paint(canvas,stage,phase);
  canvas.width=480;canvas.height=240;const c=canvas.getContext('2d'),p=GamePalette.tokens,r=(color,x,y,w,h)=>{c.fillStyle=p[color];c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
  const oval=(color,x,y,w,h)=>{for(let yy=-h;yy<=h;yy++){const width=Math.floor(Math.sqrt(Math.max(0,1-yy*yy/(h*h)))*w);r(color,x-width,y+yy,width*2,1);}};
  function pine(x,y,size,color){r('ink',x-2*size,y,4*size,35*size);for(let tier=0;tier<4;tier++){const cy=y-24*size+tier*9*size,w=(7+tier*5)*size;for(let line=0;line<9*size;line+=2)r(color,x-w*(line/(9*size)),cy+line,w*(line/(9*size))*2,3);r(color,x-w,cy+8*size,w*2,3*size);}}
