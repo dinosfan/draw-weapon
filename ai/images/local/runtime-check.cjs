@@ -1,5 +1,6 @@
 const Atlas=require('../../../dist/js/battle/effects/sprite-atlas.js'),Palette=require('../../../dist/js/palette.js'),Types=require('../../../dist/js/weapons/types.js');
 function check(inspection,index,element){
+ if(inspection.sourceClipped){delete inspection.pixels;return{...inspection,valid:false,issues:[...(inspection.issues||[]),{reason:'원본 프레임 경계에서 그림이 잘렸습니다.'}]};}
  if(!inspection.pixels)return inspection;
  const source=Buffer.from(inspection.pixels,'base64');delete inspection.pixels;
  if(source.length!==96*96*4*4)return{...inspection,valid:false,issues:[{reason:'pixel data length'}]};
