@@ -4,6 +4,7 @@ from pathlib import Path
 from PIL import Image,ImageDraw
 from matte import clear_white_mattes, transparency_issues
 import numpy as np
+from frame_extract import extract_frames
 p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','guide','glyph-guide','inherit','inspect','pack']);p.add_argument('folder');p.add_argument('--style');p.add_argument('--index',type=int);p.add_argument('--image');p.add_argument('--rows',default='0,1,2,3');a=p.parse_args();folder=Path(a.folder)
 def cut(image):
  data=np.array(image.convert('RGBA'));r=data[:,:,:3].astype(float);green=(r[:,:,1]>70)&(r[:,:,1]>r[:,:,0]*1.25)&(r[:,:,1]>r[:,:,2]*1.25);data[green,3]=0;return Image.fromarray(data)
@@ -47,12 +48,13 @@ elif a.mode=='inherit':
  print(json.dumps({'valid':True,'coverage':coverage,'transparencyChecked':4,'pixels':base64.b64encode(b''.join(pixels)).decode()}))
 elif a.mode=='inspect':
  im=Image.open(a.image).convert('RGBA');issues=[];coverage=[];pixels=[]
+ frames,source_edges=extract_frames(im)
  for i in range(4):
-  x=i%2*im.width//2;y=i//2*im.height//2;inset=12;tile=clean(clear_white_mattes(cut(im.crop((x+inset,y+inset,x+im.width//2-inset,y+im.height//2-inset))).resize((96,96),Image.Resampling.NEAREST)));data=np.array(tile);m=data[:,:,3]>=96;amount=float(m.mean());edge=int(m[:2,:].sum()+m[-2:,:].sum()+m[:,:2].sum()+m[:,-2:].sum());coverage.append(round(amount,4))
+  tile=clean(frames[i]);data=np.array(tile);m=data[:,:,3]>=96;amount=float(m.mean());edge=int(m[:2,:].sum()+m[-2:,:].sum()+m[:,:2].sum()+m[:,-2:].sum());coverage.append(round(amount,4))
   matte_issues=transparency_issues(tile)
   if (i<3 and amount<.005) or amount>.85 or edge>8 or matte_issues:issues.append({'frame':i,'coverage':round(amount,4),'edge':edge,'matte':matte_issues})
   tile.save(folder/f'{a.index}-frame-{i}.png');pixels.append(tile.tobytes())
- print(json.dumps({'valid':not issues,'issues':issues,'coverage':coverage,'transparencyChecked':4,'pixels':base64.b64encode(b''.join(pixels)).decode()}))
+ print(json.dumps({'valid':not issues and max(source_edges)<=8,'sourceClipped':max(source_edges)>8,'sourceEdges':source_edges,'issues':issues,'coverage':coverage,'transparencyChecked':4,'pixels':base64.b64encode(b''.join(pixels)).decode()}))
 else:
  rows=[int(value) for value in a.rows.split(',')]
  if not rows or len(set(rows))!=len(rows) or any(row<0 or row>3 for row in rows):raise ValueError('invalid prepared rows')
