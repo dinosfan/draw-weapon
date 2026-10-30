@@ -11,7 +11,7 @@ function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile
   if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{return json(403,{error:'허용되지 않은 출처'});}if(origin.host!==req.headers.host)return json(403,{error:'허용되지 않은 출처'});}
   if(url.pathname==='/api/public-info'){let state={};try{state=JSON.parse(fs.readFileSync(path.join(__dirname,'output/public-launch.json'),'utf8'));}catch{}return json(200,{online:true,url:process.env.RENDER_EXTERNAL_URL||process.env.PUBLIC_BASE_URL||state.url||null,local,cloud:process.env.RENDER==='true'});}
   if(url.pathname==='/'||url.pathname==='/index.html'){res.writeHead(302,{Location:'/start.html'});return res.end();}
-  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html']);
+  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html','/workshop-catch.html']);
   if(!url.pathname.startsWith('/api/')){if(!pages.has(url.pathname)&&!/^\/(?:css|js|assets)\/[a-zA-Z0-9_./-]+$/.test(url.pathname))return json(404,{error:'없는 페이지'});return require('./static.cjs').serveStatic(req,res)||json(404,{error:'없는 파일'});}
   const now=Date.now();for(const[id,s]of sessions)if(now-s.last>3600000&&s.inflight===0){s.server.close();sessions.delete(id);}
   const cookie=(req.headers.cookie||'').match(/(?:^|;\s*)dw_session=([a-f0-9]{48})(?:;|$)/);let id=cookie?.[1],session=sessions.get(id);
