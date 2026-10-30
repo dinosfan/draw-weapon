@@ -18,6 +18,7 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
   const playerTypes=weapon.types||['normal'];
   const conditions=rules.Conditions;
   const gate=action==='bag'?{allowed:true,message:''}:conditions.beforeAction(next,'player',random,chosen?.element||'normal');
+  const attackPower=(next.playerStatus==='burn'?.75:1)*rules.scale(next.playerStages.attack)/rules.scale(next.enemyStages.defense);
   let damage = 0, skip = false, protect=false,missed=false;
   if (chosen&&gate.allowed) {
     next.pp[moveIndex]--;
@@ -25,10 +26,10 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
     let extra='';
     const hit=!chosen.rule||chosen.rule.accuracy===100||random()*100<chosen.rule.accuracy;
     if(!hit){missed=true;extra='공격이 빗나갔다!';}
-    else if(weapon.engine&&chosen.mechanic){const result=Craft.Tactics.cast(next,chosen,affinity);damage=result.damage;skip=result.skip;extra=result.extra;}
+    else if(weapon.engine&&chosen.mechanic){const result=Craft.Tactics.cast(next,chosen,chosen.ultimate?affinity:affinity*attackPower);damage=result.damage;skip=result.skip;extra=result.extra;}
     else if(chosen.rule){const result=rules.cast(next,chosen,affinity,random,encounter.types||['normal']);damage=result.damage;skip=result.skip;extra=result.extra;protect=result.protect;}
     else{
-      damage=chosen.damage&&affinity>0?Math.max(1,Math.round(chosen.damage*(chosen.ultimate?Craft.Ultimate.multiplier(affinity,next):affinity))):0;skip=chosen.skipCounter;
+      damage=chosen.damage&&affinity>0?Math.max(1,Math.round(chosen.damage*(chosen.ultimate?Craft.Ultimate.multiplier(affinity,next):affinity*attackPower))):0;skip=chosen.skipCounter;
       if(chosen.heal){const healed=Math.min(chosen.heal,100-next.hp);next.hp+=healed;extra='체력을 '+healed+' 회복했다.';}
     }
     next.message=weapon.name+'의 '+chosen.name+'!';
@@ -37,10 +38,10 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
     if(extra&&extra!=='상대에게 효과가 없다!')next.message+='\n'+extra;
     if(skip)next.message+='\n상대의 반격을 멈췄다!';
   }
-  if (action === 'attack'&&gate.allowed) { if(weapon.engine)next.resource=Math.min(6,next.resource+1);const base=Craft.Rarity?Craft.Rarity.attack(weapon):weapon.attack,power=(next.playerStatus==='burn'?.75:1)*rules.scale(next.playerStages.attack)/rules.scale(next.enemyStages.defense);damage=Math.max(1,Math.round(base*power)); next.message = weapon.name + '의 공격!\n수호자에게 ' + damage + ' 피해를 입혔다.'; }
+  if (action === 'attack'&&gate.allowed) { if(weapon.engine)next.resource=Math.min(6,next.resource+1);const base=Craft.Rarity?Craft.Rarity.attack(weapon):weapon.attack;damage=Math.max(1,Math.round(base*attackPower)); next.message = weapon.name + '의 공격!\n수호자에게 ' + damage + ' 피해를 입혔다.'; }
   if (action === 'skill'&&gate.allowed) {
     next.skills--;
-    damage = weapon.kind === 'custom' ? weapon.skillDamage : weapon.kind === 'flower' ? 26 : weapon.kind === 'clock' ? 28 : weapon.attack * 2;
+    const baseDamage=weapon.kind === 'custom' ? weapon.skillDamage : weapon.kind === 'flower' ? 26 : weapon.kind === 'clock' ? 28 : weapon.attack * 2;damage=baseDamage?Math.max(1,Math.round(baseDamage*attackPower)):0;
     skip = weapon.kind === 'clock' || weapon.skipCounter === true;
     next.message = weapon.name + '의 ' + weapon.skill + '!\n' + damage + ' 피해!';
     if (weapon.kind === 'flower' || weapon.skillHeal > 0) {
@@ -93,7 +94,7 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
   if(next.field&&next.enemyHp>0){next.field.remaining--;if(next.field.remaining<=0){next.message+='\n'+next.field.name+' 효과가 끝났다.';next.field=null;}}
   next.feedback.playerStatusAfterCounter=conditions.list(next,'player');next.feedback.enemyStatusAfterCounter=conditions.list(next,'enemy');next.feedback.enemyAfterCounter=next.enemyHp;
   next.feedback.endTurn=[];
-  if(next.hp>0&&next.enemyHp>0){for(const side of ['enemy','player']){const field=side==='enemy'?'enemyHp':'hp',before=next[field],status=next[side+'Status'],message=conditions.endTurn(next,side);if(message){next.message+='\n'+message;next.feedback.endTurn.push({side,status,damage:before-next[field],hp:next[field],message});}}}
+  if(next.hp>0&&next.enemyHp>0){for(const side of ['enemy','player']){if(next.hp===0||next.enemyHp===0)break;const field=side==='enemy'?'enemyHp':'hp',before=next[field],status=next[side+'Status'],message=conditions.endTurn(next,side);if(message){next.message+='\n'+message;next.feedback.endTurn.push({side,status,damage:before-next[field],hp:next[field],message});}}}
   next.turn++;if(next.bossPhase===1)next.phaseTurn=(next.phaseTurn||0)+1;if(typeof BattleBosses!=='undefined')BattleBosses.advance(next,encounter);
   next.ended = next.hp === 0 || next.enemyHp === 0;
   if (next.ended) next.message = next.feedback.endTurn.map(e=>e.message+'\n').join('')+(next.enemyHp === 0 ? '수호자에게 승리했다!\n당신의 낙서가 멋진 무기가 되었다.' : weapon.name + '의 힘이 다했다…\n다시 시작해서 도전해 보자!');
