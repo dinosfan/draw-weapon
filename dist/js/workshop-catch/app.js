@@ -32,5 +32,5 @@
  for(const side of ['left','right']){const button=$('catch-'+side);button.addEventListener('pointerdown',event=>{if(state.status!=='running')return;event.preventDefault();target=null;keys.add(side);button.setPointerCapture(event.pointerId);});for(const name of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(name,()=>keys.delete(side));button.addEventListener('keydown',event=>{if([' ','Enter'].includes(event.key)&&state.status==='running'){event.preventDefault();target=null;keys.add(side);}});button.addEventListener('keyup',event=>{if([' ','Enter'].includes(event.key))keys.delete(side);});}
  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('blur',pause);window.addEventListener('pagehide',()=>{destroyed=true;cancelAnimationFrame(frame);keys.clear();});
  root.WorkshopCatchApp={read:()=>({status:state.status,elapsed:state.elapsed,score:state.score,caught:state.caught,bombs:state.bombs,combo:state.combo,player:{...state.player},entities:state.entities.map(item=>({...item})),rewards:M.earned(state.score).map(r=>r.id)}),start,pause,resume};
- renderer.draw(state);update();
+ renderer.draw(state);update();$('catch-start').disabled=false;
 })(window);
