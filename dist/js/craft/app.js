@@ -26,7 +26,7 @@
     },
     onUpdate(weapon,message){refreshWeapon(weapon);if(message)ui('effect-status').textContent=message+' · 기술을 읽어보는 동안에도 계속 준비돼';},
     onReady(weapon){refreshWeapon(weapon);Craft.renderWeapon(ui('weapon-preview'),ui('weapon-result'),weapon);ui('effect-status').textContent='기술 도트 준비 완료 · 전투로 출발해!';ui('retry-effects').hidden=false;ui('retry-effects').disabled=false;ui('retry-effects').textContent='도트만 다시 만들기';},
-    onError(error,weapon){refreshWeapon(weapon);ui('effect-status').textContent=error.message+' · 도트만 다시 준비해 줘. 무기와 기술은 그대로야';ui('retry-effects').hidden=false;ui('retry-effects').disabled=false;},
+    onError(error,weapon){refreshWeapon(weapon);ui('effect-status').textContent=error.message+' · 기본 연출로 전투 가능 · 무기와 기술은 그대로야';ui('retry-effects').hidden=false;ui('retry-effects').disabled=false;},
     enter(weapon){refreshWeapon(weapon);location.assign(currentBattleUrl);}
   });
   document.querySelectorAll('.battle-exit').forEach(link=>link.addEventListener('click',async event=>{event.preventDefault();if(!created||!equippedWeapon||departing)return;departing=true;const token=craftEpoch,weapon=equippedWeapon;try{const finished=await minigame.play(currentBattleUrl);if(finished&&token===craftEpoch&&weapon===equippedWeapon)preparation.request();}catch(error){ui('effect-status').textContent=error.message;}finally{departing=false;}}));
