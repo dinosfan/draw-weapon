@@ -8,6 +8,7 @@
   let runRecord;try{runRecord=BattleRunRecord.create(localStorage,BattlePreview.weapon,location.hash);}catch{runRecord={read:()=>({victories:[]}),record(){}};}
   const restored=window.BattleSave?.load(BattlePreview.weapon,location.hash,state);
   if(restored){state=restored.state;battleId=restored.battleId;revision=restored.revision;lastFinisher=restored.lastFinisher||'';lastStrike=restored.lastStrike||'';recordedRevision=-1;}
+  if(Craft.Supplies)state=Craft.Supplies.sync(location.hash,state);
   function saveBattle(){if(!window.BattleSave)return;const ok=BattleSave.save(BattlePreview.weapon,location.hash,{state,battleId,revision,lastFinisher,lastStrike});if(!ok){let note=document.getElementById('battle-save-warning');if(!note){note=document.createElement('p');note.id='battle-save-warning';note.setAttribute('role','status');document.querySelector('.game-shell').after(note);}note.textContent='전투 진행을 저장할 공간이 부족해. 현재 전투는 계속할 수 있어.';}}
   const updateIntent=BattlePreview.mountIntent?BattlePreview.mountIntent():()=>{};
   const effects=BattleEffects.mount(ui('arena'));
@@ -23,12 +24,15 @@
   const updateCommands = BattlePreview.mountCommands(ui('commands'), action => {
     if(animating)return;
     if (action === 'attack') { setMoveMenu(true); return; }
+    if (action === 'bag') { setMoveMenu(false);ui('commands').hidden=true;bagMenu.open(state);return; }
     if (action === 'skill') { dialogue.idle(BattlePreview.weapon.name+'\n'+BattlePreview.weapon.trait+' · '+Craft.Types.summary(BattlePreview.weapon.types)+'\n'+(BattlePreview.weapon.engine?.rule||'싸운다에서 기술 4개를 선택하세요.')); return; }
     act(action);
   });
   let movesOpen = false;
   const moveMenu = BattlePreview.mountMoves({use:index=>act(index<0?'attack':'move:'+index),close:()=>setMoveMenu(false)});
+  const bagMenu=BattlePreview.mountBag({use:action=>act(action),close:()=>{bagMenu.hide();setMoveMenu(false);}});
   function setMoveMenu(open) {
+    bagMenu.hide();
     movesOpen=open && !state.ended && !animating;
     ui('commands').hidden=movesOpen;ui('move-menu').hidden=!movesOpen;ui('move-description').hidden=!movesOpen;
     if(movesOpen){moveMenu.update(state);moveMenu.focus();}
@@ -38,6 +42,7 @@
     if(animating)return;
     const previous=state,next=BattlePreview.reduce(state,action);
     if(previous.turn===next.turn){state=next;render();if(next!==previous)dialogue.idle(next.message);return;}
+    if(action.startsWith('item:')){try{Craft.Supplies?.commit(location.hash,next.items);}catch{dialogue.idle('가방 사용을 저장하지 못했어. 아이템과 턴은 그대로야.');return;}}
     const token=++revision;animating=true;dialogue.cancel();setMoveMenu(false);lockCommands();
     const index=action.startsWith('move:')?Number(action.slice(5)):-1;
     const move=next.feedback?.prevented?null:index>=0?Craft.Moves.forWeapon(BattlePreview.weapon)[index]:action==='attack'?{damage:BattlePreview.weapon.attack,heal:0}:null;
@@ -101,6 +106,7 @@
     window.GameAudio?.battle(state);
     updateCommands(state);
     moveMenu.update(state);
+    bagMenu.update(state);
     updateTactics(state);
     lockCommands();
     document.querySelector('.enemy-fighter').classList.toggle('defeated',state.enemyHp === 0);

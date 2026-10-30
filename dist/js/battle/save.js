@@ -8,6 +8,7 @@
    if(s.bossPhase!==undefined&&(!integer(s.bossPhase,0,1)||s.stage!==2))return null;
    if(s.phaseTurn!==undefined&&(!integer(s.phaseTurn,0,s.turn)||s.bossPhase!==1))return null;
    if(!integer(s.hp,0,100)||!integer(s.enemyHp,0,initial.enemyHp)||!integer(s.turn,0,100000)||!integer(s.potions,0,1)||!integer(s.skills,0,2)||!integer(s.resource,0,6)||!integer(s.lastDamage,0,100))return null;
+   if(s.items&&(!['potion','charge','cleanse'].every(k=>integer(s.items[k],0,1))||Object.keys(s.items).some(k=>!['potion','charge','cleanse'].includes(k))))return null;
    if(!Array.isArray(s.pp)||s.pp.length!==4||s.pp.some((pp,i)=>!integer(pp,0,initial.pp[i]))||typeof s.ended!=='boolean'||s.ended!==(s.hp===0||s.enemyHp===0)||typeof s.message!=='string'||s.message.length>4000)return null;
    for(const side of ['player','enemy']){const status=s[side+'Status'];if(status&&!['poison','burn','paralysis','sleep','freeze'].includes(status))return null;const stages=s[side+'Stages'];if(stages&&(!integer(stages.attack,-2,2)||!integer(stages.defense,-2,2)))return null;const effects=s[side+'Volatile'];if(effects&&Object.entries(effects).some(([k,v])=>!['confusion','flinch','recharge'].includes(k)||!integer(v,0,5)))return null;}
    if(s.field&&(!['guard','burn','regen'].includes(s.field.effect)||!integer(s.field.remaining,1,20)||!integer(s.field.power,0,110)))return null;

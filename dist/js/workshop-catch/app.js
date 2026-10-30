@@ -12,7 +12,7 @@
  }
  function finish(){best=Math.max(best,state.score);$('catch-result-score').textContent=state.score.toLocaleString('ko-KR');$('catch-result-detail').textContent='재료 '+state.caught+'개 · 최고 연속 '+state.bestCombo+'개 · 폭탄 '+state.bombs+'회';$('catch-best').textContent='이번 방문 최고 기록 '+best.toLocaleString('ko-KR')+'점';$('catch-result-rewards').replaceChildren();const earned=M.earned(state.score);
   $('catch-result-title').textContent=earned.length?'가방이 든든해졌다!':'조금만 더 연습해 볼까?';for(const reward of earned)$('catch-result-rewards').append(rewardCard(reward).card);if(!earned.length){const note=document.createElement('p');note.textContent='120점을 모으면 첫 포션을 받을 수 있어.';$('catch-result-rewards').append(note);}
-  $('catch-result').hidden=false;$('catch-again').focus({preventScroll:true});
+  $('catch-result').hidden=false;$('catch-again').focus({preventScroll:true});root.dispatchEvent(new CustomEvent('workshop-catch:finished',{detail:{score:state.score}}));
  }
  function animate(now){if(destroyed||state.status!=='running')return;const dt=Math.max(0,(now-last)/1000);last=now;const events=M.step(state,dt,controls());renderer.feedback(events);renderer.draw(state,Math.min(dt,.1));update();
   for(const event of events)if(event.kind==='reward'){$('catch-toast').textContent=event.reward.name+' 보상 도달!';$('catch-toast').hidden=false;toastUntil=now+1700;}
@@ -22,7 +22,7 @@
  function start(){cancelAnimationFrame(frame);keys.clear();target=null;state=M.create();M.start(state);renderer.reset();$('catch-ready').hidden=true;$('catch-result').hidden=true;$('catch-paused').hidden=true;$('catch-toast').hidden=true;last=performance.now();update();renderer.draw(state);frame=requestAnimationFrame(animate);canvas.focus({preventScroll:true});root.GameAudio?.cue('confirm');}
  function pause(){if(state.status!=='running')return;M.pause(state);cancelAnimationFrame(frame);frame=null;keys.clear();target=null;dragging=false;$('catch-paused').hidden=false;update();}
  function resume(){if(state.status!=='paused')return;M.resume(state);$('catch-paused').hidden=true;last=performance.now();frame=requestAnimationFrame(animate);update();canvas.focus({preventScroll:true});}
- $('catch-start').addEventListener('click',start);$('catch-again').addEventListener('click',start);$('catch-resume').addEventListener('click',resume);$('catch-pause').addEventListener('click',()=>state.status==='paused'?resume():pause());
+ $('catch-start').addEventListener('click',start);$('catch-again').addEventListener('click',()=>{if(!root.WorkshopCatchIntegration?.embedded)start();});$('catch-resume').addEventListener('click',resume);$('catch-pause').addEventListener('click',()=>state.status==='paused'?resume():pause());
  function direction(key){return['ArrowLeft','a','A'].includes(key)?'left':['ArrowRight','d','D'].includes(key)?'right':null;}
  document.addEventListener('keydown',event=>{const side=direction(event.key);if(side&&state.status==='running'){event.preventDefault();target=null;keys.add(side);}else if((event.key===' '||event.key==='p'||event.key==='P')&&!event.target.closest?.('button,a')){if(['running','paused'].includes(state.status)){event.preventDefault();state.status==='paused'?resume():pause();}}});
  document.addEventListener('keyup',event=>{const side=direction(event.key);if(side)keys.delete(side);});

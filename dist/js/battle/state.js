@@ -1,15 +1,17 @@
 // Pure state transitions; no DOM or network dependencies.
 BattlePreview.createState = (stage = 0) => {
   const encounter = BattlePreview.getEncounter ? BattlePreview.getEncounter(stage) : BattlePreview.data.enemy;
-  return { resource:BattlePreview.weapon.engine?.initial??2,lastDamage:0,field:null,stage, hp:100, enemyHp:encounter.maxHp, turn:0, skills:2, pp:Craft.Moves.forWeapon(BattlePreview.weapon).map(move=>move.pp), potions:1, ended:false, message:encounter.name + ' 등장!\n' + BattlePreview.weapon.name + '로 무엇을 할까?' };
+  return { resource:BattlePreview.weapon.engine?.initial??2,lastDamage:0,field:null,stage, hp:100, enemyHp:encounter.maxHp, turn:0, skills:2, pp:Craft.Moves.forWeapon(BattlePreview.weapon).map(move=>move.pp), potions:1, items:Craft.Supplies?.read(location.hash).items||{potion:0,charge:0,cleanse:0}, ended:false, message:encounter.name + ' 등장!\n' + BattlePreview.weapon.name + '로 무엇을 할까?' };
 };
 BattlePreview.reduce = (state, action, random = Math.random) => {
   const moveIndex = typeof action === 'string' && /^move:[0-3]$/.test(action) ? Number(action.slice(5)) : -1;
-  if (state.ended || (moveIndex < 0 && !['attack','skill','guard','bag'].includes(action))) return state;
+  const item=Craft.Items?.parse(action);
+  if (state.ended || (moveIndex < 0 && !item&&!['attack','skill','guard','bag'].includes(action))) return state;
   const weapon = BattlePreview.weapon;
   const rules=Craft.Moves.Rules;
   const next = rules?rules.setup({ ...state, field:state.field?{...state.field}:null, pp:[...state.pp] }):{ ...state, field:state.field?{...state.field}:null, pp:[...state.pp] };
   const chosen = moveIndex >= 0 ? Craft.Moves.forWeapon(weapon)[moveIndex] : null;
+  if(item){const blocked=Craft.Items.reason(state,item,Craft.Moves.forWeapon(weapon),rules.Conditions);if(blocked)return{...state,message:blocked};}
   if(chosen&&weapon.engine&&chosen.mechanic){const blocked=Craft.Tactics.reason(state,chosen,weapon);if(blocked)return {...state,message:blocked};}
   if (chosen && !next.pp[moveIndex]) return {...state,message:chosen.name+'의 PP가 부족하다. 다른 기술을 골라보자!'};
   if (action === 'skill' && !next.skills) return { ...state, message: weapon.skill + ' 기술을 모두 사용했다.\n다른 명령을 선택하자!' };
@@ -17,7 +19,7 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
   const encounter=BattlePreview.getEncounter?BattlePreview.getEncounter(state.stage,state):BattlePreview.data.enemy;
   const playerTypes=weapon.types||['normal'];
   const conditions=rules.Conditions;
-  const gate=action==='bag'?{allowed:true,message:''}:conditions.beforeAction(next,'player',random,chosen?.element||'normal');
+  const gate=action==='bag'||item?{allowed:true,message:''}:conditions.beforeAction(next,'player',random,chosen?.element||'normal');
   const attackPower=(next.playerStatus==='burn'?.75:1)*rules.scale(next.playerStages.attack)/rules.scale(next.enemyStages.defense);
   let damage = 0, skip = false, protect=false,missed=false;
   if (chosen&&gate.allowed) {
@@ -55,6 +57,7 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
     next.potions--; const healed = Math.min(30, 100 - next.hp); next.hp += healed;
     next.message = '잉크 물약을 사용했다!\n체력을 ' + healed + ' 회복했다.';
   }
+  if(item)Craft.Items.use(next,item,Craft.Moves.forWeapon(weapon),conditions);
   const actionMessage=gate.allowed?next.message.split('\n')[0]:null;
   if(!gate.allowed)next.message=gate.message;else if(gate.message)next.message=gate.message+'\n'+next.message;
   const thawEnemy=conditions.afterHit(next,'enemy',chosen?.element||'normal',damage);if(thawEnemy)next.message+='\n'+thawEnemy;

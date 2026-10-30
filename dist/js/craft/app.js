@@ -3,6 +3,7 @@
   let currentBattleUrl='',craftEpoch=0;
   const scene = Craft.mountScene(ui);
   const birth=Craft.mountRarityReveal();const loading=GameLoading.mount();
+  const minigame=Craft.Minigame.mount();let departing=false;
   const rarityChoice=Craft.RarityChoice.mount(ui('craft-rarity'),ui('craft-rarity-hint'));
   const clearPreviousDots=()=>Craft.EffectJobs.reset().catch(()=>{});
   clearPreviousDots();try{Craft.StorageCleanup?.collect({reset:true});}catch(error){scene.say(error.message,'저장한 무기를 보호하기 위해 정리를 멈췄어.');}
@@ -13,7 +14,8 @@
     const stamp=JSON.stringify([weapon.effectJob,weapon.effectAtlas,weapon.effectRetryRows]);if(publishedWeapon===weapon&&publishedEffect===stamp)return;
     const params=new URLSearchParams(currentBattleUrl.split('#')[1]),build=params.get('build');
     if(build&&weapon.kind==='custom'){const data=JSON.stringify(Craft.normalizeCreative(weapon));localStorage.setItem('draw-weapon:build:'+build,data);try{localStorage.setItem('draw-weapon:build-backup:'+build,data);}catch{}}
-    else currentBattleUrl=Craft.weaponBattleUrl(weapon);
+    else if(currentBattleUrl&&weapon.kind==='custom'){params.set('data',JSON.stringify(Craft.normalizeCreative(weapon)));currentBattleUrl='battle.html#'+params;}
+    else if(!currentBattleUrl)currentBattleUrl=Craft.weaponBattleUrl(weapon);
     publishedWeapon=weapon;publishedEffect=stamp;Craft.StorageCleanup?.activate(currentBattleUrl);
     document.querySelectorAll('.battle-exit').forEach(link=>link.href=currentBattleUrl);
   }
@@ -27,9 +29,9 @@
     onError(error,weapon){refreshWeapon(weapon);ui('effect-status').textContent=error.message+' · 도트만 다시 준비해 줘. 무기와 기술은 그대로야';ui('retry-effects').hidden=false;ui('retry-effects').disabled=false;},
     enter(weapon){refreshWeapon(weapon);location.assign(currentBattleUrl);}
   });
-  document.querySelectorAll('.battle-exit').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();if(created&&equippedWeapon)preparation.request();}));
+  document.querySelectorAll('.battle-exit').forEach(link=>link.addEventListener('click',async event=>{event.preventDefault();if(!created||!equippedWeapon||departing)return;departing=true;const token=craftEpoch,weapon=equippedWeapon;try{const finished=await minigame.play(currentBattleUrl);if(finished&&token===craftEpoch&&weapon===equippedWeapon)preparation.request();}catch(error){ui('effect-status').textContent=error.message;}finally{departing=false;}}));
   ui('retry-effects').addEventListener('click',()=>{if(busy||!equippedWeapon||preparation.read().status==='generating')return;ui('retry-effects').hidden=true;preparation.retry();});
-  function invalidateWeapon(){const hadWeapon=!!equippedWeapon;preparation.reset();equippedWeapon=null;currentBattleUrl='';if(hadWeapon)clearPreviousDots();}
+  function invalidateWeapon(){const hadWeapon=!!equippedWeapon;minigame.cancel();preparation.reset();equippedWeapon=null;currentBattleUrl='';if(hadWeapon)clearPreviousDots();}
   window.addEventListener('game:new-game',()=>{craftEpoch++;Craft.cancelAnalysis?.();invalidateWeapon();});
   function update() {
     ui('drawing-placeholder').hidden = strokeCount > 0;
@@ -99,7 +101,7 @@
       document.querySelectorAll('.battle-exit').forEach(link => { link.href = battleUrl; });
       if(live)preparation.prepare(weapon);else preparation.prepare(weapon,{effects:false});
       await birth.play(weapon);if(token!==craftEpoch)return;
-      scene.say(Craft.Rarity.get(weapon.rarity).label+' 등급 '+weapon.name + ' 획득!\n이제 수호자에게 도전해 볼까?', '기술을 읽어보고 전투로 출발해. 도트는 뒤에서 계속 준비하고 있어.');
+      scene.say(Craft.Rarity.get(weapon.rarity).label+' 등급 '+weapon.name + ' 획득!\n기술을 읽었다면, 모험 가방을 챙겨볼까?', '출발을 누르면 1분 재료 줍기! 그동안 기술 도트도 계속 준비돼.');
       ui('footer-note').textContent = weapon.name + ' 장착 완료 · 나가기: 수호자에게 도전';
     } catch (error) {
       if(token!==craftEpoch)return;

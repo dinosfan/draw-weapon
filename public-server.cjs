@@ -6,6 +6,7 @@ function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile
   const json=(status,body)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(body));};
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('X-Frame-Options','DENY');
   let url;try{url=new URL(req.url,'http://localhost');}catch{return json(400,{error:'주소 형식 오류'});}
+  if(url.pathname==='/workshop-catch.html')res.setHeader('X-Frame-Options','SAMEORIGIN');
   if(url.pathname==='/healthz'&&req.method==='GET')return json(200,{status:'ok'});
   const local=/^(127\.0\.0\.1|localhost):4180$/.test(req.headers.host||'');
   if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{return json(403,{error:'허용되지 않은 출처'});}if(origin.host!==req.headers.host)return json(403,{error:'허용되지 않은 출처'});}
