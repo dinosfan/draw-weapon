@@ -27,5 +27,7 @@ def extract_frames(image):
     frames = []
     for tile in tiles:
         cx, cy = tile.width // 2, tile.height // 2
-        frames.append(tile.crop((cx - radius, cy - radius, cx + radius, cy + radius)).resize((96, 96), Image.Resampling.NEAREST))
+        # Resampling can turn sub-threshold flecks into a detectable matte patch.
+        # Clean at the final resolution too, before both inspection and packing.
+        frames.append(clear_white_mattes(tile.crop((cx - radius, cy - radius, cx + radius, cy + radius)).resize((96, 96), Image.Resampling.NEAREST)))
     return frames, source_edges
