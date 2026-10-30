@@ -36,7 +36,7 @@ async function generateNow({weapon,drawing,onProgress=()=>{},onPartial,runComman
   const sheetMoves=weapon.moves.map((original,index)=>{const m=materials?.find(m=>m.index===index&&m.name===original.name);return m?{...original,renderMaterial:m.visible,excludeCarrier:m.forbidden,effectGlyph:m.glyph}:original;});
   if(singleSheet&&onePass!=='off'&&sheet.eligible({weapon,ready,retryRows,rowCorrections,moves:sheetMoves})){
    const sheetStarted=Date.now();
-   Object.assign(sheetRecovery,await sheet.generate({weapon,moves:sheetMoves,folder,helper,render,inspect,reviewSkill,signal,notify,accept:async(index,file,inspection,semantic)=>{
+   Object.assign(sheetRecovery,await sheet.generate({weapon,moves:sheetMoves,materials,folder,helper,render,inspect,reviewSkill,signal,notify,accept:async(index,file,inspection,semantic)=>{
     const move=sheetMoves[index],cacheKey=cacheModule.key({model:cacheModel,drawing,subject:prompts.subject(weapon,move),animation:prompts.animation(weapon,move)});
     cache.save(cacheKey,file,inspection);skills[index]={name:move.name,method:'single-sheet',semantic:semantic?.verdict||'unverified',runtimeChecked:inspection.runtimeChecked===true,repaired:false,reused:false,coverage:inspection.coverage,transparencyChecked:inspection.transparencyChecked,elapsedMs:Date.now()-sheetStarted};ready.add(index);
    }}));
