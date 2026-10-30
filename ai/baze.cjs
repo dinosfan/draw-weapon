@@ -18,17 +18,17 @@ async function image({prompt,reference,key=process.env.BAZE_API_KEY,model=proces
 }
 function runner({key,model,fetchImpl,signal}={}){return async(exe,args,options={})=>{
  if(path.basename(exe).toLowerCase()!=='sd-cli.exe')return require('./images/local/process.cjs').run(exe,args,{...options,signal:signal||options.signal});
- const arg=flag=>args[args.indexOf(flag)+1];const bytes=await image({prompt:fs.readFileSync(arg('--prompt-file'),'utf8'),reference:fs.readFileSync(arg('-r')),key,model,fetchImpl,signal});
+ const arg=flag=>args[args.indexOf(flag)+1];const bytes=await image({prompt:fs.readFileSync(arg('--prompt-file'),'utf8'),reference:fs.readFileSync(arg('-r')),key,model,fetchImpl,signal,...(arg('--width')==='1024'?{fallbackModel:null}:{})});
  // Existing pixel validation consumes the same 512px source layout as the local model.
- fs.writeFileSync(arg('--output'),bytes);await require('./images/local/process.cjs').run(require('./images/local/client.cjs').paths().python,['-c',"from PIL import Image; import sys; p=sys.argv[1]; im=Image.open(p).convert('RGBA'); im.resize((512,512),Image.Resampling.NEAREST).save(p)",arg('--output')],{timeout:30000,signal});options.onEngine?.('ChatKHU/'+(model||MODEL));return'';
+ fs.writeFileSync(arg('--output'),bytes);await require('./images/local/process.cjs').run(require('./images/local/client.cjs').paths().python,['-c',"from PIL import Image; import sys; p=sys.argv[1]; n=int(sys.argv[2]); im=Image.open(p).convert('RGBA'); assert im.width==im.height and max(im.size)<=4096; assert n!=1024 or im.width>=1024; im.resize((n,n),Image.Resampling.NEAREST).save(p)",arg('--output'),arg('--width')==='1024'?'1024':'512'],{timeout:30000,signal});options.onEngine?.('ChatKHU/'+(model||MODEL));return'';
 };}
 async function generate(input){
  const model=process.env.AI_IMAGE_MODEL||MODEL;
- // This model already passed the four-skill one-pass QA. Cloud caches are
- // ephemeral, so do not depend on a desktop-only approval file to select it.
- // Missing glyphs and failed frame checks still use the existing quality path.
+ // Fresh four-skill sets use the validated 4x4 layout; unchanged/inherited rows
+ // and rejected cells retain the individually validated recovery path.
  const onePass=model===MODEL&&(input.onePass===undefined||input.onePass==='auto')?'glyph':input.onePass;
- const result=await require('./images/local/client.cjs').generate({...input,onePass,concurrency:4,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
+ const singleSheet=model===MODEL&&onePass!=='off'&&input.singleSheet!==false;
+ const result=await require('./images/local/client.cjs').generate({...input,onePass,singleSheet,concurrency:4,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
 }
 function evolution(input){return require('./evolution/local.cjs').render({...input,checkAvailability:false,runCommand:runner({signal:input.signal})});}
 module.exports={BASE,MODEL,image,runner,generate,evolution};
