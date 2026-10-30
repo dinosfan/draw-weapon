@@ -1,7 +1,7 @@
-/* The only text and icon typefaces used by the project. */
+/* Pretendard text and self-hosted Microsoft Fluent Emoji Flat (MIT). */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
-@import url('https://cdn.jsdelivr.net/gh/toss/tossface@v1.6.1/dist/tossface.css');
 
 :root{font-family:'Pretendard';}
 body,button,input,select,textarea{font-family:'Pretendard';}
-.tossface{font-family:'Tossface';font-style:normal;font-weight:400;line-height:1;display:inline-block;}
+.fluent-emoji{font-family:'Pretendard';font-style:normal;font-weight:400;line-height:1;display:inline-block;}
+.fluent-emoji-image{display:inline-block;width:1em;height:1em;max-width:none;vertical-align:-.15em;object-fit:contain;flex-shrink:0;pointer-events:none;user-select:none;}

@@ -36,7 +36,7 @@
 - HP는 타입으로 재색칠하지 않는다. 포커스는 별도 검정 윤곽선이다.
 - 상태 배지: 독=poison, 화상=fire, 마비=electric, 잠듦=normal, 얼음=ice, 혼란=illusion, 풀죽음=fighting, 반동=rock.
 - CSS는 var(--color-...), JS/canvas는 GamePalette.tokens만 사용한다. 임의 색·혼합·농도를 추가하지 않는다. 투명도 변화는 허용한다.
-- AI는 색 코드 대신 타입 ID를 반환한다. 원본 그림·Tossface·승인된 도트 그림의 원래 색은 보존한다.
+- AI는 색 코드 대신 타입 ID를 반환한다. 원본 그림·Microsoft Fluent Emoji·승인된 도트 그림의 원래 색은 보존한다.
 - 색 변경 시 이 문서도 갱신하고 생성 스크립트와 node --test를 실행한다.
 
 - 희귀도 색: 일반=normal, 희귀=water, 영웅=ghost, 전설=electric, 신화=illusion. 등급 배지와 탄생 연출에만 사용하며 기술 테두리와 전투 타격 연출은 원래 타입 색을 유지한다.

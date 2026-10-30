@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8"><link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script>
+  <meta charset="utf-8"><link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script><script defer src="js/ui/fluent-emoji-data.js"></script><script defer src="js/ui/fluent-emoji.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>용의 낫 · 등급별 기술 시범</title>
   <link rel="stylesheet" href="css/fonts.css">
@@ -71,7 +71,7 @@
         <div class="fighter enemy-fighter"><div class="ground enemy-ground"></div><canvas id="enemy-sprite" width="32" height="32" aria-label="잉크로 만들어진 낙서 수호자"></canvas><span class="fighter-caption">WILD GUARDIAN</span></div>
         <div class="fighter player-fighter"><div class="ground player-ground"></div><canvas id="held-battle-weapon" width="96" height="96" aria-label="손에 든 무기"></canvas><canvas id="player-sprite" width="56" height="64" aria-label="빨간 모자의 도트 트레이너"></canvas></div>
         <section id="battle-result" class="battle-result pixel-panel" aria-labelledby="result-title" hidden>
-          <span id="result-icon" class="tossface" aria-hidden="true">🏆</span><h2 id="result-title"></h2><p id="result-summary"></p><p id="result-note"></p>
+          <span id="result-icon" class="fluent-emoji" aria-hidden="true">🏆</span><h2 id="result-title"></h2><p id="result-summary"></p><p id="result-note"></p>
           <div class="result-actions"><button id="next-encounter" type="button">다음 상대에게</button><button id="result-retry" type="button">재대결</button><a href="craft.html">새 무기 그리기</a></div>
         </section>
         <div id="player-status" class="status-slot player-status"></div>
@@ -79,7 +79,7 @@
       <div id="move-description" class="move-description" role="status" hidden></div><div class="battle-console"><div id="dialogue" class="dialogue pixel-panel" role="status" aria-live="polite"></div><div class="command-area"><div id="commands" class="commands pixel-panel" aria-label="전투 명령"></div><div id="move-menu" class="move-menu pixel-panel" aria-label="기술 4개" hidden></div></div></div>
       <div class="game-bottomline"><span id="equipped-weapon"><i></i> 꽃잎 지팡이 장착 중</span><span>YOUR DRAWING. YOUR POWER.</span></div>
     </section>
-    <footer class="preview-footer"><p>내 낙서로 세 명의 수호자에게 도전하세요.<br><span>방향키로 명령 선택 · Enter로 실행</span></p><div class="battle-navigation"><button id="retry-battle" class="reset-button" type="button">재대결</button><a id="reset-preview" class="reset-button" href="craft.html"><span class="tossface" aria-hidden="true">🔄</span> 다시 시작</a></div></footer>
+    <footer class="preview-footer"><p>내 낙서로 세 명의 수호자에게 도전하세요.<br><span>방향키로 명령 선택 · Enter로 실행</span></p><div class="battle-navigation"><button id="retry-battle" class="reset-button" type="button">재대결</button><a id="reset-preview" class="reset-button" href="craft.html"><span class="fluent-emoji" aria-hidden="true">🔄</span> 다시 시작</a></div></footer>
   </main>
 </body>
 </html>

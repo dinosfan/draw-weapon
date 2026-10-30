@@ -1,0 +1,202 @@
+{
+  "provider": "Microsoft Fluent Emoji",
+  "style": "Flat",
+  "license": "MIT",
+  "copyright": "Copyright (c) Microsoft Corporation.",
+  "repository": "https://github.com/microsoft/fluentui-emoji",
+  "revision": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+  "icons": {
+    "▶️": {
+      "file": "play_button_flat.svg",
+      "name": "Play button",
+      "source": "assets/Play button/Flat/play_button_flat.svg",
+      "sha256": "18595887c69b4f762e5f4f569cf40730d9868db03fad9828503f176cb3ae7f2c"
+    },
+    "☠️": {
+      "file": "skull_and_crossbones_flat.svg",
+      "name": "Skull and crossbones",
+      "source": "assets/Skull and crossbones/Flat/skull_and_crossbones_flat.svg",
+      "sha256": "e9f5aa624ad06d9eaf784c14a894ae7ff55f8dad7ac2ea766cbd9d934699969a"
+    },
+    "⚔️": {
+      "file": "crossed_swords_flat.svg",
+      "name": "Crossed swords",
+      "source": "assets/Crossed swords/Flat/crossed_swords_flat.svg",
+      "sha256": "c558bf99346154fa039418a9a657acdc1f03e061c68dcc2e97d6caeb949581ff"
+    },
+    "⚙️": {
+      "file": "gear_flat.svg",
+      "name": "Gear",
+      "source": "assets/Gear/Flat/gear_flat.svg",
+      "sha256": "373aa26b6d217bd2db4418e2b883ebf15640ebaa3f942a47723a37ab0f774495"
+    },
+    "⚡": {
+      "file": "high_voltage_flat.svg",
+      "name": "High voltage",
+      "source": "assets/High voltage/Flat/high_voltage_flat.svg",
+      "sha256": "e85d1b10f93078bbc7cf9eb047ae37b5fa47a66a2aed63c25523592e567036ba"
+    },
+    "✅": {
+      "file": "check_mark_button_flat.svg",
+      "name": "Check mark button",
+      "source": "assets/Check mark button/Flat/check_mark_button_flat.svg",
+      "sha256": "526d3efe42ac3ede81400c171c4a39722034ceb57f661923ef34bea0dcd68532"
+    },
+    "✏️": {
+      "file": "pencil_flat.svg",
+      "name": "Pencil",
+      "source": "assets/Pencil/Flat/pencil_flat.svg",
+      "sha256": "f82b7820c41b57d2cca96ef75e32fdedcb07d2d8b786a781274c25fe306c76d7"
+    },
+    "✨": {
+      "file": "sparkles_flat.svg",
+      "name": "Sparkles",
+      "source": "assets/Sparkles/Flat/sparkles_flat.svg",
+      "sha256": "d5802877677464187a510c3fbb9d8c272dea164bcca2bf6a2270944e6cd2324e"
+    },
+    "❄️": {
+      "file": "snowflake_flat.svg",
+      "name": "Snowflake",
+      "source": "assets/Snowflake/Flat/snowflake_flat.svg",
+      "sha256": "bbe0ff7fbfbd17f02d26aa59d4f961c6470af1cff9474047b7b031a81c4915ab"
+    },
+    "➡️": {
+      "file": "right_arrow_flat.svg",
+      "name": "Right arrow",
+      "source": "assets/Right arrow/Flat/right_arrow_flat.svg",
+      "sha256": "67826dc93f419b30f863cd991f1436ab7ec91b1ca49b26c065d02c8b9e59037f"
+    },
+    "⬅️": {
+      "file": "left_arrow_flat.svg",
+      "name": "Left arrow",
+      "source": "assets/Left arrow/Flat/left_arrow_flat.svg",
+      "sha256": "cc923d67070c390560a499de75e22a2c693ef28f002e5b1b1efdc5eae08f78ef"
+    },
+    "🌸": {
+      "file": "cherry_blossom_flat.svg",
+      "name": "Cherry blossom",
+      "source": "assets/Cherry blossom/Flat/cherry_blossom_flat.svg",
+      "sha256": "eb1ec221824f85581b5dc685e2a8d31bf9f6113c08d0940ee361234173336e62"
+    },
+    "🌿": {
+      "file": "herb_flat.svg",
+      "name": "Herb",
+      "source": "assets/Herb/Flat/herb_flat.svg",
+      "sha256": "e0478c6692108c4431d0ba82fb8bc6998007e5e3f5fcaae6a899a935270117e0"
+    },
+    "🎒": {
+      "file": "backpack_flat.svg",
+      "name": "Backpack",
+      "source": "assets/Backpack/Flat/backpack_flat.svg",
+      "sha256": "9a3ea2d79e670de01c0f6e742b80d5b679c172edc4532c08a7c3083d703b4f23"
+    },
+    "🏆": {
+      "file": "trophy_flat.svg",
+      "name": "Trophy",
+      "source": "assets/Trophy/Flat/trophy_flat.svg",
+      "sha256": "088c6305e4c6551dd64e3aff880aa36c399b9867facb81972c431cfaf5d4bab8"
+    },
+    "💣": {
+      "file": "bomb_flat.svg",
+      "name": "Bomb",
+      "source": "assets/Bomb/Flat/bomb_flat.svg",
+      "sha256": "812ebb84fe0ef8b9aad1b1c0a87386f19612ef1165835c36d87daf62ee360aad"
+    },
+    "💤": {
+      "file": "zzz_flat.svg",
+      "name": "Zzz",
+      "source": "assets/Zzz/Flat/zzz_flat.svg",
+      "sha256": "4fa693d8950693ebbbad0c0e0b0f12c5cabbf12d31a51239fb7df0d473a1c1e6"
+    },
+    "💥": {
+      "file": "collision_flat.svg",
+      "name": "Collision",
+      "source": "assets/Collision/Flat/collision_flat.svg",
+      "sha256": "62020b0173a8d00014f821799a47ce7235e0f0fb4dea33d6ffc8ebbe04162700"
+    },
+    "💧": {
+      "file": "droplet_flat.svg",
+      "name": "Droplet",
+      "source": "assets/Droplet/Flat/droplet_flat.svg",
+      "sha256": "91bbffebc864f286b0684817b797f8ce1e1c4cc7dd0d9e1af1bd58afef2d09f0"
+    },
+    "💨": {
+      "file": "dashing_away_flat.svg",
+      "name": "Dashing away",
+      "source": "assets/Dashing away/Flat/dashing_away_flat.svg",
+      "sha256": "6c2c9ca17e52a19c856c9efaa487bcb75e991193ddb3b73a4520f9eaa5e54286"
+    },
+    "💫": {
+      "file": "dizzy_flat.svg",
+      "name": "Dizzy",
+      "source": "assets/Dizzy/Flat/dizzy_flat.svg",
+      "sha256": "41b314704c12c67e5f2a9750dee4cfb30a5850bbf2b02cde9fb2da3cc7979465"
+    },
+    "📖": {
+      "file": "open_book_flat.svg",
+      "name": "Open book",
+      "source": "assets/Open book/Flat/open_book_flat.svg",
+      "sha256": "84809f80ba9252021198ee4f015f1e16ac76020727625c3ee611712c017108b4"
+    },
+    "📦": {
+      "file": "package_flat.svg",
+      "name": "Package",
+      "source": "assets/Package/Flat/package_flat.svg",
+      "sha256": "82a5591c465302b009a3681ac2f45d21fac61d1b48e6d7fc956cc8a723dae14d"
+    },
+    "🔄": {
+      "file": "counterclockwise_arrows_button_flat.svg",
+      "name": "Counterclockwise arrows button",
+      "source": "assets/Counterclockwise arrows button/Flat/counterclockwise_arrows_button_flat.svg",
+      "sha256": "05be7c1f6ebfe65616707b1fa524ebf9509b4f298ee4d2f90211197885888664"
+    },
+    "🔥": {
+      "file": "fire_flat.svg",
+      "name": "Fire",
+      "source": "assets/Fire/Flat/fire_flat.svg",
+      "sha256": "00184d516421223782fc5efd67af64641ee8044af9613a3674ce5899cd38583d"
+    },
+    "🕐": {
+      "file": "one_oclock_flat.svg",
+      "name": "One oclock",
+      "source": "assets/One oclock/Flat/one_oclock_flat.svg",
+      "sha256": "73d31043a8f7a8947ebdefbbd835a946c1216674156af1545f59f742bb8b6ecf"
+    },
+    "🕒": {
+      "file": "three_oclock_flat.svg",
+      "name": "Three oclock",
+      "source": "assets/Three oclock/Flat/three_oclock_flat.svg",
+      "sha256": "4df248acd6fe40ae0a811ff29fb0a2e6421ad6f30f6318b8be58c06f22a38308"
+    },
+    "🧪": {
+      "file": "test_tube_flat.svg",
+      "name": "Test tube",
+      "source": "assets/Test tube/Flat/test_tube_flat.svg",
+      "sha256": "307adc05b618900dc1ab38e8e8f3276d54e17e8549df51db610692c9246357dd"
+    },
+    "🩹": {
+      "file": "adhesive_bandage_flat.svg",
+      "name": "Adhesive bandage",
+      "source": "assets/Adhesive bandage/Flat/adhesive_bandage_flat.svg",
+      "sha256": "36d048da196e2893d8d9b2e68561e432a9503730d629e09ae7811f2057c99045"
+    },
+    "🪨": {
+      "file": "rock_flat.svg",
+      "name": "Rock",
+      "source": "assets/Rock/Flat/rock_flat.svg",
+      "sha256": "bf1331690f16a9bcb6cdfe6f052ff6b998cb29b2a05ce956ba78a21bdd968532"
+    },
+    "🚪": {
+      "file": "door_flat.svg",
+      "name": "Door",
+      "source": "assets/Door/Flat/door_flat.svg",
+      "sha256": "6a81dd76ab1e38aef2e6dafdfec77880b51067c0e20ed5ea5d3491cb0af7c3b6"
+    },
+    "🛡️": {
+      "file": "shield_flat.svg",
+      "name": "Shield",
+      "source": "assets/Shield/Flat/shield_flat.svg",
+      "sha256": "838b7367c59cc96bfcbdc4adafb98e2886a6e397aaae1bc751edd91127539bd0"
+    }
+  }
+}

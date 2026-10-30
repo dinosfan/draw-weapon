@@ -3,7 +3,7 @@ Craft.renderWeapon = (preview, result, weapon) => {
   const art = document.createElement(Craft.validArtwork(weapon.artwork) ? 'img' : 'span');
   art.className = 'weapon-art';
   if (art.tagName === 'IMG') { art.src = weapon.artwork; art.alt = '직접 그린 ' + weapon.name; }
-  else { art.classList.add('tossface'); art.textContent = weapon.icon; }
+  else { art.classList.add('fluent-emoji'); art.textContent = weapon.icon; }
   oldArt.replaceWith(art);
   preview.querySelector('.preview-caption').textContent = '당신의 낙서에서 태어난 무기';
   const safe = Object.fromEntries(Object.entries(weapon).map(([key,value]) => [key,Craft.escapeHTML(value)]));

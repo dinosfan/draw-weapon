@@ -120,7 +120,7 @@
   const equipped = ui('equipped-weapon');
   equipped.replaceChildren();
   const icon = document.createElement('span');
-  icon.className = 'tossface'; icon.setAttribute('aria-hidden', 'true');
+  icon.className = 'fluent-emoji'; icon.setAttribute('aria-hidden', 'true');
   icon.textContent = BattlePreview.weapon.icon;
   equipped.append(icon, ' ' + BattlePreview.weapon.name + ' 장착 중');
   const memory=document.createElement('span');memory.id='weapon-memory';equipped.append(memory);

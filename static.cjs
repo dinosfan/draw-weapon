@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.join(__dirname, 'dist');
-const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json':'application/json', '.png':'image/png', '.webp':'image/webp', '.gif':'image/gif', '.mp3':'audio/mpeg', '.ogg':'audio/ogg', '.wav':'audio/wav' };
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json':'application/json', '.svg':'image/svg+xml', '.txt':'text/plain', '.png':'image/png', '.webp':'image/webp', '.gif':'image/gif', '.mp3':'audio/mpeg', '.ogg':'audio/ogg', '.wav':'audio/wav' };
 
 function serveStatic(req, res) {
   if (req.method !== 'GET' && req.method !== 'HEAD') return false;

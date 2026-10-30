@@ -10,7 +10,7 @@ Craft.mountRarityReveal=()=>{
   const tier=Craft.Rarity.get(weapon.rarity),art=dialog.querySelector('.birth-art');
   dialog.classList.remove('revealed');dialog.dataset.rank=tier.rank;dialog.style.setProperty('--rarity-color',GamePalette.tokens[tier.color]);
   art.replaceChildren();const image=document.createElement(Craft.validArtwork(weapon.artwork)?'img':'span');
-  if(image.tagName==='IMG'){image.src=weapon.artwork;image.alt='직접 그린 '+weapon.name;}else{image.className='tossface';image.textContent=weapon.icon;}
+  if(image.tagName==='IMG'){image.src=weapon.artwork;image.alt='직접 그린 '+weapon.name;}else{image.className='fluent-emoji';image.textContent=weapon.icon;}
   art.append(image);dialog.querySelector('.birth-grade').textContent=tier.label;
   dialog.querySelector('h2').textContent=weapon.name;
   dialog.querySelector('.birth-announcement').textContent=tier.label+' 등급 무기 탄생!';
