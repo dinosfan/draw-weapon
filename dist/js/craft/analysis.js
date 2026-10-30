@@ -24,7 +24,7 @@ Craft.analyzeDrawing = async ({ canvas, description, rarity, onProgress=()=>{} }
   let body = await Craft.Http.json(response);
   if (!response.ok) throw Error(body.error || '그림 분석에 실패했어. 잠시 후 다시 시도해 줘.');
   if(publicMode){const id=body.id;if(!/^[a-f0-9]{32}$/.test(id||''))throw Error('분석 작업 형식 오류');const deadline=Date.now()+320000;
-   while(Date.now()<deadline){if(controller.signal.aborted)throw controller.signal.reason;try{const poll=await fetch('/api/ai/analyze-jobs/'+id,{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(20000)])}),job=await Craft.Http.json(poll);if(!poll.ok)throw Error(job.error);if(job.status==='failed')throw Error(job.error);if(job.status==='done'){body={data:job.data};break;}}catch(error){if(controller.signal.aborted||!error.resumable&&!['TypeError','TimeoutError'].includes(error.name))throw error;onProgress('연결을 복구하고 있어 · 같은 그림 분석을 계속 확인 중');}await new Promise(r=>setTimeout(r,1500));}
+   while(Date.now()<deadline){if(controller.signal.aborted)throw controller.signal.reason;try{const poll=await fetch('/api/ai/analyze-jobs/'+id,{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(20000)])}),job=await Craft.Http.json(poll);if(!poll.ok)throw Error(job.error);if(job.status==='cancelled'){const error=Error(job.message||'새 게임을 시작해 이전 그림 분석을 종료했어.');error.cancelled=true;throw error;}if(job.status==='failed')throw Error(job.error);if(job.status==='done'){body={data:job.data};break;}}catch(error){if(controller.signal.aborted||!error.resumable&&!['TypeError','TimeoutError'].includes(error.name))throw error;onProgress('연결을 복구하고 있어 · 같은 그림 분석을 계속 확인 중');}await new Promise(r=>setTimeout(r,1500));}
    if(!body.data)throw Error('분석 시간이 오래 걸리고 있어. 그림은 그대로야.');
   }
   const weapon = Craft.normalizeWeapon(body.data);
