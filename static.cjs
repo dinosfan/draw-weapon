@@ -14,7 +14,7 @@ function serveStatic(req, res) {
   try {
     if (!fs.statSync(file).isFile()) return false;
     const body = fs.readFileSync(file);
-    res.writeHead(200, { 'Content-Type': types[path.extname(file)] + (/^text\//.test(types[path.extname(file)]) ? '; charset=utf-8' : ''), 'Cache-Control': 'no-cache' });
+    res.writeHead(200, { 'Content-Type': types[path.extname(file)] + (/^text\//.test(types[path.extname(file)]) ? '; charset=utf-8' : ''), 'Content-Length': body.length, 'Cache-Control': 'no-cache' });
     res.end(req.method === 'HEAD' ? undefined : body);
     return true;
   } catch { return false; }

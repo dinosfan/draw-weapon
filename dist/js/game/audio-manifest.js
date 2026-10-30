@@ -1,5 +1,5 @@
 (function(root){
- const tracks={title:{loop:'title.ogg'},loading:{loop:'loading.mp3'},workshop:{loop:'workshop.mp3'},battle1:{loop:'battle-1.ogg'},battle2:{loop:'battle-2.mp3'},boss1:{intro:'boss-1-intro.ogg',loop:'boss-1.ogg'},boss2:{intro:'boss-2-intro.mp3',loop:'boss-2.mp3'}};
+ const tracks={title:{loop:'title.ogg'},loading:{loop:'loading.mp3'},workshop:{loop:'workshop.mp3'},battle1:{loop:'battle-1.ogg'},battle2:{loop:'battle-2.mp3'},boss1:{intro:'boss-1-intro.ogg',loop:'boss-1.ogg'},boss2:{intro:'boss-2-intro.mp3',loop:'boss-2.mp3'},victory:{loop:'boss-victory.ogg',once:true}};
  const cues={evolutionRise:'evolution-rise.wav',evolutionCraft:'evolution-craft.mp3',evolutionComplete:'evolution-complete.mp3',confirm:'menu-confirm.mp3'};
  const credits=[
   ['Flowerbed Fields [Loop]','Zane Little Music','CC0','flowerbed-fields-loop'],
@@ -12,6 +12,6 @@
   ['Level up, power up, Coin get — Rise03','WobbleBoxx Workshop','CC0','level-up-power-up-coin-get-13-sounds'],
   ['8-Bit Sound Effects Library','Little Robot Sound Factory — www.littlerobotsoundfactory.com','CC BY 3.0','8-bit-sound-effects-library']
  ];
- function battleTrack(state){return state.stage>=2?(state.bossPhase===1?'boss2':'boss1'):state.stage===1?'battle2':'battle1';}
+ function battleTrack(state){if(state.stage>=2&&state.ended&&state.enemyHp===0)return'victory';return state.stage>=2?(state.bossPhase===1?'boss2':'boss1'):state.stage===1?'battle2':'battle1';}
  const api={tracks,cues,credits,battleTrack};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.GameAudioManifest=api;
 })(typeof window!=='undefined'?window:globalThis);
