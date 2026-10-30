@@ -5,12 +5,13 @@ const Fast=require('./fast-path.cjs'),Prompts=require('./skill-prompts.cjs');
 function eligible({weapon,ready,retryRows,rowCorrections,moves}){
  return weapon.moves.length===4&&!ready.size&&!retryRows.length&&!Object.keys(rowCorrections).length&&moves.every(move=>Fast.select({move,mode:'glyph'}));
 }
-async function generate({weapon,moves,folder,helper,render,inspect,accept,reviewSkill,signal,notify}){
+async function generate({weapon,moves,materials,folder,helper,render,inspect,accept,reviewSkill,signal,notify}){
  const check=()=>signal?.throwIfAborted();
  const tokens=require('../../../dist/js/palette.js').tokens;
- const colors=['ink','dark','dragon','paper'].map(k=>[1,3,5].map(i=>parseInt(tokens[k].slice(i,i+2),16)));
  for(let i=0;i<4;i++){
   check();const selected=Fast.select({move:moves[i],mode:'glyph'});if(!selected)continue;
+  const material=materials?.find(m=>m.index===i&&m.name===moves[i].name&&m.glyph);
+  const colors=(material?['ink','dragon','paper','metal']:['ink','dark','dragon','paper']).map(k=>[1,3,5].map(j=>parseInt(tokens[k].slice(j,j+2),16)));
   fs.writeFileSync(path.join(folder,i+'-glyph.json'),JSON.stringify({glyph:selected.glyph,colors}));
   await helper('glyph-guide',['--index',String(i)]);
  }
