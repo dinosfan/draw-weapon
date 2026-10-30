@@ -5,7 +5,7 @@ from PIL import Image,ImageDraw
 from matte import clear_white_mattes, transparency_issues
 import numpy as np
 from frame_extract import extract_frames
-p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','guide','glyph-guide','inherit','inspect','pack']);p.add_argument('folder');p.add_argument('--style');p.add_argument('--index',type=int);p.add_argument('--image');p.add_argument('--rows',default='0,1,2,3');a=p.parse_args();folder=Path(a.folder)
+p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','guide','glyph-guide','sheet-guide','sheet-split','inherit','inspect','pack']);p.add_argument('folder');p.add_argument('--style');p.add_argument('--index',type=int);p.add_argument('--image');p.add_argument('--rows',default='0,1,2,3');a=p.parse_args();folder=Path(a.folder)
 def cut(image):
  data=np.array(image.convert('RGBA'));r=data[:,:,:3].astype(float);green=(r[:,:,1]>70)&(r[:,:,1]>r[:,:,0]*1.25)&(r[:,:,1]>r[:,:,2]*1.25);data[green,3]=0;return Image.fromarray(data)
 def clean(tile):
@@ -41,6 +41,23 @@ elif a.mode=='glyph-guide':
  for y in range(2):
   for x in range(2):board.alpha_composite(sprite,(x*256+(256-sprite.width)//2,y*256+(256-sprite.height)//2))
  board.convert('RGB').save(folder/f'{a.index}-guide.png');print('{}')
+elif a.mode=='sheet-guide':
+ board=Image.new('RGBA',(1024,1024),(0,255,0,255))
+ for row in range(4):
+  if not (folder/f'{row}-guide.png').exists():continue
+  guide=Image.open(folder/f'{row}-guide.png').convert('RGBA').crop((0,0,256,256))
+  for col in range(4):board.paste(guide,(col*256,row*256))
+ board.save(folder/'sheet-guide.png');print('{}')
+elif a.mode=='sheet-split':
+ im=Image.open(a.image).convert('RGBA');w,h=im.size
+ if w!=h or w<1024 or w>4096:raise ValueError('invalid four-skill sheet size')
+ for row in range(4):
+  board=Image.new('RGBA',(512,512))
+  for col in range(4):
+   tile=im.crop((col*w//4,row*h//4,(col+1)*w//4,(row+1)*h//4)).resize((256,256),Image.Resampling.NEAREST)
+   board.paste(tile,((col%2)*256,(col//2)*256))
+  board.save(folder/f'{row}-sheet.png')
+ print('{}')
 elif a.mode=='inherit':
  im=Image.open(a.image).convert('RGBA');pixels=[];coverage=[]
  for col in range(4):
