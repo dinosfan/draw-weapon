@@ -4,7 +4,7 @@ const ROOT=path.resolve(__dirname,'../../..'),MODEL='local/flux2-klein-4b-per-sk
 function paths(root=ROOT){return{exe:path.join(root,'.local-ai/tools/sd-vulkan/sd-cli.exe'),python:process.env.PYTHON_BIN||(process.platform==='win32'?path.join(root,'.local-ai/venv/Scripts/python.exe'):'python3'),models:path.join(root,'.local-ai/models/flux2-klein'),work:process.env.AI_WORK_DIR||path.join(root,'.local-ai/jobs'),style:path.join(root,'references/vfx/nyknck-fx062/LightFX/FX003/FX003_03.png'),helper:path.join(__dirname,'skill-images.py')};}
 function available(root){const p=paths(root);return[p.exe,p.python,p.style,...['diffusion.gguf','text-encoder.gguf','vae.safetensors'].map(f=>path.join(p.models,f))].every(file=>fs.existsSync(file));}
 function imageResult(file){const bytes=fs.readFileSync(file);if(bytes.length<33||bytes.length>12*1024*1024||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('로컬 연출 이미지 형식 오류');const width=bytes.readUInt32BE(16),height=bytes.readUInt32BE(20);if(width<512||width>4096||height!==width)throw Error('로컬 연출 이미지 격자 크기 오류');return{bytes,width,height};}
-async function generateNow({weapon,drawing,onProgress=()=>{},onPartial,runCommand=run,root=ROOT,checkAvailability=true,bypassCache=false,materials,signal,retryRows=[],inheritance,onePass='auto',reviewSkill,rowCorrections={},cacheModel=MODEL,concurrency=1}){
+async function generateNow({weapon,drawing,onProgress=()=>{},onPartial,runCommand=run,root=ROOT,checkAvailability=true,bypassCache=false,materials,signal,retryRows=[],inheritance,onePass='auto',singleSheet=false,reviewSkill,rowCorrections={},cacheModel=MODEL,concurrency=1}){
  const check=()=>signal?.throwIfAborted();check();const p=paths(root);if(checkAvailability&&!available(root)){const error=Error('로컬 이미지 모델이 준비되지 않았습니다. 로컬 설치 상태를 확인해 주세요.');error.status=503;throw error;}
  const started=Date.now(),engines=new Set();let queuedMs=0,nativeCalls=0,firstReadyMs=null;const cacheModule=require('./frame-cache.cjs'),cache=cacheModule.create(root),subjectCache=cacheModule.create(root,'effect-subjects');fs.mkdirSync(p.work,{recursive:true});const folder=fs.mkdtempSync(path.join(p.work,'vfx-'));
  const notify=(phase,message)=>onProgress({phase,message});
@@ -13,9 +13,10 @@ async function generateNow({weapon,drawing,onProgress=()=>{},onPartial,runComman
   fs.writeFileSync(path.join(folder,'drawing.png'),Buffer.from(drawing,'base64'));
   notify('preparing','각 기술의 이름과 설명으로 도트 연출을 준비하고 있어…');
   await helper('prepare',['--style',p.style]);
-  const render=async(stem,prompt,reference)=>{check();
+  const render=async(stem,prompt,reference,size=512)=>{check();
    const promptFile=path.join(folder,stem+'.txt'),file=path.join(folder,stem+'.png');fs.writeFileSync(promptFile,prompt);
    const args=['--diffusion-model',path.join(p.models,'diffusion.gguf'),'--llm',path.join(p.models,'text-encoder.gguf'),'--vae',path.join(p.models,'vae.safetensors'),'--backend','diffusion=Vulkan0,te=Vulkan0,vae=Vulkan0','--offload-to-cpu','--max-vram','12','--mmap','--flash-attn','on',...require('../../../scripts/local-ai/klein-profiles.cjs').direct.extra,'-r',reference,'--prompt-file',promptFile,'--steps','4','--cfg-scale','1','--sampling-method','euler','--width','512','--height','512','--seed',String(require('node:crypto').randomInt(1,2147483647)),'--disable-image-metadata','--output',file];
+   args[args.indexOf('--width')+1]=String(size);args[args.indexOf('--height')+1]=String(size);
    nativeCalls++;await runCommand(p.exe,args,{timeout:180000,onEngine:engine=>engines.add(engine)});check();return file;
   };
   const skills=[],ready=new Set(),failures=[],order=require('./schedule.cjs').order(weapon);
@@ -31,11 +32,21 @@ async function generateNow({weapon,drawing,onProgress=()=>{},onPartial,runComman
    if(reused){skills[index]={name:move.name,repaired:false,reused:true,inherited,runtimeChecked:inspection.runtimeChecked===true,coverage:inspection.coverage,transparencyChecked:inspection.transparencyChecked,elapsedMs:Date.now()-skillStarted};ready.add(index);}
   }
   await publish();
+  const sheetRecovery={},sheet=require('./single-sheet.cjs');
+  const sheetMoves=weapon.moves.map((original,index)=>{const m=materials?.find(m=>m.index===index&&m.name===original.name);return m?{...original,renderMaterial:m.visible,excludeCarrier:m.forbidden,effectGlyph:m.glyph}:original;});
+  if(singleSheet&&onePass!=='off'&&sheet.eligible({weapon,ready,retryRows,rowCorrections,moves:sheetMoves})){
+   const sheetStarted=Date.now();
+   Object.assign(sheetRecovery,await sheet.generate({weapon,moves:sheetMoves,folder,helper,render,inspect,reviewSkill,signal,notify,accept:async(index,file,inspection,semantic)=>{
+    const move=sheetMoves[index],cacheKey=cacheModule.key({model:cacheModel,drawing,subject:prompts.subject(weapon,move),animation:prompts.animation(weapon,move)});
+    cache.save(cacheKey,file,inspection);skills[index]={name:move.name,method:'single-sheet',semantic:semantic?.verdict||'unverified',runtimeChecked:inspection.runtimeChecked===true,repaired:false,reused:false,coverage:inspection.coverage,transparencyChecked:inspection.transparencyChecked,elapsedMs:Date.now()-sheetStarted};ready.add(index);
+   }}));
+   await publish();
+  }
   await require('./concurrent.cjs').each(order,concurrency,async index=>{check();if(ready.has(index))return;
    try{
    const originalMove=weapon.moves[index],material=materials?.find(m=>m.index===index&&m.name===originalMove.name),move=material?{...originalMove,renderMaterial:material.visible,excludeCarrier:material.forbidden,effectGlyph:material.glyph}:originalMove,skillStarted=Date.now(),subjectPrompt=prompts.subject(weapon,move),animationPrompt=prompts.animation(weapon,move),cacheKey=cacheModule.key({model:cacheModel,drawing,subject:subjectPrompt,animation:animationPrompt});
    let inspection,reused=false,repaired=false,file,semantic;let fastAccepted=false;
-   const correction=typeof rowCorrections[index]==='string'?rowCorrections[index].slice(0,400):'';
+   const correction=typeof (rowCorrections[index]||sheetRecovery[index])==='string'?(rowCorrections[index]||sheetRecovery[index]).slice(0,400):'';
    const corrected=prompt=>correction?prompt+'\nVisual QA correction (appearance only, never change the skill): '+correction:prompt;
    if(!reused){notify('queued',(concurrency>1?index+1:ready.size+1)+'/4 · '+move.name+' 도트 생성 차례를 기다리고 있어…');
    const execute=async()=>{check();
