@@ -16,7 +16,7 @@ function createJobs(service,{latestOnly:initialLatest=false}={}){
   if(input.replace===true&&!stale){latestEpoch=epoch;latestOnly=true;currentIdentity=owner;cancelAll(fingerprint);}
   if(pending.has(fingerprint))return{id:pending.get(fingerprint)};
   if([...jobs.values()].filter(job=>['queued','running'].includes(job.status)).length>=32){const error=Error('잠시 후 연출 생성을 다시 시도해 주세요.');error.status=429;throw error;}
-  const id=randomBytes(16).toString('hex'),job={id,status:'queued',phase:'queued',message:'로컬 도트 생성 차례를 기다리고 있어…',createdAt:Date.now(),updated:Date.now(),controller:new AbortController(),fingerprint};jobs.set(id,job);
+  const id=randomBytes(16).toString('hex'),job={id,status:'queued',phase:'queued',message:'기술 도트 생성 차례를 기다리고 있어…',createdAt:Date.now(),updated:Date.now(),controller:new AbortController(),fingerprint};jobs.set(id,job);
   if(stale||latestOnly&&currentIdentity!==owner){cancelled(job);return{id};}
   pending.set(fingerprint,id);queue.push({id,input,fingerprint});drain();return{id};
  }

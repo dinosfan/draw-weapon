@@ -30,5 +30,5 @@ async function generate(input){
  const singleSheet=model===MODEL&&onePass!=='off'&&input.singleSheet!==false;
  const result=await require('./images/local/client.cjs').generate({...input,onePass,singleSheet,concurrency:4,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
 }
-function evolution(input){return require('./evolution/local.cjs').render({...input,checkAvailability:false,runCommand:runner({signal:input.signal})});}
+function evolution(input){return require('./evolution/api.cjs').render({...input,provider:'ChatKHU API',generateImage:options=>image({...options,key:input.key,model:input.model||process.env.AI_IMAGE_MODEL||MODEL,fetchImpl:input.fetchImpl,onUsage:input.onUsage})});}
 module.exports={BASE,MODEL,image,runner,generate,evolution};

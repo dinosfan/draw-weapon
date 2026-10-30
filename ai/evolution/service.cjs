@@ -23,14 +23,14 @@ function createService(config={}){
   const {weapon,drawing,fingerprint,atlas}=parent.input,option=parent.data.options[index];return start('choose:'+fingerprint+':'+index,async(progress,job,signal)=>{
    const file=path.join(cache,fingerprint+'-chosen-'+index+'.json'),stored=read(file);if(stored){if(!stored.weapon.effectInheritance){const token=require('../images/inheritance.cjs').create(root).issue(weapon,atlas,stored.weapon,stored.changes);if(token){stored.weapon.effectInheritance=token;write(file,stored);}}return stored;}
    progress({phase:'skills',message:'선택한 진화 기술을 정리하고, 전용 도트도 동시에 만들고 있어…'});const bytes=fs.readFileSync(path.join(assets,fingerprint+'-'+index+'.png')),artwork=bytes.toString('base64');
-   // Start GPU artwork as soon as the player selects an evolution, alongside skill design.
+   // Start effect artwork alongside skill design, using the configured API provider.
    const preview=require('./merge.cjs').merge(weapon,option,weapon);preview.artwork='data:image/png;base64,'+artwork;
 
    for(const change of option.changes){const move=preview.moves[change.index];delete move.effectGlyph;if(move.motionPlan)for(const layer of move.motionPlan.layers)if(layer.source==='effect')delete layer.glyph;}
    const previewInheritance=require('../images/inheritance.cjs').create(root).issue(weapon,atlas,preview,option.changes.map(c=>c.index));if(previewInheritance)preview.effectInheritance=previewInheritance;
    const workController=new AbortController(),workSignal=AbortSignal.any([signal,workController.signal]);
    const prepareEffects=config.effectPreparer|| (async({weapon:preview,onProgress,signal})=>{if(config.test)return null;try{
-    const effectService=require('../images/service.cjs').createService({provider:process.env.AI_IMAGE_PROVIDER==='chatkhu'?'chatkhu':'local',root:path.join(root,'dist/assets/vfx/generated'),vision:config.endpoint&&config.key?{endpoint:config.endpoint,model:config.model,key:config.key,fallbackModel:config.fallbackModel,fetchImpl:config.fetchImpl,meter:(status,usage,actualModel=config.model)=>meter(status,usage,actualModel)}:undefined,onUsage:entry=>meter(entry.status,entry.usage,entry.model)});
+    const effectService=require('../images/service.cjs').createService({provider:config.imageProvider||process.env.AI_IMAGE_PROVIDER||'local',model:config.imageModel,key:config.key,fetchImpl:config.fetchImpl,root:path.join(root,'dist/assets/vfx/generated'),vision:config.endpoint&&config.key?{endpoint:config.endpoint,model:config.model,key:config.key,fallbackModel:config.fallbackModel,fetchImpl:config.fetchImpl,meter:(status,usage,actualModel=config.model)=>meter(status,usage,actualModel)}:undefined,onUsage:entry=>meter(entry.status,entry.usage,entry.model)});
     const meta=await effectService.create({weapon:preview,image:preview.artwork},{onProgress:p=>onProgress({...p,message:'도트 · '+p.message}),signal});return meta?.id?{id:meta.id,rarity:preview.rarity,layout:meta.local?.layout,inheritedRows:meta.local?.skills?.flatMap((skill,index)=>skill.inherited?[index]:[])||[]}:null;
    }catch{return null;}});
    const effectTask=Promise.resolve().then(()=>prepareEffects({weapon:preview,drawing:artwork,option,onProgress:progress,signal:workSignal})).catch(()=>null);
