@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>공방 재료 줍기 · 이딴게 무기?</title>
+<link rel="stylesheet" href="css/palette.css"><script src="js/palette.js"></script><link rel="stylesheet" href="css/fonts.css"><link rel="stylesheet" href="css/game/frame.css"><link rel="stylesheet" href="css/workshop-catch.css"><link rel="stylesheet" href="css/game/audio.css"><script defer src="js/game/audio-manifest.js"></script><script defer src="js/game/audio.js"></script>
+<script defer src="js/trainers/study-sprite.js"></script><script defer src="js/workshop-catch/model.js"></script><script defer src="js/workshop-catch/renderer.js"></script><script defer src="js/workshop-catch/app.js"></script>
+</head><body><main class="game-app catch-app">
+<nav class="app-nav" aria-label="목업 메뉴"><strong>이딴게 무기?</strong><span class="catch-mock-label">미니게임 플레이 목업</span><a href="craft.html">공방으로</a></nav>
+<section class="game-window catch-window" aria-labelledby="catch-title">
+ <header class="scene-bar"><b id="catch-title" class="brand">공방 재료 줍기</b><span class="scene-label">잠깐의 틈, 든든한 가방.</span><div class="bar-end"><button id="catch-pause" type="button" disabled>잠깐 쉬기</button></div></header>
+ <div class="catch-layout"><section class="catch-play" aria-label="1분 재료 줍기">
+  <div class="catch-hud"><div class="catch-score"><small>모은 점수</small><strong id="catch-score">0</strong><span id="catch-combo">하나씩, 차곡차곡</span></div><div id="catch-clock" class="catch-clock"><small>남은 시간</small><strong id="catch-time" role="timer" aria-label="남은 시간">01:00</strong></div></div>
+  <div class="catch-time-track" aria-hidden="true"><div id="catch-time-fill"></div></div>
+  <div class="catch-arena">
+   <canvas id="catch-canvas" width="480" height="300" tabindex="0" aria-label="좌우 방향키 또는 A와 D로 이동해 재료를 받으세요. 터치로 드래그할 수도 있습니다.">좌우로 이동해 재료를 받고 폭탄을 피하는 60초 미니게임입니다.</canvas>
+   <div id="catch-toast" class="catch-toast" role="status" hidden></div>
+   <div id="catch-ready" class="catch-overlay"><section class="catch-intro pixel-dialog"><span class="catch-eyebrow">모험 전, 가방부터 챙겨!</span><h1>쏟아지는 재료를<br>전부 받아 봐!</h1><p>재료는 반갑게, 폭탄은 멀리.<br>60초 동안 모은 점수로 아이템을 얻어.</p><div class="catch-intro-icons" aria-hidden="true"><span class="tossface">🌿</span><span class="tossface">⚡</span><span class="tossface">💧</span><i></i><span class="tossface">💣</span></div><button id="catch-start" type="button" class="catch-primary"><span class="tossface" aria-hidden="true">▶️</span> 1분 줍기 시작</button><small>키보드 <kbd>←</kbd> <kbd>→</kbd> 또는 화면을 드래그</small></section></div>
+   <div id="catch-paused" class="catch-overlay" hidden><section class="pixel-dialog catch-pause-dialog"><span class="catch-eyebrow">잠깐 숨 고르기</span><h2>재료들도 기다리는 중.</h2><p>남은 시간은 멈춰 있어.</p><button id="catch-resume" class="catch-primary" type="button">이어서 줍기</button></section></div>
+  </div>
+  <div class="catch-controls"><button id="catch-left" type="button" aria-label="왼쪽으로 이동"><span class="tossface" aria-hidden="true">⬅️</span> 왼쪽</button><p><strong>재료를 받아!</strong><span>폭탄은 −20점 · 연속 수집은 보너스 점수</span></p><button id="catch-right" type="button" aria-label="오른쪽으로 이동">오른쪽 <span class="tossface" aria-hidden="true">➡️</span></button></div>
+ </section>
+ <aside class="catch-inventory" aria-labelledby="catch-bag-title"><div class="catch-bag-heading"><span class="tossface" aria-hidden="true">🎒</span><div><small>이번에 채울 가방</small><h2 id="catch-bag-title">작은 준비, 큰 한 턴.</h2></div><b id="catch-bag-count">0 / 3</b></div><p class="catch-bag-note">점수를 모으면 보상이 하나씩 열려.<br>한 판에 최대 3개까지!</p><ul id="catch-rewards" class="catch-reward-list"></ul><p id="catch-goal" class="catch-goal">다음 아이템까지 120점</p><div class="catch-packing"><span class="tossface" aria-hidden="true">📦</span><div><strong>손은 바쁘게, 가방은 든든하게.</strong><p>체력도 챙기고, 아끼던 기술도 한 번 더.</p></div></div><div class="catch-small-stats"><span>주운 재료 <b id="catch-count">0</b>개</span><span>한 판 <b>60초</b></span></div></aside></div>
+ <footer class="catch-footer"><span><b>조작</b> 방향키 / A · D / 터치 드래그 <span class="catch-space-hint">· Space로 쉬기</span></span><span>보상 미리보기 목업</span></footer>
+</section>
+<p class="mock-caption">1분 미니게임 목업 · 실제 전투 가방에는 아직 지급되지 않아. 획득 보상과 조작감을 먼저 확인해 봐.</p>
+<div id="catch-result" class="catch-result-layer" hidden><section class="catch-result pixel-dialog" role="dialog" aria-modal="true" aria-labelledby="catch-result-title"><span class="catch-eyebrow">60초의 작은 수확</span><h2 id="catch-result-title">가방이 든든해졌다!</h2><div class="catch-final-score"><strong id="catch-result-score">0</strong><span>점</span></div><p id="catch-result-detail"></p><h3>이번 판 보상 미리보기</h3><ul id="catch-result-rewards" class="catch-reward-list"></ul><p id="catch-best" class="catch-best"></p><div class="catch-result-actions"><button id="catch-again" type="button" class="catch-primary">한 판 더 줍기</button><a href="craft.html">공방으로</a></div></section></div>
+</main></body></html>
