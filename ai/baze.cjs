@@ -3,14 +3,16 @@ const BASE='https://factchat-cloud.mindlogic.ai/v1/gateway',MODEL='gemini-nano-b
 let creditBlockedUntil=0;
 async function image({prompt,reference,key=process.env.BAZE_API_KEY,model=process.env.AI_IMAGE_MODEL||MODEL,fetchImpl=fetch,signal,onUsage=require('./usage.cjs').recordUsage,fallbackModel=process.env.AI_IMAGE_FALLBACK_MODEL||'gemini-3.1-flash-image-preview'}){
  if(!key)throw Error('ChatKHU 이미지 API 키가 없습니다.');
- if(Date.now()<creditBlockedUntil&&fetchImpl===fetch){const e=Error('ChatKHU 크레딧이 부족해 도트 생성이 대기 중이야. 완성된 도트는 보존돼. 크레딧을 보충한 뒤 다시 만들 수 있어.');e.status=402;throw e;}
+ const gateway=require('./chatkhu-http.cjs'),live=fetchImpl===fetch||fetchImpl===gateway.request;
+ if(Date.now()<creditBlockedUntil&&live){const e=Error('ChatKHU 크레딧이 부족해 도트 생성이 대기 중이야. 완성된 도트는 보존돼. 크레딧을 보충한 뒤 다시 만들 수 있어.');e.status=402;throw e;}
  const transportSignal=signal?AbortSignal.any([signal,AbortSignal.timeout(180000)]):AbortSignal.timeout(180000);
  const started=Date.now();
  let response=await fetchImpl(BASE+'/images/generate/',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json','User-Agent':'DrawWeapon/1.0'},body:JSON.stringify({model,prompt,aspect_ratio:'1:1',image_size:'1K',number_of_images:1,...(reference?{input_images:['data:image/png;base64,'+reference.toString('base64')]}:{})}),signal:transportSignal});
+ const ray=gateway.rayId(response);
  let data;try{data=await response.json();}catch{data={detail:{code:'non_json_upstream',message:'Image provider returned a non-JSON response'}};response={ok:false,status:response.status>=400?response.status:502};}onUsage({model,status:response.status,usage:data.usage});
- if(!response.ok){const reason=JSON.stringify(data).replace(/baze_[A-Za-z0-9]+/g,'[redacted]').slice(0,3000),diagnosis=require('./image-errors.cjs').classify(response.status,data),blocked=diagnosis.blocked;console.warn(JSON.stringify({event:'chatkhu-image-error',status:response.status,model,elapsedMs:Date.now()-started,cause:diagnosis.code,upstreamCode:diagnosis.upstreamCode,reason}));
+ if(!response.ok){const reason=JSON.stringify(data).replace(/baze_[A-Za-z0-9]+/g,'[redacted]').slice(0,3000),diagnosis=require('./image-errors.cjs').classify(response.status,data),blocked=diagnosis.blocked;console.warn(JSON.stringify({event:'chatkhu-image-error',status:response.status,model,elapsedMs:Date.now()-started,cause:diagnosis.code,upstreamCode:diagnosis.upstreamCode,ray,reason}));
   if(fallbackModel&&fallbackModel!==model&&!signal?.aborted&&!blocked&&[400,500,502,503,504].includes(response.status)){console.warn(JSON.stringify({event:'chatkhu-image-failover',from:model,to:fallbackModel}));return image({prompt,reference,key,model:fallbackModel,fetchImpl,signal,onUsage,fallbackModel:null});}
-  if(response.status===402&&fetchImpl===fetch)creditBlockedUntil=Date.now()+30000;
+  if(response.status===402&&live)creditBlockedUntil=Date.now()+30000;
   const e=Error(diagnosis.message);e.status=response.status;e.code=diagnosis.code;e.upstreamCode=diagnosis.upstreamCode;throw e;}
  const url=data.data?.[0]?.url;if(!/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url||''))throw Error('ChatKHU 이미지 응답 형식 오류');
  let bytes=Buffer.from(url.split(',')[1],'base64');if(bytes.length>12*1024*1024)throw Error('ChatKHU 이미지 용량 초과');
