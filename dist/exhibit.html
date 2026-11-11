@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>이딴 게 무기? · 전시 체험</title>
+  <link rel="stylesheet" href="css/palette.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/exhibit.css?v=3">
+  <script defer src="js/palette.js"></script>
+  <script defer src="js/ui/fluent-emoji-data.js"></script>
+  <script defer src="js/ui/fluent-emoji.js"></script>
+  <script defer src="js/weapons/catalog.js"></script>
+  <script defer src="js/exhibit/session.js?v=1"></script>
+  <script defer src="js/game/http.js"></script>
+  <script defer src="js/weapons/types.js"></script>
+  <script defer src="js/weapons/rarity.js"></script>
+  <script defer src="js/weapons/tactics.js"></script>
+  <script defer src="js/weapons/story.js"></script>
+  <script defer src="js/weapons/effect-plan.js"></script>
+  <script defer src="js/weapons/conditions.js"></script>
+  <script defer src="js/weapons/move-rules.js"></script>
+  <script defer src="js/weapons/weapon-rig.js"></script>
+  <script defer src="js/weapons/hit-feel.js"></script>
+  <script defer src="js/weapons/motion-plan.js"></script>
+  <script defer src="js/weapons/ultimate.js"></script>
+  <script defer src="js/weapons/moves.js"></script>
+  <script defer src="js/drawing/canvas.js"></script>
+  <script defer src="js/craft/analysis.js"></script>
+  <script defer src="js/weapons/artwork.js"></script>
+  <script defer src="js/battle/effects/sprite-atlas.js"></script>
+  <script defer src="js/weapons/effect-progress.js"></script>
+  <script defer src="js/weapons/effect-jobs.js"></script>
+  <script defer src="js/trainers/study-sprite.js"></script>
+  <script defer src="js/battle/enemy-sprites.js"></script>
+  <script defer src="js/battle/hp-animation.js"></script>
+  <script defer src="js/game/stage-layout.js"></script>
+  <script defer src="js/game/scenery.js"></script>
+  <script defer src="js/exhibit/mock-effects.js?v=2"></script>
+  <script defer src="js/exhibit/mock-battle.js?v=2"></script>
+
+  <script defer src="js/exhibit/workshop.js?v=3"></script>
+</head>
+<body class="exhibit-page">
+  <main class="exhibit-workshop">
+    <header class="exhibit-header">
+      <h1>이딴 게 <em>무기?</em></h1>
+      <span id="exhibit-mode">전시 체험</span>
+    </header>
+    <section class="exhibit-panel" id="exhibit-drawing" aria-labelledby="exhibit-draw-title">
+      <div class="exhibit-location"><h2 id="exhibit-draw-title" tabindex="-1">낙서 공방</h2></div>
+      <div class="exhibit-desk">
+        <canvas class="exhibit-world" id="exhibit-workshop-art" aria-hidden="true"></canvas>
+        <div class="exhibit-desk-intro">
+          <p>뭐든 그려 봐.<br><strong>네 낙서가 무기가 돼!</strong></p>
+          <canvas id="exhibit-trainer" aria-hidden="true"></canvas>
+        </div>
+        <div class="exhibit-paper">
+          <div class="exhibit-board">
+            <canvas id="exhibit-canvas" width="512" height="384" aria-label="무기로 만들 그림을 그리는 작업대"></canvas>
+            <span id="exhibit-placeholder" aria-hidden="true"><span class="fluent-emoji">✏️</span> 손가락으로 그려 봐</span>
+          </div>
+          <div class="exhibit-tools">
+            <button type="button" id="exhibit-undo" disabled>되돌리기</button>
+            <button type="button" id="exhibit-clear" disabled>지우기</button>
+          </div>
+        </div>
+      </div>
+      <div class="exhibit-controls">
+        <button class="exhibit-primary" type="button" id="exhibit-create" disabled>무기로 만들기 <span class="fluent-emoji" aria-hidden="true">✨</span></button>
+        <p id="exhibit-analysis-status" class="exhibit-notice" role="status" hidden></p>
+        <small id="exhibit-privacy" class="exhibit-notice">제작을 누르면 그림이 ChatKHU로 전송돼.</small>
+        <button class="exhibit-quiet" type="button" id="exhibit-example">예시로 화면 둘러보기</button>
+      </div>
+    </section>
+    <section class="exhibit-panel" id="exhibit-reveal" aria-labelledby="exhibit-name" hidden>
+      <div class="exhibit-location"><span>무기 탄생</span><small id="exhibit-result-source"></small></div>
+      <div class="exhibit-reveal-stage">
+        <canvas class="exhibit-world" id="exhibit-reveal-world" aria-hidden="true"></canvas>
+        <div class="exhibit-art-paper">
+          <canvas id="exhibit-art" width="192" height="144" aria-label="내가 그린 원본 낙서"></canvas>
+        </div>
+        <div class="exhibit-weapon-name">
+          <h2 id="exhibit-name" tabindex="-1"></h2>
+          <span id="exhibit-types" class="exhibit-type"></span>
+        </div>
+      </div>
+      <div class="exhibit-loadout">
+        <p id="exhibit-reason"></p>
+        <h3>기술 4개</h3>
+        <ol id="exhibit-moves" class="exhibit-move-grid" aria-label="만들어진 기술 4개"></ol>
+      </div>
+      <div class="exhibit-controls">
+        <button class="exhibit-primary" type="button" id="exhibit-play">기술 써보기 <span class="fluent-emoji" aria-hidden="true">⚔️</span></button>
+        <p id="exhibit-effect-status" class="exhibit-notice" role="status" hidden></p>
+        <button class="exhibit-quiet" type="button" id="exhibit-edit">낙서 수정하기</button>
+      </div>
+    </section>
+    <section class="exhibit-panel" id="exhibit-battle" aria-labelledby="exhibit-battle-title" hidden>
+      <div class="exhibit-location"><h2 id="exhibit-battle-title" tabindex="-1">낙서의 숲</h2><small>연습 전투</small></div>
+      <div class="exhibit-stage" id="exhibit-stage">
+        <canvas class="exhibit-world" id="exhibit-world" aria-hidden="true"></canvas>
+        <div class="exhibit-enemy-card">
+          <strong>물방울 해파리</strong>
+          <div class="exhibit-hp"><span>HP</span><meter id="exhibit-hp" min="0" max="100" value="100" aria-label="상대 체력"></meter></div>
+        </div>
+        <canvas class="exhibit-enemy" id="exhibit-enemy" width="32" height="32"></canvas>
+        <div class="exhibit-player" id="exhibit-player">
+          <canvas id="player-sprite" aria-label="도트 모험가"></canvas>
+          <canvas class="exhibit-held" id="exhibit-held" width="64" height="64" aria-label="손에 든 원본 낙서"></canvas>
+        </div>
+        <div class="exhibit-equipped"><small>장착 무기</small><strong id="exhibit-equipped-name"></strong></div>
+        <canvas class="exhibit-effect" id="exhibit-effect" aria-hidden="true"></canvas>
+      </div>
+      <div class="exhibit-command-deck">
+        <p class="exhibit-log" id="exhibit-log" role="status">네 낙서로 써 볼 기술을 골라 봐.</p>
+        <div class="exhibit-move-grid" id="exhibit-commands" aria-label="전투 기술 선택"></div>
+        <div class="exhibit-result" id="exhibit-result" hidden>
+          <button class="exhibit-primary" type="button" id="exhibit-again">다른 기술 써보기</button>
+          <button class="exhibit-quiet" type="button" id="exhibit-new">새 낙서 그리기</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

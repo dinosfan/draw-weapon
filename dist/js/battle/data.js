@@ -6,7 +6,12 @@ BattlePreview.data = {
   commands: [{ id: 'attack', label: '싸운다', hint: 'ATTACK' }, { id: 'skill', label: '무기 정보', hint: 'BLOOM · 2/2' }, { id: 'guard', label: '방어', hint: 'GUARD' }, { id: 'bag', label: '가방', hint: 'BAG' }]
 };
 
-try{BattlePreview.weapon = Craft.readBattleWeapon(location.hash);}catch(error){BattlePreview.loadError=error;BattlePreview.weapon={kind:'unavailable',name:'저장된 무기 확인 필요',type:'복구 대기',types:['normal'],attack:0};}
+try{
+  if (Craft.Exhibit?.active) {
+    BattlePreview.exhibit = Craft.Exhibit.load();
+    BattlePreview.weapon = BattlePreview.exhibit.weapon;
+  } else BattlePreview.weapon = Craft.readBattleWeapon(location.hash);
+}catch(error){BattlePreview.loadError=error;BattlePreview.weapon={kind:'unavailable',name:'저장된 무기 확인 필요',type:'복구 대기',types:['normal'],attack:0};}
 BattlePreview.data.player.name = BattlePreview.weapon.name;
 BattlePreview.data.player.note = (BattlePreview.weapon.rarity&&Craft.Rarity?Craft.Rarity.get(BattlePreview.weapon.rarity).label+' · ':'')+BattlePreview.weapon.type + ' · 당신이 그린 무기';
 if(BattlePreview.weapon.evolution)BattlePreview.data.player.note+=' · '+BattlePreview.weapon.evolution.stage+'차 진화';

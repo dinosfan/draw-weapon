@@ -7,7 +7,7 @@ function createJobs({dispatch,onActive=()=>{},host=()=> '127.0.0.1:'+(process.en
  function submit(chunks,{generation=epoch,admit=()=>{}}={}){
   if(generation!==epoch)throw failure(409,'새 게임을 시작해 이전 그림 분석을 종료했어.');
   const bytes=Buffer.concat(chunks),fingerprint=createHash('sha256').update(String(epoch)).update(bytes).digest('hex'),existing=fingerprints.get(fingerprint);
-  if(existing&&jobs.has(existing))return{id:existing};
+  if(existing&&jobs.has(existing)&&jobs.get(existing).status!=='failed')return{id:existing};
   if(jobs.size>=20)throw failure(429,'이번 테스트의 제작 횟수를 모두 사용했어.');
   admit();
   const id=randomBytes(16).toString('hex'),job={id,status:'running'},result=new EventEmitter(),internal=Readable.from(chunks);let settled=false;

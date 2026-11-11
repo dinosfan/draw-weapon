@@ -1,7 +1,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),{randomBytes}=require('node:crypto');
 const {createServer}=require('./serve.cjs');
 function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile=path.join(__dirname,'output/playtest-feedback.jsonl')}={}){
- const sessions=new Map();
+ const sessions=new Map(),exhibitSessions=new Map();
  const server=http.createServer(async(req,res)=>{
   const json=(status,body)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(body));};
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('X-Frame-Options','DENY');
@@ -12,11 +12,14 @@ function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile
   if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{return json(403,{error:'허용되지 않은 출처'});}if(origin.host!==req.headers.host)return json(403,{error:'허용되지 않은 출처'});}
   if(url.pathname==='/api/public-info'){let state={};try{state=JSON.parse(fs.readFileSync(path.join(__dirname,'output/public-launch.json'),'utf8'));}catch{}return json(200,{online:true,url:process.env.RENDER_EXTERNAL_URL||process.env.PUBLIC_BASE_URL||state.url||null,local,cloud:process.env.RENDER==='true'});}
   if(url.pathname==='/'||url.pathname==='/index.html'){res.writeHead(302,{Location:'/start.html'});return res.end();}
-  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html','/workshop-catch.html']);
+  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html','/workshop-catch.html','/exhibit.html']);
   if(!url.pathname.startsWith('/api/')){if(!pages.has(url.pathname)&&!/^\/(?:css|js|assets)\/[a-zA-Z0-9_./-]+$/.test(url.pathname))return json(404,{error:'없는 페이지'});return require('./static.cjs').serveStatic(req,res)||json(404,{error:'없는 파일'});}
-  const now=Date.now();for(const[id,s]of sessions)if(now-s.last>3600000&&s.inflight===0){s.server.close();sessions.delete(id);}
-  const cookie=(req.headers.cookie||'').match(/(?:^|;\s*)dw_session=([a-f0-9]{48})(?:;|$)/);let id=cookie?.[1],session=sessions.get(id);
-  if(!session){if(sessions.size>=20)return json(429,{error:'공개 테스트 접속이 많아. 잠시 뒤 다시 접속해 줘.'});id=randomBytes(24).toString('hex');session={server:factory(),last:now,inflight:0,minute:now,calls:0,total:0,feedback:0};const owned=session;session.analyses=require('./public-analysis.cjs').createJobs({dispatch:(req,res)=>owned.server.emit('request',req,res),onActive:delta=>owned.inflight+=delta});sessions.set(id,session);res.setHeader('Set-Cookie','dw_session='+id+'; HttpOnly; SameSite=Lax; Path=/; Max-Age=3600'+(secure&&!local?'; Secure':''));}
+  const exhibit=req.headers['x-draw-weapon-mode']==='exhibit',pool=exhibit?exhibitSessions:sessions,now=Date.now();
+  for(const [group,ttl] of [[sessions,3600000],[exhibitSessions,300000]])for(const [oldId,s] of group)if(now-s.last>ttl&&s.inflight===0){s.server.close();group.delete(oldId);}
+  const cookieName=exhibit?'dw_exhibit':'dw_session';
+  const cookie=(req.headers.cookie||'').match(exhibit?/(?:^|;\s*)dw_exhibit=([a-f0-9]{48})(?:;|$)/:/(?:^|;\s*)dw_session=([a-f0-9]{48})(?:;|$)/);
+  let id=cookie?.[1],session=pool.get(id);
+  if(!session){if(pool.size>=20)return json(429,{error:'공개 테스트 접속이 많아. 잠시 뒤 다시 접속해 줘.'});id=randomBytes(24).toString('hex');session={server:factory(),last:now,inflight:0,minute:now,calls:0,total:0,feedback:0};const owned=session;session.analyses=require('./public-analysis.cjs').createJobs({dispatch:(req,res)=>owned.server.emit('request',req,res),onActive:delta=>owned.inflight+=delta});pool.set(id,session);res.setHeader('Set-Cookie',cookieName+'='+id+'; HttpOnly; SameSite=Lax; Path=/; Max-Age=3600'+(secure&&!local?'; Secure':''));}
   session.last=now;
   if(req.method==='GET'&&/^\/api\/ai\/analyze-jobs\/[a-f0-9]{32}$/.test(url.pathname)){const job=session.analyses.get(url.pathname.split('/').pop());return job?json(200,job):json(404,{error:'분석 작업을 찾지 못했어. 그림은 유지돼.'});}
   const reset=req.method==='POST'&&['/api/ai/effects/reset','/api/evolution/reset'].includes(url.pathname),analysisPost=req.method==='POST'&&url.pathname==='/api/ai/analyze-jobs';
@@ -41,7 +44,7 @@ function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile
   req.headers.host='127.0.0.1:'+(process.env.PORT||4174);if(req.headers.origin)req.headers.origin='http://'+req.headers.host;
   session.inflight++;res.once('close',()=>session.inflight--);session.server.emit('request',req,res);
  });
- server.once('close',()=>{for(const session of sessions.values()){session.analyses.reset();session.server.close();}});return server;
+ server.once('close',()=>{for(const pool of [sessions,exhibitSessions])for(const session of pool.values()){session.analyses.reset();session.server.close();}});return server;
 }
 if(require.main===module)createPublicServer().listen(4180,'127.0.0.1',()=>console.log('Public playtest gateway: http://127.0.0.1:4180'));
 module.exports={createPublicServer};
