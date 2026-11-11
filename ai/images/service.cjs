@@ -4,7 +4,11 @@ const{validateInput}=require('../analyze.cjs'),{validateCreative}=require('../we
 const{recordUsage}=require('../usage.cjs');
 function createService({key,provider='gemini',model,fetchImpl,root=path.join(__dirname,'../../dist/assets/vfx/generated'),onUsage=recordUsage,test=false,generator,vision,materialPlanner=require('./materials.cjs').plan}={}){
  if(!['gemini','local','chatkhu'].includes(provider))throw Error('지원하지 않는 연출 생성 방식');
- const local=provider==='local'||provider==='chatkhu';model=model||(local?require('./local/client.cjs').MODEL:MODEL);
+ const local=provider==='local'||provider==='chatkhu';
+ if(!model){
+  if(provider==='chatkhu')model=process.env.AI_IMAGE_MODEL||require('../baze.cjs').MODEL;
+  else model=local?require('./local/client.cjs').MODEL:MODEL;
+ }
  const generateImage=generator||(provider==='chatkhu'?require('../baze.cjs').generate:local?require('./local/client.cjs').generate:generate);
  const pending=new Map();let running=0,quotaUntil=0;
  async function create(input,{onProgress,signal,rowCorrections={}}={}){
@@ -27,7 +31,7 @@ function createService({key,provider='gemini',model,fetchImpl,root=path.join(__d
    const authored=weapon.moves.every(move=>move.effectBrief&&move.delivery&&move.motionPlan);
    let materials=null;if(local&&vision){onProgress?.({phase:'materials',message:authored?'AI가 설계한 네 기술의 전용 도트 소재를 준비하고 있어…':'그림과 네 기술에서 실제로 보일 소재를 분리하고 있어…'});try{materials=await materialPlanner({weapon,drawing,config:vision,signal,cacheOnly:authored});}catch{/* Optional planning never changes the four moves. */}}
    signal?.throwIfAborted();
-   const result=await generateImage({weapon,drawing,key:local?undefined:key,model,fetchImpl,onProgress,onPartial,materials,bypassCache:input.regenerate===true,retryRows,inheritance,rowCorrections,reviewSkill:local?require('./semantic-review.cjs').create({weapon,drawing,config:vision,root:path.resolve(root,'../../../..')}):undefined,onePass:['auto','glyph','off'].includes(input.onePass)?input.onePass:'auto',signal});
+   const result=await generateImage({weapon,drawing,key:provider==='local'?undefined:key,model,fetchImpl,onProgress,onPartial,materials,bypassCache:input.regenerate===true,retryRows,inheritance,rowCorrections,reviewSkill:local?require('./semantic-review.cjs').create({weapon,drawing,config:vision,root:path.resolve(root,'../../../..')}):undefined,onePass:['auto','glyph','off'].includes(input.onePass)?input.onePass:'auto',signal});
    signal?.throwIfAborted();
    if(result.local)result.local.materialsPrepared=!!materials;
    if(!test||onUsage!==recordUsage)onUsage({model,status:200,usage:result.usage});

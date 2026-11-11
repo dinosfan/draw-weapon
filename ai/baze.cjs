@@ -25,12 +25,13 @@ function runner({key,model,fetchImpl,signal}={}){return async(exe,args,options={
  fs.writeFileSync(arg('--output'),bytes);await require('./images/local/process.cjs').run(require('./images/local/client.cjs').paths().python,['-c',"from PIL import Image; import sys; p=sys.argv[1]; n=int(sys.argv[2]); im=Image.open(p).convert('RGBA'); assert im.width==im.height and max(im.size)<=4096; assert n!=1024 or im.width>=1024; im.resize((n,n),Image.Resampling.NEAREST).save(p)",arg('--output'),arg('--width')==='1024'?'1024':'512'],{timeout:30000,signal});options.onEngine?.('ChatKHU/'+(model||MODEL));return'';
 };}
 async function generate(input){
- const model=process.env.AI_IMAGE_MODEL||MODEL;
+ const model=input.model||process.env.AI_IMAGE_MODEL||MODEL;
  // Fresh four-skill sets use the validated 4x4 layout; unchanged/inherited rows
  // and rejected cells retain the individually validated recovery path.
  const onePass=model===MODEL&&(input.onePass===undefined||input.onePass==='auto')?'glyph':input.onePass;
  const singleSheet=model===MODEL&&onePass!=='off'&&input.singleSheet!==false;
- const result=await require('./images/local/client.cjs').generate({...input,onePass,singleSheet,concurrency:4,checkAvailability:false,runCommand:runner({signal:input.signal}),cacheModel:'chatkhu/'+model});return{...result,model};
+ const runCommand=runner({key:input.key,model,fetchImpl:input.fetchImpl,signal:input.signal});
+ const result=await require('./images/local/client.cjs').generate({...input,onePass,singleSheet,concurrency:4,checkAvailability:false,runCommand,cacheModel:'chatkhu/'+model});return{...result,model};
 }
 function evolution(input){return require('./evolution/api.cjs').render({...input,provider:'ChatKHU API',generateImage:options=>image({...options,key:input.key,model:input.model||process.env.AI_IMAGE_MODEL||MODEL,fetchImpl:input.fetchImpl,onUsage:input.onUsage})});}
 module.exports={BASE,MODEL,image,runner,generate,evolution};
