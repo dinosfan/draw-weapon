@@ -47,7 +47,11 @@ async function callAI(endpoint, opts, fetchImpl = fetch) {
     }
     delete body.image;
     delete body.additionalImages;
-    if(endpoint.startsWith('https://factchat-cloud.mindlogic.ai/'))return fetchRetry(endpoint,{...requestOptions,body:JSON.stringify(body)},{...retryPolicy,fetchImpl});
+    if(endpoint.startsWith('https://factchat-cloud.mindlogic.ai/')){
+      const headers = new Headers(requestOptions.headers);
+      if (!headers.get('User-Agent')?.trim()) headers.set('User-Agent', 'DrawWeapon/1.0');
+      return fetchRetry(endpoint, {...requestOptions, headers, body:JSON.stringify(body)}, {...retryPolicy, fetchImpl});
+    }
     return fetchImpl(endpoint, { ...requestOptions, body: JSON.stringify(body) });
   }
   const response = await fetchRetry('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(body.model) + ':generateContent', {

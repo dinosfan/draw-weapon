@@ -1,10 +1,10 @@
 // Return stable categories instead of exposing a provider's raw response.
-function classify(payload) {
+function classify(payload, status) {
   const detail = JSON.stringify(payload);
-  if (/insufficient[_ -]?(?:credit|balance|quota)|credit(?:s)? (?:exhausted|depleted)|out of credits|credit limit|잔액.{0,12}부족|크레딧.{0,12}(?:부족|소진)/i.test(detail)) return 'credits';
-  if (/region|country|geo.?block|ip address|ip (?:is )?(?:blocked|denied|not allowed)/i.test(detail)) return 'network';
-  if (/expired|revoked|invalid.?token|invalid.?api.?key|api.?key.?invalid|invalid.?key|authentication|unauthori[sz]ed|만료|유효하지/i.test(detail)) return 'credential';
-  if (/model.{0,35}(?:permission|access|restricted|disabled|denied)|permission.{0,25}model|모델.{0,12}권한/i.test(detail)) return 'model';
+  if (status === 402 || /insufficient[_ -]?(?:credit|balance|quota)|credit(?:s)? (?:exhausted|depleted)|out of credits|credit limit|잔액.{0,12}부족|크레딧.{0,12}(?:부족|소진)/i.test(detail)) return 'credits';
+  if (/error code:\s*1010|region|country|geo.?block|ip address|ip (?:is )?(?:blocked|denied|not allowed)/i.test(detail)) return 'network';
+  if (status === 401 || /expired|revoked|invalid.?token|invalid.?api.?key|api.?key.?invalid|invalid.?key|authentication|unauthori[sz]ed|만료|유효하지/i.test(detail)) return 'credential';
+  if (/model.{0,60}(?:permission|access|restricted|disabled|denied|not enabled|not available)|permission.{0,25}model|모델.{0,12}권한/i.test(detail)) return 'model';
   return 'access';
 }
 
