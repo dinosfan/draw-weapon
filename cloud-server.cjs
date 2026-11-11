@@ -10,7 +10,11 @@ function start(){
   analysisModel:process.env.AI_MODEL||'gemini-3.5-flash',
   imageModel:process.env.AI_IMAGE_MODEL||require('./ai/baze.cjs').MODEL,
  });
- const server=require('./public-server.cjs').createPublicServer({feedbackFile:store.feedbackFile,factory:()=>require('./serve.cjs').createServer({fetchImpl})});
+ const server=require('./public-server.cjs').createPublicServer({
+  feedbackFile:store.feedbackFile,
+  factory:()=>require('./serve.cjs').createServer({fetchImpl}),
+  entryOrigin:process.env.RENDER==='true'?process.env.DRAW_WEAPON_PUBLIC_ORIGIN:undefined,
+ });
  const port=Number(process.env.PORT||10000);server.listen(port,'0.0.0.0',()=>console.log('Draw Weapon cloud server ready on port '+port));
  const stop=()=>{server.close(()=>process.exit(0));setTimeout(()=>{server.closeAllConnections();process.exit(0);},25000).unref();};process.once('SIGTERM',stop);process.once('SIGINT',stop);return server;
 }

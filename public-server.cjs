@@ -1,6 +1,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),{randomBytes}=require('node:crypto');
 const {createServer}=require('./serve.cjs');
-function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile=path.join(__dirname,'output/playtest-feedback.jsonl')}={}){
+const {fixedEntryTarget}=require('./deployment/public-entry.cjs');
+function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile=path.join(__dirname,'output/playtest-feedback.jsonl'),entryOrigin}={}){
  const sessions=new Map(),exhibitSessions=new Map();
  const server=http.createServer(async(req,res)=>{
   const json=(status,body)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(body));};
@@ -8,6 +9,10 @@ function createPublicServer({factory=()=>createServer(),secure=true,feedbackFile
   let url;try{url=new URL(req.url,'http://localhost');}catch{return json(400,{error:'주소 형식 오류'});}
   if(url.pathname==='/workshop-catch.html')res.setHeader('X-Frame-Options','SAMEORIGIN');
   if(url.pathname==='/healthz'&&req.method==='GET')return json(200,{status:'ok'});
+  if(entryOrigin&&(req.method==='GET'||req.method==='HEAD')){
+   const target=fixedEntryTarget(entryOrigin,url);
+   if(target){res.writeHead(302,{'Location':target,'Cache-Control':'no-store'});return res.end();}
+  }
   const local=/^(127\.0\.0\.1|localhost):4180$/.test(req.headers.host||'');
   if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{return json(403,{error:'허용되지 않은 출처'});}if(origin.host!==req.headers.host)return json(403,{error:'허용되지 않은 출처'});}
   if(url.pathname==='/api/public-info'){let state={};try{state=JSON.parse(fs.readFileSync(path.join(__dirname,'output/public-launch.json'),'utf8'));}catch{}return json(200,{online:true,url:process.env.RENDER_EXTERNAL_URL||process.env.PUBLIC_BASE_URL||state.url||null,local,cloud:process.env.RENDER==='true'});}
