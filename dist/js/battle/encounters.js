@@ -6,5 +6,6 @@ BattlePreview.encounters = [
 ];
 if(Craft.Journey)BattlePreview.encounters=Craft.Journey.route(new URLSearchParams(location.hash.slice(1)).get('journey'),BattlePreview.encounters);
 if(typeof BattleBosses!=='undefined')BattlePreview.encounters=BattlePreview.encounters.map((enemy,index)=>index===2?BattleBosses.decorate(enemy):enemy);
+if(BattlePreview.exhibit)BattlePreview.encounters[ExhibitEncounter.stage]=ExhibitEncounter.boss(BattlePreview.exhibit.boss);
 BattlePreview.getEncounter = (stage,state) => typeof BattleBosses!=='undefined'?BattleBosses.encounter(BattlePreview.encounters[Math.max(0,Math.min(BattlePreview.encounters.length-1,Math.trunc(stage)||0))],state):BattlePreview.encounters[Math.max(0,Math.min(BattlePreview.encounters.length-1,Math.trunc(stage)||0))];
 BattlePreview.enemyIntent=state=>Craft.Journey?Craft.Journey.intent(BattlePreview.getEncounter(state.stage,state),state):BattlePreview.getEncounter(state.stage,state).moves[state.turn%BattlePreview.getEncounter(state.stage,state).moves.length];

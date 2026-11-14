@@ -1,7 +1,8 @@
-Craft.mountDrawing = (canvas, onChange) => {
+Craft.mountDrawing = (canvas, onChange, {batch=false} = {}) => {
   const ctx = canvas.getContext('2d');
-  let strokes = [], current = null, width = 5;
+  let strokes = [], current = null, width = 5, frame = null;
   function redraw() {
+    if (frame !== null) { cancelAnimationFrame(frame); frame = null; }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = GamePalette.tokens.ink; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     for (const stroke of strokes) {
@@ -13,13 +14,18 @@ Craft.mountDrawing = (canvas, onChange) => {
     onChange(strokes.length, strokes.reduce((sum,s) => sum + s.points.length, 0));
   }
   function position(event) { const r = canvas.getBoundingClientRect(); return [(event.clientX-r.left)*canvas.width/r.width,(event.clientY-r.top)*canvas.height/r.height]; }
-  function end() { current = null; }
+  function end() { current = null; if (frame !== null) redraw(); }
   canvas.addEventListener('pointerdown', event => {
     if (current || (event.pointerType === 'mouse' && event.button !== 0)) return;
     event.preventDefault(); canvas.setPointerCapture(event.pointerId);
     current = { width, points:[position(event)], pointerId:event.pointerId }; strokes.push(current); redraw();
   });
-  canvas.addEventListener('pointermove', event => { if (!current || event.pointerId !== current.pointerId) return; current.points.push(position(event)); redraw(); });
+  canvas.addEventListener('pointermove', event => {
+    if (!current || event.pointerId !== current.pointerId) return;
+    current.points.push(position(event));
+    if (!batch) redraw();
+    else if (frame === null) frame = requestAnimationFrame(() => { frame = null; redraw(); });
+  });
   ['pointerup','pointercancel','lostpointercapture'].forEach(name => canvas.addEventListener(name, event => { if (current?.pointerId === event.pointerId) end(); }));
   return {
     setWidth(value) { width = Number(value); },

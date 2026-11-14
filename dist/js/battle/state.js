@@ -72,11 +72,6 @@ BattlePreview.reduce = (state, action, random = Math.random) => {
   next.feedback.actionMessage=actionMessage;
   next.feedback.playerAfter=next.hp;next.feedback.enemyAfterAction=next.enemyHp;
   next.feedback.enemyMessages=[];
-  if (BattlePreview.exhibit) {
-    next.turn++;
-    next.ended = next.enemyHp === 0 || next.hp === 0;
-    return next;
-  }
   const moves = BattlePreview.getEncounter ? BattlePreview.getEncounter(state.stage,state).moves : BattlePreview.data.enemyMoves;
   const move = BattlePreview.enemyIntent?BattlePreview.enemyIntent(state):moves[next.turn % moves.length];
   const enemyAffinity=Craft.Types.multiplier(move.element||'normal',playerTypes);

@@ -29,7 +29,7 @@ async function generate(input){
  // Fresh four-skill sets use the validated 4x4 layout; unchanged/inherited rows
  // and rejected cells retain the individually validated recovery path.
  const onePass=model===MODEL&&(input.onePass===undefined||input.onePass==='auto')?'glyph':input.onePass;
- const singleSheet=model===MODEL&&onePass!=='off'&&input.singleSheet!==false;
+ const singleSheet=input.sheetOnly===true||(model===MODEL&&onePass!=='off'&&input.singleSheet!==false);
  const runCommand=runner({key:input.key,model,fetchImpl:input.fetchImpl,signal:input.signal});
  const result=await require('./images/local/client.cjs').generate({...input,onePass,singleSheet,concurrency:4,checkAvailability:false,runCommand,cacheModel:'chatkhu/'+model});return{...result,model};
 }

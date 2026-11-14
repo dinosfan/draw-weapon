@@ -5,7 +5,7 @@ const Fast=require('./fast-path.cjs'),Prompts=require('./skill-prompts.cjs');
 function eligible({weapon,ready,retryRows,rowCorrections,moves}){
  return weapon.moves.length===4&&!ready.size&&!retryRows.length&&!Object.keys(rowCorrections).length&&moves.every(move=>Fast.select({move,mode:'glyph'}));
 }
-async function generate({weapon,moves,materials,folder,helper,render,inspect,accept,reviewSkill,signal,notify}){
+async function generate({weapon,moves,materials,folder,helper,render,inspect,accept,reviewSkill,signal,notify,recover=true,skip=new Set()}){
  const check=()=>signal?.throwIfAborted();
  const tokens=require('../../../dist/js/palette.js').tokens;
  for(let i=0;i<4;i++){
@@ -19,13 +19,13 @@ async function generate({weapon,moves,materials,folder,helper,render,inspect,acc
  notify('animating','네 기술의 도트 16장면을 한 장에 만들고 있어…');
  let file;
  try{file=await render('four-skills',Prompts.sheet(weapon,moves),path.join(folder,'sheet-guide.png'),1024);}
- catch(error){check();if(![400,500,502,503,504].includes(error.status))throw error;notify('repairing','이미지 응답을 완료하지 못해 기술별로 나누어 준비하고 있어…');return;}
- check();try{await helper('sheet-split',['--image',file]);}catch{check();notify('repairing','격자 형식을 보완하기 위해 기술별 도트를 준비하고 있어…');return;}
+ catch(error){check();if(!recover||![400,500,502,503,504].includes(error.status))throw error;notify('repairing','이미지 응답을 완료하지 못해 기술별로 나누어 준비하고 있어…');return;}
+ check();try{await helper('sheet-split',['--image',file]);}catch(error){check();if(!recover)throw error;notify('repairing','격자 형식을 보완하기 위해 기술별 도트를 준비하고 있어…');return;}
  const corrections={};
  await require('./concurrent.cjs').each([0,1,2,3],4,async i=>{
-  check();const rowFile=path.join(folder,i+'-sheet.png');let inspection;
-  try{inspection=await inspect(i,rowFile);}catch(error){check();if(!(error instanceof SyntaxError)&&![502,504].includes(error.status))throw error;notify('repairing',(i+1)+'/4 · '+moves[i].name+'의 도트를 다시 검사할 수 있게 준비할게');return;}
-  if(!inspection.valid){notify('repairing',(i+1)+'/4 · '+moves[i].name+'의 도트만 다시 준비할게');return;}
+  check();if(skip.has(i))return;const rowFile=path.join(folder,i+'-sheet.png');let inspection;
+  try{inspection=await inspect(i,rowFile);}catch(error){check();if(recover&&!(error instanceof SyntaxError)&&![502,504].includes(error.status))throw error;if(recover)notify('repairing',(i+1)+'/4 · '+moves[i].name+'의 도트를 다시 검사할 수 있게 준비할게');return;}
+  if(!inspection.valid){if(recover)notify('repairing',(i+1)+'/4 · '+moves[i].name+'의 도트만 다시 준비할게');return;}
   let semantic;
   if(reviewSkill){semantic=await reviewSkill({file:rowFile,index:i,signal});check();if(semantic?.verdict==='mismatch'){if(typeof semantic.correction==='string')corrections[i]=semantic.correction;return;}}
   await accept(i,rowFile,inspection,semantic);

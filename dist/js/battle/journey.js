@@ -14,16 +14,32 @@
   {id:'mind',name:'접힌 차원문',types:['illusion'],sprite:'jelly',moves:[['접힌 공간',19,'illusion'],['차원 파동',32,'illusion'],['문 닫기',0],['어지러운 잔상',12,'illusion','confusion',40]]}
  ];
  const Bosses=typeof module!=='undefined'&&module.exports?require('./bosses.js'):root.BattleBosses;if(Bosses)roster.push(...Bosses.roster); const locations=['낙서의 샛길','구겨진 페이지','여백의 문턱'];
+ function encountersForStage(stage){
+  const location=locations[stage];
+  if(!location)return [];
+  const pool=roster.slice(stage*4,stage===2?undefined:(stage+1)*4);
+  return pool.map(data=>{
+   const encounter={
+    ...data,level:7+stage*3,maxHp:[110,135,165][stage],location,
+    subtitle:['새로운 만남','두 번째 관문','마지막 수호자'][stage],
+    moves:data.moves.map(([name,damage,element='normal',status,chance])=>({name,damage,element,...(status?{status,chance}:{})})),
+   };
+   return stage===2&&Bosses?Bosses.decorate(encounter):encounter;
+  });
+ }
  const hash=text=>{let h=2166136261;for(const c of text)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;};
  const valid=seed=>typeof seed==='string'&&/^[a-z0-9]{6,32}$/.test(seed);
  const seed=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
  function route(value,classic){
   if(!valid(value))return classic;
-  let n=hash(value);const random=()=>{n^=n<<13;n^=n>>>17;n^=n<<5;return(n>>>0)/4294967296;},used=new Set();
-  return [0,1,2].map(stage=>{const pool=stage===0?[0,1,2,3]:stage===1?[4,5,6,7]:Array.from({length:roster.length-8},(_,i)=>i+8);let index=pool[Math.floor(random()*pool.length)];while(used.has(index))index=pool[(pool.indexOf(index)+1)%pool.length];used.add(index);const data=roster[index];const encounter={...data,level:7+stage*3,maxHp:[110,135,165][stage],location:locations[stage],subtitle:stage===2?'마지막 수호자':stage===0?'새로운 만남':'두 번째 관문',moves:data.moves.map(([name,damage,element='normal',status,chance])=>({name,damage,element,...(status?{status,chance}:{})}))};return stage===2&&Bosses?Bosses.decorate(encounter):encounter;});
+  let n=hash(value);const random=()=>{n^=n<<13;n^=n>>>17;n^=n<<5;return(n>>>0)/4294967296;};
+  return [0,1,2].map(stage=>{
+   const encounters=encountersForStage(stage);
+   return encounters[Math.floor(random()*encounters.length)];
+  });
  }
  function intent(encounter,state){return encounter.moves[Math.max(0,state.phaseTurn??state.turn??0)%encounter.moves.length];}
  function note(encounter,state){const move=intent(encounter,state);return{move,strong:move.damage>=25,rest:move.damage===0,status:move.status||null};}
  function carry(url,sourceHash){if(typeof sourceHash!=='string')return url;const params=new URLSearchParams(url.split('#')[1]),source=new URLSearchParams((sourceHash||'').replace(/^#/,''));if(valid(source.get('journey')))params.set('journey',source.get('journey'));else params.delete('journey');return'battle.html#'+params;}
- const api={roster,valid,seed,route,intent,note,carry};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Craft.Journey=api;
+ const api={roster,encountersForStage,valid,seed,route,intent,note,carry};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Craft.Journey=api;
 })(typeof window!=='undefined'?window:globalThis);

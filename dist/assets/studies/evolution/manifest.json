@@ -1,0 +1,34 @@
+{
+  "sourceName": "초심의 낙서 검",
+  "sourceTypes": [
+    "normal"
+  ],
+  "rarity": "rare",
+  "original": "assets/studies/evolution/original.png",
+  "options": [
+    {
+      "id": "vanguard",
+      "name": "철갑의 선봉검",
+      "types": [
+        "metal",
+        "fighting"
+      ],
+      "route": "단단한 칼날의 길",
+      "line": "굵어진 양날과 넓어진 가드. 정면을 가르는 검으로.",
+      "story": "서툴던 선이 단단한 양날이 되었어.\n원래 검의 윤곽을 따라, 힘 있게 성장하는 길이야.",
+      "image": "assets/studies/evolution/vanguard.png"
+    },
+    {
+      "id": "phantom",
+      "name": "유령의 잔상검",
+      "types": [
+        "ghost",
+        "normal"
+      ],
+      "route": "기묘한 기운의 길",
+      "line": "날에 스며든 보랏빛. 기묘한 힘을 품은 검으로.",
+      "story": "익숙한 칼날에 서늘한 보랏빛이 스며들었어.\n원래 검의 형태를 지키며, 기묘한 힘을 얻는 길이야.",
+      "image": "assets/studies/evolution/phantom.png"
+    }
+  ]
+}

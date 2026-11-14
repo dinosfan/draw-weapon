@@ -1,10 +1,11 @@
 (() => {
-  if(BattlePreview.loadError){if(Craft.Exhibit?.active)location.replace('exhibit.html');else Craft.mountBattleRecovery(BattlePreview.loadError);return;}
+  if(BattlePreview.loadError){if(Craft.Exhibit?.active)location.replace(Craft.Exhibit.workshopUrl);else Craft.mountBattleRecovery(BattlePreview.loadError);return;}
   const exhibit = !!BattlePreview.exhibit;
   const ui = id => document.getElementById(id);
   if(!exhibit)try{Craft.StorageCleanup?.activate(location.hash);}catch(error){console.error(error.message);}
   BattlePreview.icons.skill = BattlePreview.weapon.icon;
-  let state = BattlePreview.createState(exhibit ? 0 : Craft.Evolution.stage(location.hash,BattlePreview.encounters.length));
+  const startingStage = exhibit ? ExhibitEncounter.stage : Craft.Evolution.stage(location.hash,BattlePreview.encounters.length);
+  let state = BattlePreview.createState(startingStage);
   let animating=false,revision=0,recordedRevision=-1;
   let battleId=Craft.Chronicle?.session(),lastFinisher='',lastStrike='',weaponRecord=null;
   let runRecord;if(!exhibit)try{runRecord=BattleRunRecord.create(localStorage,BattlePreview.weapon,location.hash);}catch{runRecord={read:()=>({victories:[]}),record(){}};}
@@ -35,13 +36,13 @@
   const bagMenu=BattlePreview.mountBag({use:action=>act(action),close:()=>{bagMenu.hide();setMoveMenu(false);}});
   function setMoveMenu(open) {
     bagMenu.hide();
-    movesOpen=(exhibit ? state.turn===0 : open) && !state.ended && !animating;
+    movesOpen=(exhibit || open) && !state.ended && !animating;
     ui('commands').hidden=exhibit||movesOpen;ui('move-menu').hidden=!movesOpen;ui('move-description').hidden=!movesOpen;
     if(movesOpen){moveMenu.update(state);moveMenu.focus();}
     else if(!exhibit && !state.ended && !animating)ui('commands').querySelector('[data-action="attack"]').focus({preventScroll:true});
   }
   async function act(action) {
-    if(animating||(exhibit&&state.turn>0))return;
+    if(animating)return;
     const previous=state,next=BattlePreview.reduce(state,action);
     if(previous.turn===next.turn){state=next;render();if(next!==previous)dialogue.idle(next.message);return;}
     if(action.startsWith('item:')){try{Craft.Supplies?.commit(location.hash,next.items);}catch{dialogue.idle('가방 사용을 저장하지 못했어. 아이템과 턴은 그대로야.');return;}}
@@ -69,7 +70,7 @@
     shell.classList.toggle('turn-busy',animating);
     if(animating)document.querySelectorAll('#commands button,.move-button').forEach(button=>{button.disabled=true;});
   }
-  const updateResults = exhibit ? BattlePreview.mountExhibitResult(() => startEncounter(0)) : BattlePreview.mountResults({ retry: () => startEncounter(state.stage), next: () => {
+  const updateResults = exhibit ? BattlePreview.mountExhibitResult(() => startEncounter(startingStage)) : BattlePreview.mountResults({ retry: () => startEncounter(state.stage), next: () => {
     if (state.ended && state.enemyHp === 0 && state.stage < BattlePreview.encounters.length - 1) startEncounter(state.stage + 1);
   }, save: () => {
     const id=Craft.Library?.record(BattlePreview.weapon,new URLSearchParams(location.hash.slice(1)));if(!id)return false;
@@ -101,11 +102,11 @@
     const rarityPreview=ui("rarity-preview");if(rarityPreview&&BattlePreview.weapon.moves?.every(move=>move.motionPlan))rarityPreview.href="rarity-effects-lab.html"+location.hash;
     if(!exhibit&&state.ended&&recordedRevision!==revision){runRecord.record(state,lastStrike);recordedRevision=revision;try{weaponRecord=Craft.Library?.finish(BattlePreview.weapon,location.hash,{id:battleId,won:state.enemyHp===0,stage:state.stage,lastStage:BattlePreview.encounters.length-1,turns:state.turn,hp:state.hp,enemy:encounter,finisher:lastFinisher});}catch{if(weaponRecord)weaponRecord={...weaponRecord,lastEarned:[]};}}
     const memory=ui('weapon-memory');if(memory)memory.textContent=weaponRecord&&Craft.Chronicle?.tag(weaponRecord)?' · 「'+Craft.Chronicle.tag(weaponRecord)+'」':'';
-    ui('stage-counter').textContent = exhibit ? '연습 전투' : 'STAGE ' + (state.stage + 1) + ' / ' + BattlePreview.encounters.length;
+    ui('stage-counter').textContent = exhibit ? '3단계 보스' : 'STAGE ' + (state.stage + 1) + ' / ' + BattlePreview.encounters.length;
     ui('encounter-label').textContent = encounter.location + ' · ' + (encounter.boss ? ((state.bossPhase||0)+1)+'페이즈 / 2' : encounter.subtitle);
     BattlePreview.renderStatus(ui('enemy-status'), encounter, state.enemyHp, state.ended ? '전투 종료' : '전투 중', false,Craft.Conditions.list(state,'enemy'));
     BattlePreview.renderStatus(ui('player-status'), data.player, state.hp,undefined,true,Craft.Conditions.list(state,'player'));
-    dialogue.idle(exhibit?(state.turn>0?'체험 완료!':'네 낙서로 기술 하나를 골라 써 봐.'):state.ended?state.message:BattlePreview.weapon.name+'로 무엇을 할까?');
+    dialogue.idle(state.ended?state.message:BattlePreview.weapon.name+'로 무엇을 할까?');
     window.GameAudio?.battle(state);
     updateCommands(state);
     moveMenu.update(state);
@@ -115,11 +116,11 @@
     document.querySelector('.enemy-fighter').classList.toggle('defeated',state.enemyHp === 0);
     document.querySelector('.player-fighter').classList.toggle('defeated',state.hp === 0);
     if(exhibit){
-      setMoveMenu(state.turn===0);
+      setMoveMenu(!state.ended);
       updateResults(state);
     }else updateResults(state,weaponRecord,runRecord.read());
     ui('turn-counter').textContent = `TURN ${String(state.turn + 1).padStart(2, '0')}`;
-    ui('turn-counter').title='전투 진행은 자동 저장돼. 재대결은 처음부터 시작해.';
+    ui('turn-counter').title=exhibit?'재대결은 1페이즈부터 시작해.':'전투 진행은 자동 저장돼. 재대결은 처음부터 시작해.';
     saveBattle();
   }
   ui('retry-battle').addEventListener('click', () => startEncounter(state.stage));
@@ -135,6 +136,6 @@
   if(!exhibit&&!restored&&!state.ended)encounterIntro();
   function stopPresentation(){revision++;entry.cancel();dialogue.cancel();visualTasks.cancel();BattleHP.cancelAll();turnFlow.cancel();effects.cancel();impact.cancel();finisher.cancel();combatSound.stop();animating=true;lockCommands();}
   window.addEventListener('game:new-game',stopPresentation);window.addEventListener('pagehide',stopPresentation);
-  if(exhibit)window.addEventListener('pageshow',event=>{if(event.persisted)startEncounter(0);});
+  if(exhibit)window.addEventListener('pageshow',event=>{if(event.persisted)startEncounter(startingStage);});
 })();
 

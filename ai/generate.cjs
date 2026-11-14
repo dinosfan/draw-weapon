@@ -2,13 +2,13 @@ const {callAI:request}=require('./analyze.cjs');
 const {validateCreative}=require('./weapon.cjs');
 
 // A model's inconsistent move set is repaired internally, never blamed on the drawing.
-async function callAI(endpoint,opts,fetchImpl,onUsage=()=>{}){
+async function callAI(endpoint,opts,fetchImpl,onUsage=()=>{},{singleAttempt=false}={}){
   const original=JSON.parse(opts.body);
   let repair='';
   const missing=new Set();
   let activeModel=original.model;
   const requestOptions={...opts,retryPolicy:{attemptTimeoutMs:90000,attempts:1}};
-  const canFallback=()=>/^https:\/\/(?:generativelanguage.googleapis.com|factchat-cloud.mindlogic.ai)\//.test(endpoint)&&original.fallbackModel&&activeModel!==original.fallbackModel&&!opts.signal?.aborted;
+  const canFallback=()=>!singleAttempt&&/^https:\/\/(?:generativelanguage.googleapis.com|factchat-cloud.mindlogic.ai)\//.test(endpoint)&&original.fallbackModel&&activeModel!==original.fallbackModel&&!opts.signal?.aborted;
   for(let attempt=0;attempt<3;attempt++){
     const body=structuredClone(original);
     body.model=activeModel;
@@ -29,6 +29,7 @@ async function callAI(endpoint,opts,fetchImpl,onUsage=()=>{}){
       if(original.motionPlans&&result.moves.some(move=>move.motionPlan.layers.some(layer=>layer.source==='effect'&&!layer.glyph)))throw Error('연출 픽셀 소재 누락');
       return{ok:true,json:async()=>({...data,choices:[{message:{content:JSON.stringify(result)}}],modelUsed:body.model})};
     }catch(error){
+      if(singleAttempt){onUsage(200,data.usage,body.model);throw error;}
       if(error.code==='WEAPON_ENGINE_CONFLICT'){
         onUsage(200,data.usage,body.model);
         if(attempt>=2)throw Error('무기의 기술 구성을 정리하지 못했어. 그림은 그대로 유지되어 있으니 다시 제작해 줘.');

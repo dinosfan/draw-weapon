@@ -97,7 +97,7 @@
   const generated=/^generated:([a-f0-9]{64})$/.exec(variant);if(!Object.hasOwn(variants,variant)&&!generated)variant='fang';if(!root.Craft.Types.valid(element))element='dragon';
   readyRows=validateReadyRows(readyRows);const key=variant+':'+element+':'+allowFadeEmpty+':'+readyRows.join(',');if(cache.has(key))return cache.get(key);
   const ready=(async()=>{
-   const image=new Image(),bundled=await root.GameDemo?.atlasSource(variant),url=bundled||(generated?'assets/vfx/generated/'+generated[1]+'.png':variants[variant]);let objectUrl;
+   const image=new Image(),bundled=root.ExhibitPresentation?.atlasSource(variant)||await root.GameDemo?.atlasSource(variant),url=bundled||(generated?'assets/vfx/generated/'+generated[1]+'.png':variants[variant]);let objectUrl;
    // Free cloud servers can lose generated files on restart. Keep recently used
    // immutable atlases in this browser, under this game's origin only.
    if(generated&&!bundled&&root.caches&&root.fetch&&root.URL?.createObjectURL)try{

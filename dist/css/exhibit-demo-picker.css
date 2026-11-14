@@ -1,0 +1,40 @@
+.exhibit-demo-picker {
+  box-sizing: border-box;
+  width: min(30rem, calc(100% - 28px));
+  max-height: calc(100dvh - 28px);
+  padding: 0 14px 14px;
+  border: 3px solid var(--color-ink);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 5px 5px 0 var(--color-ink);
+}
+.exhibit-demo-picker::backdrop { background: var(--color-ink); opacity: .65; }
+.exhibit-demo-picker header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-inline: -14px;
+  padding: 8px 14px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.exhibit-demo-picker h2 { margin: 0; font-size: 1.17rem; }
+.exhibit-demo-picker p { margin: 11px 0; color: var(--color-muted); font-size: .86rem; word-break: keep-all; }
+.exhibit-demo-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.exhibit-demo-picker :is(button, a) {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 7px 9px;
+  border: 2px solid var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  cursor: pointer;
+  font-size: .87rem;
+  text-align: left;
+  text-decoration: none;
+}
+.exhibit-demo-options :is(button, a) { display: grid; align-content: center; gap: 3px; min-height: 58px; word-break: keep-all; }
+.exhibit-demo-options small { color: var(--color-muted); font-size: .74rem; }
+.exhibit-demo-picker :is(button, a):focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.exhibit-demo-picker header button:focus-visible { outline-color: var(--color-electric); }

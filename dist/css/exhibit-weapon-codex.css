@@ -1,0 +1,48 @@
+.guide-weapon-codex h3 { margin-top: 0; }
+.guide-weapon-list { display: grid; gap: 8px; }
+.guide-weapon-card {
+  border: 2px solid var(--color-ink);
+  background: var(--color-surface);
+}
+.guide-weapon-summary {
+  display: grid;
+  grid-template-columns: clamp(54px, 16vw, 78px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+.guide-weapon-summary::-webkit-details-marker { display: none; }
+.guide-weapon-summary:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+}
+.guide-weapon-card[open] .guide-weapon-summary { background: var(--color-subtle); }
+.guide-weapon-art {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 4px;
+  border: 1px solid var(--color-metal);
+  background: var(--color-paper);
+}
+.guide-weapon-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.guide-weapon-title { display: grid; gap: 5px; min-width: 0; overflow-wrap: anywhere; }
+.guide-weapon-types { display: flex; flex-wrap: wrap; gap: 3px; }
+.guide-weapon-hint { font-size: .72rem; font-weight: 750; color: var(--color-muted); }
+.guide-weapon-card[open] .guide-weapon-hint { visibility: hidden; }
+.guide-weapon-details { padding: 8px; border-top: 1px solid var(--color-metal); }
+.guide-weapon-details p { margin: 0; overflow-wrap: anywhere; }
+.guide-weapon-details .guide-weapon-reason { margin-bottom: 8px; color: var(--color-muted); }
+.guide-weapon-moves { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; }
+.guide-weapon-moves li { padding: 6px; border: 2px solid var(--type-color); }
+.guide-weapon-move-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; }
+.guide-weapon-move-title strong { overflow-wrap: anywhere; }
+.guide-weapon-moves li p { margin-top: 3px; font-size: .78rem; }

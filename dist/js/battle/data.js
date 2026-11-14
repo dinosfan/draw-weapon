@@ -13,7 +13,7 @@ try{
   } else BattlePreview.weapon = Craft.readBattleWeapon(location.hash);
 }catch(error){BattlePreview.loadError=error;BattlePreview.weapon={kind:'unavailable',name:'저장된 무기 확인 필요',type:'복구 대기',types:['normal'],attack:0};}
 BattlePreview.data.player.name = BattlePreview.weapon.name;
-BattlePreview.data.player.note = (BattlePreview.weapon.rarity&&Craft.Rarity?Craft.Rarity.get(BattlePreview.weapon.rarity).label+' · ':'')+BattlePreview.weapon.type + ' · 당신이 그린 무기';
+BattlePreview.data.player.note = (BattlePreview.weapon.rarity&&Craft.Rarity?Craft.Rarity.get(BattlePreview.weapon.rarity).label+' · ':'')+BattlePreview.weapon.type + (BattlePreview.exhibit?.sample ? ' · 예시 무기' : ' · 당신이 그린 무기');
 if(BattlePreview.weapon.evolution)BattlePreview.data.player.note+=' · '+BattlePreview.weapon.evolution.stage+'차 진화';
 
 BattlePreview.data.player.types=BattlePreview.weapon.types||['normal'];

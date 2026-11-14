@@ -33,6 +33,14 @@
 }
 .exhibit-location h2, .exhibit-location > span { font-size: .98rem; font-weight: 850; }
 .exhibit-location small { color: var(--color-metal); font-size: .72rem; }
+.exhibit-location .exhibit-rarity-badge {
+  margin-left: auto;
+  margin-right: .55rem;
+  padding: 3px 7px;
+  background: var(--exhibit-rarity);
+  color: var(--exhibit-rarity-ink);
+  font-size: .74rem;
+}
 .exhibit-desk, .exhibit-reveal-stage, .exhibit-stage { position: relative; isolation: isolate; overflow: hidden; }
 .exhibit-world, .exhibit-effect { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
 .exhibit-world { z-index: -1; }
@@ -99,6 +107,19 @@
 }
 .exhibit-workshop .exhibit-primary:active:not(:disabled) { translate: 0 2px; box-shadow: 0 1px 0 var(--color-ink); }
 .exhibit-workshop .exhibit-primary:disabled { background: var(--color-subtle); }
+.exhibit-odds {
+  width: 100%;
+  margin-block: 9px 2px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
+}
+.exhibit-odds caption { margin-bottom: 5px; color: var(--color-muted); font-size: .75rem; text-align: left; }
+.exhibit-odds :is(th, td) { border: 1px solid var(--color-metal); padding: 4px 2px; }
+.exhibit-odds th { background: var(--color-subtle); font-weight: 750; }
+.exhibit-odds td { background: var(--color-surface); font-weight: 800; }
 .exhibit-reveal-stage { display: grid; gap: 10px; padding: 13px 12px 0; background: var(--color-dark); }
 .exhibit-reveal-stage .exhibit-world { object-fit: cover; opacity: .65; }
 .exhibit-art-paper {
@@ -109,7 +130,7 @@
   margin: 4px auto;
   border: 3px solid var(--color-ink);
   background: var(--color-paper);
-  box-shadow: 0 0 0 2px var(--color-electric), 5px 6px 0 var(--color-ink);
+  box-shadow: 0 0 0 2px var(--exhibit-rarity, var(--color-electric)), 5px 6px 0 var(--color-ink);
 }
 .exhibit-art-paper canvas { display: block; width: 100%; height: 119px; object-fit: contain; }
 .exhibit-reveal:not([hidden]) .exhibit-art-paper { animation: exhibit-unfold .32s steps(6, end) both; }
@@ -141,7 +162,8 @@
 .exhibit-loadout li strong, .exhibit-move strong { display: block; font-size: .82rem; line-height: 1.25; }
 .exhibit-loadout li p { margin: 3px 0 0; color: var(--color-muted); font-size: .75rem; line-height: 1.3; }
 .exhibit-stage { height: clamp(228px, 65vw, 300px); border-bottom: 3px solid var(--color-ink); background: var(--color-paper); }
-.exhibit-enemy { position: absolute; width: 88px; height: 88px; image-rendering: pixelated; }
+.exhibit-enemy { position: absolute; width: 112px; height: 112px; image-rendering: pixelated; }
+.exhibit-enemy-defeated { opacity: 0; }
 .exhibit-enemy-card, .exhibit-equipped {
   position: absolute;
   z-index: 2;
@@ -152,8 +174,7 @@
   font-size: .83rem;
 }
 .exhibit-enemy-card { top: 12px; left: 12px; width: 44%; }
-.exhibit-equipped { right: 12px; bottom: 12px; max-width: 48%; overflow-wrap: anywhere; }
-.exhibit-equipped small { display: block; margin-bottom: 2px; color: var(--color-muted); font-size: .68rem; }
+.exhibit-equipped { right: 12px; bottom: 12px; width: 42%; overflow-wrap: anywhere; }
 .exhibit-hp { display: flex; align-items: center; gap: 5px; margin-top: 4px; font-size: .65rem; font-weight: 850; }
 .exhibit-hp meter { width: 100%; height: 12px; }
 .exhibit-hp meter::-webkit-meter-bar { border: 1px solid var(--color-ink); border-radius: 0; background: var(--color-subtle); }
@@ -167,12 +188,20 @@
 .exhibit-workshop .exhibit-move { min-height: 50px; text-align: left; }
 .exhibit-move small { color: var(--color-muted); font-size: .7rem; }
 .exhibit-result { display: grid; gap: 3px; }
+.exhibit-result h3 { margin: 0 0 6px; }
 .exhibit-drawing-busy .exhibit-board canvas { pointer-events: none; }
 .exhibit-notice { margin: 6px 0 0; color: var(--color-muted); font-size: .8rem; line-height: 1.35; }
+.exhibit-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.exhibit-footer-actions button:focus-visible { outline-color: var(--color-electric); }
 .exhibit-live-battle .app-nav, .exhibit-live-battle .preview-footer,
 .exhibit-live-battle .route-pips, .exhibit-live-battle .move-back:last-child { display: none; }
 .live-battle.exhibit-live-battle .game-shell { margin-block: 0; }
 .live-battle.exhibit-live-battle .move-button { min-height: 44px; }
+.exhibit-live-battle #stage-counter { display: inline-block; white-space: nowrap; }
 .exhibit-practice-result {
   padding: 12px;
   border-top: 2px solid var(--color-ink);

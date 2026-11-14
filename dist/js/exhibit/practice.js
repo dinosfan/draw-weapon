@@ -14,13 +14,15 @@
     try {
       if (!weapon.effectJob && record.resumeEffects) {
         record.resumeEffects = false;
-        await Craft.EffectJobs.submit({weapon, image});
+        await Craft.EffectJobs.submit({weapon, image, requestId:record.effectRequestId});
         persist();
       }
       if (weapon.effectJob) await Craft.EffectJobs.watch(weapon);
       note.textContent = weapon.effectAtlas ? '전용 도트 완성 · 다음 기술부터 적용돼.' : '기본 연출로 기술을 쓸 수 있어.';
     } catch {
-      note.textContent = '전용 도트를 불러오지 못했어. 기본 연출로 기술을 쓸 수 있어.';
+      const rows = weapon.effectAtlas?.readyRows?.length || 0;
+      note.textContent = rows ? '전용 도트 ' + rows + '/4 완성 · 나머지 기술에는 기본 연출을 써.' :
+        '전용 도트를 불러오지 못했어. 기본 연출로 기술을 쓸 수 있어.';
     } finally {
       persist();
     }
@@ -37,27 +39,38 @@
     const actions = document.createElement('div');
     const again = document.createElement('button');
     again.type = 'button';
-    again.textContent = '다른 기술 써보기';
+    again.textContent = '보스 다시 도전';
     again.addEventListener('click', retry);
     const draw = document.createElement('a');
-    draw.href = 'exhibit.html';
+    draw.href = Craft.Exhibit.workshopUrl;
     draw.textContent = '새 낙서 그리기';
-    const full = document.createElement('a');
-    full.href = 'start.html';
-    full.textContent = '본편 열기';
-    actions.append(again, draw, full);
+    actions.append(again);
+    if (BattlePreview.exhibit.sample) {
+      const examples = document.createElement('a');
+      examples.href = Craft.Exhibit.workshopUrl + '&example=1';
+      examples.textContent = '다른 예시 무기';
+      actions.append(examples);
+    }
+    actions.append(draw);
     panel.append(title, detail, actions);
     document.querySelector('.battle-console').after(panel);
+    if (!Craft.Exhibit.presentation) {
+      const report = document.createElement('button');
+      report.type = 'button';
+      report.textContent = '오류 제보';
+      report.className = 'exhibit-battle-report';
+      report.dataset.exhibitFeedback = '';
+      report.setAttribute('aria-haspopup', 'dialog');
+      panel.after(report);
+    }
 
     return state => {
-      const completed = state.turn > 0;
+      const completed = state.ended;
       const justCompleted = completed && panel.hidden;
       panel.hidden = !completed;
       if (justCompleted) {
-        title.textContent = '네 낙서로 기술을 썼어!';
-        const damage = state.feedback?.hit || 0;
-        detail.textContent = damage ? '상대에게 ' + damage + ' 피해를 입혔어.' :
-          state.feedback?.miss ? '기술이 빗나갔어. 다시 써볼 수 있어.' : '다른 기술도 시험해 볼 수 있어.';
+        title.textContent = state.enemyHp === 0 ? '3단계 보스 격파!' : '보스에게 패배했어';
+        detail.textContent = state.enemyHp === 0 ? state.turn + '턴 만에 두 페이즈를 돌파했어.' : '같은 무기로 1페이즈부터 다시 도전할 수 있어.';
         title.focus();
         panel.scrollIntoView({block:'nearest'});
       }

@@ -1,0 +1,53 @@
+.exhibit-notice-dialog {
+  box-sizing: border-box;
+  width: min(32rem, calc(100% - 36px));
+  max-height: calc(100% - 36px);
+  padding: clamp(18px, 5vw, 28px);
+  border: 3px solid var(--color-ink);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 5px 5px 0 var(--color-ink);
+  font-size: .94rem;
+  line-height: 1.55;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.exhibit-notice-dialog::backdrop { background: var(--color-ink); opacity: .65; }
+.exhibit-notice-dialog h2 { margin: 0; font-size: 1.55rem; line-height: 1.2; }
+.exhibit-notice-dialog p { margin: .8em 0; }
+.exhibit-notice-dialog ul { padding-inline-start: 1.25em; margin: .8em 0 1.1em; }
+.exhibit-notice-dialog li + li { margin-top: .35em; }
+.exhibit-notice-availability { border-inline-start: 4px solid var(--color-electric); padding-inline-start: 10px; font-weight: 750; }
+.exhibit-notice-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.exhibit-notice-actions button {
+  flex: 1 0 auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: .93rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.exhibit-notice-actions button[data-draw] { background: var(--color-electric); }
+.exhibit-notice-actions button:disabled { background: var(--color-subtle); color: var(--color-muted); cursor: default; }
+.exhibit-notice-report, .exhibit-notice-reopen {
+  min-height: 34px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.exhibit-notice-help { color: var(--color-muted); font-size: .83rem; }
+.exhibit-notice-faq { margin-top: 8px; padding: 9px 0; border-block: 1px solid var(--color-metal); font-size: .85rem; }
+.exhibit-notice-faq summary { min-height: 28px; font-weight: 800; cursor: pointer; }
+.exhibit-notice-faq dl { margin: 6px 0 0; }
+.exhibit-notice-faq dt { font-weight: 800; }
+.exhibit-notice-faq dd { margin: 2px 0 9px; color: var(--color-muted); }
+.exhibit-notice-dialog button:focus-visible, .exhibit-notice-reopen:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}

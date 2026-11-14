@@ -2,7 +2,7 @@ const fs=require('node:fs'),path=require('node:path'),{createHash,randomBytes}=r
 const{generate,MODEL}=require('./client.cjs');
 const{validateInput}=require('../analyze.cjs'),{validateCreative}=require('../weapon.cjs');
 const{recordUsage}=require('../usage.cjs');
-function createService({key,provider='gemini',model,fetchImpl,root=path.join(__dirname,'../../dist/assets/vfx/generated'),onUsage=recordUsage,test=false,generator,vision,materialPlanner=require('./materials.cjs').plan}={}){
+function createService({key,provider='gemini',model,fetchImpl,root=path.join(__dirname,'../../dist/assets/vfx/generated'),onUsage=recordUsage,test=false,generator,vision,materialPlanner=require('./materials.cjs').plan,exhibit=false,onProviderCredits}={}){
  if(!['gemini','local','chatkhu'].includes(provider))throw Error('지원하지 않는 연출 생성 방식');
  const local=provider==='local'||provider==='chatkhu';
  if(!model){
@@ -31,14 +31,14 @@ function createService({key,provider='gemini',model,fetchImpl,root=path.join(__d
    const authored=weapon.moves.every(move=>move.effectBrief&&move.delivery&&move.motionPlan);
    let materials=null;if(local&&vision){onProgress?.({phase:'materials',message:authored?'AI가 설계한 네 기술의 전용 도트 소재를 준비하고 있어…':'그림과 네 기술에서 실제로 보일 소재를 분리하고 있어…'});try{materials=await materialPlanner({weapon,drawing,config:vision,signal,cacheOnly:authored});}catch{/* Optional planning never changes the four moves. */}}
    signal?.throwIfAborted();
-   const result=await generateImage({weapon,drawing,key:provider==='local'?undefined:key,model,fetchImpl,onProgress,onPartial,materials,bypassCache:input.regenerate===true,retryRows,inheritance,rowCorrections,reviewSkill:local?require('./semantic-review.cjs').create({weapon,drawing,config:vision,root:path.resolve(root,'../../../..')}):undefined,onePass:['auto','glyph','off'].includes(input.onePass)?input.onePass:'auto',signal});
+   const result=await generateImage({weapon,drawing,key:provider==='local'?undefined:key,model,fetchImpl,onProgress,onPartial,materials,bypassCache:input.regenerate===true,retryRows,inheritance,rowCorrections,reviewSkill:local&&!exhibit?require('./semantic-review.cjs').create({weapon,drawing,config:vision,root:path.resolve(root,'../../../..')}):undefined,onePass:['auto','glyph','off'].includes(input.onePass)?input.onePass:'auto',sheetOnly:exhibit&&provider==='chatkhu',signal});
    signal?.throwIfAborted();
    if(result.local)result.local.materialsPrepared=!!materials;
    if(!test||onUsage!==recordUsage)onUsage({model,status:200,usage:result.usage});
    const inputCost=model===MODEL&&Number.isFinite(result.usage?.promptTokenCount)?result.usage.promptTokenCount*.5/1e6:null;
    const meta={id,provider,model,rarity:weapon.rarity,width:result.width,height:result.height,elapsedMs:result.elapsedMs,usage:result.usage||null,...(result.local?{local:result.local}:{}),estimateUSD:{imageOutput:provider==='local'?0:provider==='chatkhu'?null:model===MODEL?.0672:null,input:provider==='local'?0:provider==='chatkhu'?null:inputCost,note:provider==='local'?'Local generation: no image API charge; hardware and electricity excluded':provider==='chatkhu'?'ChatKHU API credits apply; cost is not estimated here':'1K image output estimate; text/thinking charges may be additional'},cached:false};
    fs.mkdirSync(root,{recursive:true});fs.writeFileSync(file,result.bytes);fs.writeFileSync(metadata,JSON.stringify(meta));return meta;
-  }catch(error){if([402,429].includes(error.status))quotaUntil=Date.now()+30000;if(!test||onUsage!==recordUsage)onUsage({model,status:error.status||'failed',usage:null});throw error;}finally{running--;pending.delete(id);}})();
+  }catch(error){if([402,429].includes(error.status))quotaUntil=Date.now()+30000;if(error.status===402||error.code==='IMAGE_CREDIT_EXHAUSTED')onProviderCredits?.();if(!test||onUsage!==recordUsage)onUsage({model,status:error.status||'failed',usage:null});throw error;}finally{running--;pending.delete(id);}})();
   pending.set(id,task);return task;
  }
  return{create,model,provider};
