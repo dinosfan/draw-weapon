@@ -154,21 +154,28 @@
     } else showWeapon(record);
   }
 
-  function prepareEffects(record) {
-    if (poster) {
-      record.resumeEffects = true;
-      record.effectStatus = '보스전에 들어가면 전용 도트를 준비해. 기술은 기본 도트로 바로 쓸 수 있어.';
-      return;
-    }
+  async function prepareEffects(record) {
     const status = text => {
       record.effectStatus = text;
       if (result === record) say('effect-status', text);
     };
     status('전용 도트 준비 중 · 지금 전투에 들어갈 수 있어.');
-    ExhibitPresentation.loadAtlas().then(
-      () => status('전용 도트 완성!'),
-      () => status('전용 도트를 불러오지 못했어. 기술은 바로 쓸 수 있어.'),
-    );
+    try {
+      if (poster) {
+        const {weapon, effectRequestId} = record;
+        if (!effectRequestId) throw Error('전시 무기 제작 번호가 없어.');
+        record.resumeEffects = true;
+        await Craft.EffectJobs.submit({weapon, image:weapon.artwork, requestId:effectRequestId});
+        record.resumeEffects = false;
+        if (weapon.effectJob) await Craft.EffectJobs.watch(weapon);
+      } else await ExhibitPresentation.loadAtlas();
+      status('전용 도트 완성!');
+    } catch (error) {
+      if (error.status >= 400 && error.status < 500) record.resumeEffects = false;
+      const rows = record.weapon.effectAtlas?.readyRows?.length;
+      status(rows ? `전용 도트 ${rows}/4 완성 · 나머지 기술은 기본 도트로 쓸 수 있어.` :
+        '전용 도트를 불러오지 못했어. 기술은 기본 도트로 바로 쓸 수 있어.');
+    }
   }
 
   async function prepareSample() {

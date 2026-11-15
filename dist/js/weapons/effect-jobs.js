@@ -13,7 +13,20 @@ Craft.EffectJobs=(()=>{
   for(let attempt=0;attempt<3;attempt++)try{ensure();const response=await request('/api/ai/effects/jobs/'+id,{signal:AbortSignal.timeout(20000)});if(response.status>=500||response.status===429)throw Error('진행 조회 서버 응답 지연');const body=await (Craft.Http?Craft.Http.json(response):response.json());return{response,body};}catch(error){ensure();if(error.cancelled)throw error;if(attempt===2){error.connectionOnly=true;throw error;}onProgress('진행 조회에 다시 연결하고 있어 · 같은 도트 작업을 계속 확인 중');await new Promise(resolve=>setTimeout(resolve,1800));}
  }
  async function apply(weapon,meta,{partial=false,assertCurrent}={}){assertCurrent?.();if(!/^[a-f0-9]{64}$/.test(meta?.id||''))throw Error('도트 결과 형식 오류');if(meta.rarity!==undefined&&meta.rarity!==(weapon.rarity||'common'))throw Error('무기 등급과 도트 등급이 달라. 같은 등급의 도트만 적용할 수 있어.');const rows=meta.local?.readyRows;if(rows!==undefined&&(!Array.isArray(rows)||!rows.length||rows.length>4||new Set(rows).size!==rows.length||rows.some(r=>!Number.isInteger(r)||r<0||r>3)))throw Error('완성된 도트 기술 위치 형식 오류');if(!partial&&rows&&rows.length<4)throw Error('부분 도트를 완성된 결과로 처리할 수 없습니다.');await BattleSpriteAtlas.loadGenerated(meta.id,weapon.moves[0].element,{allowFadeEmpty:meta.local?.layout==='skill-2x2-v1',...(rows?{readyRows:rows}:{})});assertCurrent?.();weapon.effectAtlas={id:meta.id,...(meta.rarity?{rarity:meta.rarity}:{}),...(meta.local?.layout==='skill-2x2-v1'?{layout:meta.local.layout}:{}),...(rows?{readyRows:[...rows]}:{})};if(!partial){delete weapon.effectJob;delete weapon.effectRetryRows;}return meta;}
- async function submit({weapon,image,regenerate=false,retry=false,retryRows,requestId}){if(resetting)await resetting;const version=resetVersion,epoch=currentEpoch();const response=await request('/api/ai/effects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({weapon,image,regenerate,...(retryRows?.length?{retryRows}:{}),replace:true,epoch,...(retry?{retry:true}:{}),...(requestId?{requestId}:{})}),signal:AbortSignal.timeout(20000)}),body=await (Craft.Http?Craft.Http.json(response):response.json());if(version!==resetVersion||epoch!==currentEpoch())throw ended(body.id||'stale-submit');if(!response.ok){const error=Error(body.error||'도트 생성을 시작하지 못했어요.');error.status=response.status;throw error;}if(response.status!==202){await apply(weapon,body.data,{assertCurrent:()=>{if(version!==resetVersion||epoch!==currentEpoch())throw ended('stale-submit');}});return null;}if(!/^[a-f0-9]{32}$/.test(body.id||''))throw Error('도트 작업 형식 오류');weapon.effectJob=body.id;try{localStorage.setItem(activeKey,body.id);}catch{}return body.id;}
+ async function submit({weapon,image,regenerate=false,retry=false,retryRows,requestId}){
+  if(resetting)await resetting;
+  const version=resetVersion,epoch=currentEpoch();
+  // The live exhibit server already holds the drawing and weapon under the analysis ID.
+  const exhibit=Boolean(Craft.Exhibit?.request&&!Craft.Exhibit.presentation&&requestId);
+  const input=exhibit?{requestId}:{weapon,image,regenerate,...(retryRows?.length?{retryRows}:{}),replace:true,epoch,...(retry?{retry:true}:{}),...(requestId?{requestId}:{})};
+  const response=await request('/api/ai/effects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input),keepalive:exhibit,signal:AbortSignal.timeout(20000)});
+  const body=await (Craft.Http?Craft.Http.json(response):response.json());
+  if(version!==resetVersion||epoch!==currentEpoch())throw ended(body.id||'stale-submit');
+  if(!response.ok){const error=Error(body.error||'도트 생성을 시작하지 못했어요.');error.status=response.status;throw error;}
+  if(response.status!==202){await apply(weapon,body.data,{assertCurrent:()=>{if(version!==resetVersion||epoch!==currentEpoch())throw ended('stale-submit');}});return null;}
+  if(!/^[a-f0-9]{32}$/.test(body.id||''))throw Error('도트 작업 형식 오류');
+  weapon.effectJob=body.id;try{localStorage.setItem(activeKey,body.id);}catch{}return body.id;
+ }
  function watch(weapon,{onProgress=()=>{},recoveryUsed=false}={}){
   const id=weapon.effectJob,existing=watching.get(weapon);if(existing&&existing.id===id){existing.listeners.add(onProgress);return existing.task;}
   const record={id,listeners:new Set([onProgress])},version=resetVersion;

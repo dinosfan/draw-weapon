@@ -117,7 +117,7 @@ window.ExhibitGuide = {
       panel.append(element('h3', '낙서로 무기 만들기'),
         element('p', '실시간 제작에서는 ChatKHU가 그림을 보고 무기 이름, 타입, 기술 4개를 만들어. 희귀도에 따라 무기 성능과 연출이 달라져.'),
         element('h3', '기술과 도트'),
-        element('p', '위력, 명중률, 남은 사용 횟수(PP), 타입 상성과 상태 이상을 보고 기술을 골라. 전시에서는 보스전에 들어가면 전용 도트를 준비해. 전용 도트가 없거나 아직 완성되지 않은 기술은 기본 도트로 바로 쓸 수 있어.'));
+        element('p', '위력, 명중률, 남은 사용 횟수(PP), 타입 상성과 상태 이상을 보고 기술을 골라. 무기가 탄생하면 기술을 읽는 동안 전용 도트를 준비해. 아직 완성되지 않은 기술은 기본 도트로 바로 쓸 수 있어.'));
       const sheet = element('img', '', 'guide-atlas');
       sheet.src = 'assets/demo/umbrella-exhibit.png';
       sheet.alt = '빗방울 스톰 우산의 기술 4개와 각 기술의 4프레임 도트';
