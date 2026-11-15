@@ -115,17 +115,20 @@ window.ExhibitGuide = {
     function adventure() {
       const panel = element('div', '', 'guide-adventure');
       panel.append(element('h3', '낙서로 무기 만들기'),
-        element('p', '실시간 제작에서는 ChatKHU가 그림을 보고 이름, 타입, 기술 4개와 기술 도트를 만들어.'),
+        element('p', '실시간 제작에서는 ChatKHU가 그림을 보고 무기 이름, 타입, 기술 4개를 만들어. 희귀도에 따라 무기 성능과 연출이 달라져.'),
         element('h3', '기술과 도트'),
-        element('p', '기술은 위력, 명중률, 남은 사용 횟수(PP)와 타입을 보고 골라. 도트가 준비 중이어도 기술을 쓸 수 있어.'));
+        element('p', '위력, 명중률, 남은 사용 횟수(PP), 타입 상성과 상태 이상을 보고 기술을 골라. 전시에서는 보스전에 들어가면 전용 도트를 준비해. 전용 도트가 없거나 아직 완성되지 않은 기술은 기본 도트로 바로 쓸 수 있어.'));
       const sheet = element('img', '', 'guide-atlas');
       sheet.src = 'assets/demo/umbrella-exhibit.png';
       sheet.alt = '빗방울 스톰 우산의 기술 4개와 각 기술의 4프레임 도트';
-      panel.append(sheet, element('h3', '전시 보스전'),
-        element('p', '만든 무기로 3단계 보스에 바로 도전해. 두 페이즈를 모두 쓰러뜨리면 승리야.'),
-        element('h3', '본편 모험'),
-        element('p', '본편에서는 1분 재료 줍기로 보급품을 얻고, 전투 중 가방에서 체력 회복, PP 충전, 상태 해제에 써.'),
-        element('p', '세 구역을 탐험하고, 승리 후에는 원래 무기의 형태를 바탕으로 진화 방향을 골라. 마지막 수호자는 두 페이즈로 싸워.'));
+      panel.append(sheet, element('h3', '전시 체험'),
+        element('p', '직접 만든 무기나 예시 무기 8종으로 3단계 보스에게 바로 도전해. 기본 설정에서는 보스 8종 중 하나가 랜덤으로 나오고, 두 페이즈를 쓰러뜨리면 승리야.'),
+        element('p', '기술을 바로 골라 싸우고, 같은 보스에 다시 도전하거나 새 낙서를 그릴 수 있어. 전시 한 판은 현재 탭에서 진행돼.'),
+        element('h3', '본편에서 더 즐길 수 있는 것'),
+        element('p', '첫 전투로 출발할 때 1분 재료 줍기 미니게임을 해. 점수에 따라 얻은 보급품은 전투 가방에서 체력 회복, PP 충전, 상태 이상 해제에 쓸 수 있어.'),
+        element('p', '세 구역을 순서대로 탐험해. 전투에서는 기술뿐 아니라 방어와 가방을 이용하고, 마지막 보스는 두 페이즈로 싸워.'),
+        element('p', '직접 만든 무기로 승리하면 원래 그림에서 이어지는 진화 방향 두 가지 중 하나를 고를 수 있어. 일부 기술을 계승하고 진화 전용 기술도 얻어.'),
+        element('p', '진행 중인 전투는 같은 브라우저에 자동 저장돼. 마음에 드는 무기와 전적은 무기 진열장에 직접 보관할 수 있어.'));
       const evolution = element('div', '', 'guide-evolution');
       for (const [id, name] of [['original', '초심의 낙서 검'], ['vanguard', '철갑의 선봉검'], ['phantom', '유령의 잔상검']]) {
         const figure = element('figure');

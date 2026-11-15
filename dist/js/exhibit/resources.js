@@ -1,6 +1,5 @@
 window.ExhibitResources = (() => {
   const groups = {
-    effects: ['battle/effects/sprite-atlas.js', 'weapons/effect-progress.js', 'weapons/effect-jobs.js?v=poster'],
     enemies: ['battle/boss-art.js', 'battle/enemy-sprites.js'],
     sample: ['battle/hp-animation.js', 'game/stage-layout.js', 'game/battle-scenery.js', 'exhibit/mock-effects.js?v=2', 'exhibit/mock-battle.js?v=showcase-settings'],
     demos: ['game/demo-catalog.js', 'game/demo-battle.js'],

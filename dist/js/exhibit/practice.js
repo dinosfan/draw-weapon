@@ -6,7 +6,7 @@
     const note = document.createElement('p');
     note.className = 'exhibit-live-effect-note';
     note.setAttribute('role', 'status');
-    note.textContent = '전용 도트 준비 중 · 기술은 바로 쓸 수 있어.';
+    note.textContent = '전용 도트 준비 중 · 기본 도트로 바로 싸울 수 있어.';
     document.querySelector('.game-shell').after(note);
     function persist() {
       try { Craft.Exhibit.save(record); } catch {}
@@ -18,11 +18,11 @@
         persist();
       }
       if (weapon.effectJob) await Craft.EffectJobs.watch(weapon);
-      note.textContent = weapon.effectAtlas ? '전용 도트 완성 · 다음 기술부터 적용돼.' : '기본 연출로 기술을 쓸 수 있어.';
+      note.textContent = weapon.effectAtlas ? '전용 도트 완성 · 다음 기술부터 적용돼.' : '기본 도트로 모든 기술을 쓸 수 있어.';
     } catch {
       const rows = weapon.effectAtlas?.readyRows?.length || 0;
-      note.textContent = rows ? '전용 도트 ' + rows + '/4 완성 · 나머지 기술에는 기본 연출을 써.' :
-        '전용 도트를 불러오지 못했어. 기본 연출로 기술을 쓸 수 있어.';
+      note.textContent = rows ? '전용 도트 ' + rows + '/4 완성 · 나머지 기술에는 기본 도트가 나가.' :
+        '전용 도트를 불러오지 못했어. 기본 도트로 모든 기술을 쓸 수 있어.';
     } finally {
       persist();
     }

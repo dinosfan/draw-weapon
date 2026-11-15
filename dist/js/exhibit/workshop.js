@@ -155,36 +155,20 @@
   }
 
   function prepareEffects(record) {
+    if (poster) {
+      record.resumeEffects = true;
+      record.effectStatus = '보스전에 들어가면 전용 도트를 준비해. 기술은 기본 도트로 바로 쓸 수 있어.';
+      return;
+    }
     const status = text => {
       record.effectStatus = text;
       if (result === record) say('effect-status', text);
     };
     status('전용 도트 준비 중 · 지금 전투에 들어갈 수 있어.');
-    if (presentation) {
-      ExhibitPresentation.loadAtlas().then(
-        () => status('전용 도트 완성!'),
-        () => status('전용 도트를 불러오지 못했어. 기술은 바로 쓸 수 있어.'),
-      );
-      return;
-    }
-    record.resumeEffects = true;
-    const ticket = ExhibitResources.load('effects').then(() =>
-      Craft.EffectJobs.submit({weapon:record.weapon, image:record.image, requestId:record.effectRequestId})
-    ).then(id => {
-      record.resumeEffects = false;
-      return id;
-    }, error => {
-      record.resumeEffects = error.connectionOnly || ['TimeoutError', 'TypeError'].includes(error.name);
-      status('전용 도트를 불러오지 못했어. 기술은 바로 쓸 수 있어.');
-      return null;
-    });
-    ticket.then(async id => {
-      if (id) await Craft.EffectJobs.watch(record.weapon);
-      if (record.weapon.effectAtlas) status('전용 도트 완성!');
-    }).catch(() => {
-      const rows = record.weapon.effectAtlas?.readyRows?.length;
-      status(rows ? rows + '/4 기술 도트 완성 · 나머지는 기본 연출로 쓸 수 있어.' : '기본 연출로 모든 기술을 쓸 수 있어.');
-    });
+    ExhibitPresentation.loadAtlas().then(
+      () => status('전용 도트 완성!'),
+      () => status('전용 도트를 불러오지 못했어. 기술은 바로 쓸 수 있어.'),
+    );
   }
 
   async function prepareSample() {
@@ -221,10 +205,9 @@
       const [saved] = await Promise.all([ExhibitPresentation.load(), new Promise(resolve => setTimeout(resolve, 15_000))]);
       return {weapon:{...saved, artwork}};
     }
-    ExhibitResources.load('effects').catch(() => {});
     const weapon = await Craft.analyzeDrawing({canvas, description:'', rarity:settings.rarity(), preferJobs:true, onProgress:text => say('analysis-status', text)});
     if (!Craft.Rarity.valid(weapon.rarity)) weapon.rarity = Craft.Rarity.roll();
-    return {weapon, image:Craft.captureDrawing(canvas), effectRequestId:weapon.exhibitAnalysisId};
+    return {weapon, effectRequestId:weapon.exhibitAnalysisId};
   }
   ui('create').addEventListener('click', async () => {
     if (ui('create').disabled) return;
