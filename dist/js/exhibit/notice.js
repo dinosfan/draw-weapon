@@ -13,7 +13,8 @@ window.ExhibitNotice = (() => {
 
   async function availability() {
     try {
-      const response = await fetch('/api/exhibit/availability', {signal:AbortSignal.timeout(4500), cache:'no-store'});
+      const timeout = location.hostname === 'draw-weapon-khu-2026.onrender.com' ? 12_000 : 4500;
+      const response = await fetch('/api/exhibit/availability', {signal:AbortSignal.timeout(timeout), cache:'no-store'});
       const info = await response.json();
       if (response.ok && info.available === true) return '';
       return blockedMessage(info.code || info.reason) || blockedMessages.EXHIBIT_OFFLINE;
