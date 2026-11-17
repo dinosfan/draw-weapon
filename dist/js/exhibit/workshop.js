@@ -14,7 +14,8 @@
   let strokes = 0, busy = false, result = null, waitingWeapon = null, encounter, revealPainted = false, blocked = '';
   const {offline, presentation} = Craft.Exhibit;
   const poster = !offline && !presentation;
-  let checkingAvailability = poster;
+  let checkingAvailability = poster, reconnect = false;
+  const originalPrivacy = ui('privacy').textContent;
   const birth = Craft.mountRarityReveal();
   const settings = ExhibitSettings.mount(ui, {fixedRarity:presentation ? 'mythic' : undefined, randomBoss:poster});
   let demoPicker;
@@ -84,8 +85,9 @@
   }
 
   function blockCreation(message) {
-    blocked = message;
-    ui('privacy').textContent = message + ' 예시 무기로 보스전에 도전해 보세요.';
+    reconnect = ['EXHIBIT_OFFLINE', 'EXHIBIT_UNAVAILABLE'].some(code => message === ExhibitNotice.blockedMessage(code));
+    blocked = reconnect ? '' : message;
+    ui('privacy').textContent = message + (reconnect ? ' 무기로 만들기를 누르면 연결을 다시 확인해요.' : ' 예시 무기로 보스전에 도전해 보세요.');
     controls();
   }
 
@@ -221,6 +223,17 @@
     busy = true;
     controls();
     try {
+      if (reconnect) {
+        say('analysis-status', '제작 서버에 다시 연결하고 있어…');
+        const message = await ExhibitNotice.availability();
+        if (message) {
+          blockCreation(message);
+          say('analysis-status', '그림은 이 화면에 남아 있어요.');
+          return;
+        }
+        reconnect = false;
+        ui('privacy').textContent = originalPrivacy;
+      }
       say('analysis-status', '네 무기와 기술 4개를 준비하고 있어…');
       const record = await makeWeapon();
       say('analysis-status', '');
