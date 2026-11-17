@@ -23,12 +23,13 @@ window.ExhibitNotice = (() => {
   async function directAvailability(message) {
     if (location.hostname !== 'draw-weapon-khu-2026.onrender.com' || message !== blockedMessages.EXHIBIT_OFFLINE) return {message};
     const target = new URL('https://node.taila8bbe3.ts.net');
+    const direct = {message:'', destination:new URL('/exhibit.html?screen=workshop', target).href};
     try {
       const response = await fetch(new URL('/api/exhibit/availability', target), {signal:AbortSignal.timeout(4000), cache:'no-store'});
       const info = await response.json();
-      if (response.ok && info.available === true) return {message:'', destination:new URL('/exhibit.html?screen=workshop', target).href};
+      if (response.ok && info.available === true) return direct;
       return {message:blockedMessage(info.code) || message};
-    } catch { return {message}; }
+    } catch { return direct; }
   }
 
   function mount({enter, example, onAvailabilityChange}) {
