@@ -82,6 +82,8 @@ window.ExhibitNotice = (() => {
     async function refresh() {
       const check = ++lastCheck;
       draw.disabled = true;
+      status.textContent = '제작 서버에 연결하고 있어요. 연결되면 ‘그리러 가기’를 누를 수 있어요.';
+      status.hidden = false;
       onAvailabilityChange(null);
       const access = await directAvailability(await availability());
       if (check !== lastCheck) return;
