@@ -20,6 +20,17 @@ window.ExhibitNotice = (() => {
     } catch { return blockedMessages.EXHIBIT_OFFLINE; }
   }
 
+  async function directAvailability(message) {
+    if (location.hostname !== 'draw-weapon-khu-2026.onrender.com' || message !== blockedMessages.EXHIBIT_OFFLINE) return {message};
+    const target = new URL('https://node.taila8bbe3.ts.net');
+    try {
+      const response = await fetch(new URL('/api/exhibit/availability', target), {signal:AbortSignal.timeout(4000), cache:'no-store'});
+      const info = await response.json();
+      if (response.ok && info.available === true) return {message:'', destination:new URL('/exhibit.html?screen=workshop', target).href};
+      return {message:blockedMessage(info.code) || message};
+    } catch { return {message}; }
+  }
+
   function mount({enter, example, onAvailabilityChange}) {
     const dialog = document.createElement('dialog');
     dialog.className = 'exhibit-notice-dialog';
@@ -64,17 +75,20 @@ window.ExhibitNotice = (() => {
     const sample = dialog.querySelector('[data-example]');
     const music = dialog.querySelector('[data-music]');
     const status = dialog.querySelector('[role="status"]');
+    let destination;
     let lastCheck = 0;
     async function refresh() {
       const check = ++lastCheck;
       draw.disabled = true;
       onAvailabilityChange(null);
-      const message = await availability();
+      const access = await directAvailability(await availability());
       if (check !== lastCheck) return;
+      const {message} = access;
+      destination = access.destination;
       draw.disabled = Boolean(message);
       status.hidden = !message;
       status.textContent = message ? message + ' 예시 무기 8종으로 보스전을 체험할 수 있어요.' : '';
-      onAvailabilityChange(message);
+      onAvailabilityChange(message, destination);
     }
     function dismiss() {
       try { sessionStorage.setItem(seenKey, '1'); } catch {}
@@ -84,7 +98,7 @@ window.ExhibitNotice = (() => {
       if (!dialog.open) dialog.showModal();
       refresh();
     }
-    draw.addEventListener('click', () => { dismiss(); enter(); });
+    draw.addEventListener('click', () => { dismiss(); enter({direct:destination}); });
     sample.addEventListener('click', () => { dismiss(); example(); });
     music.addEventListener('click', () => {
       window.GameAudio?.setEnabled(true);

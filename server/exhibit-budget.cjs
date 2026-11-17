@@ -3,7 +3,7 @@ const path = require('node:path');
 
 function createBudget({ file, limit }) {
   let providerCreditsExhausted = false;
-  const capacity = Number.isSafeInteger(limit) && limit >= 0 ? limit : 40;
+  const capacity = Number.isSafeInteger(limit) && limit >= 0 ? limit : null;
 
   function used() {
     try {
@@ -17,6 +17,8 @@ function createBudget({ file, limit }) {
   }
 
   function availability() {
+    if (capacity === null) return {available:!providerCreditsExhausted, remaining:0, limit:0,
+      ...(providerCreditsExhausted ? {code:'EXHIBIT_CREDITS'} : {})};
     try {
       const remaining = Math.max(0, capacity - used());
       const code = providerCreditsExhausted ? 'EXHIBIT_CREDITS' : remaining === 0 ? 'EXHIBIT_LIMIT' : null;
@@ -36,6 +38,7 @@ function createBudget({ file, limit }) {
       };
       throw Object.assign(Error(messages[state.code]), {status:state.code === 'EXHIBIT_UNAVAILABLE' ? 503 : 429, code:state.code});
     }
+    if (capacity === null) return;
     try {
       fs.mkdirSync(path.dirname(file), {recursive:true});
       // Reserve before dispatching the paid request. Failed or interrupted

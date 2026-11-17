@@ -58,12 +58,13 @@
 
   let destination = workshop;
   let posterStatus = poster ? null : '';
+  let directWorkshop;
   const entry = WorkshopEntry.mount(scene, {onComplete: () => location.assign(destination)});
-  function enter({example = false} = {}) {
+  function enter({example = false, direct = directWorkshop} = {}) {
     if (start.disabled) return;
     if (!example && posterStatus === null) return;
     if (posterStatus) example = true;
-    destination = example ? workshop + '&example=1' : workshop;
+    destination = example ? workshop + '&example=1' : direct || workshop;
     start.disabled = true;
     start.setAttribute('aria-busy', 'true');
     titleContent.forEach(node => { node.inert = true; });
@@ -73,8 +74,9 @@
   start.addEventListener('click', () => enter());
   if (poster) {
     const label = start.firstElementChild;
-    ExhibitNotice.mount({enter, example:() => enter({example:true}), onAvailabilityChange(message) {
+    ExhibitNotice.mount({enter, example:() => enter({example:true}), onAvailabilityChange(message, direct) {
       posterStatus = message;
+      directWorkshop = direct;
       label.textContent = message === null ? '제작 연결 확인 중…' : message ? '예시 무기로 체험' : '그리러 가기';
     }});
   }

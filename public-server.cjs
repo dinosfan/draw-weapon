@@ -3,7 +3,7 @@ const {createServer}=require('./serve.cjs');
 const {fixedEntryTarget}=require('./deployment/public-entry.cjs');
 const Rarity=require('./dist/js/weapons/rarity.js');
 function createPublicServer({factory=options=>createServer(options),secure=true,feedbackFile=path.join(__dirname,'output/playtest-feedback.jsonl'),entryOrigin,posterRelay,
- exhibitLimit=Number(process.env.EXHIBIT_CREATION_LIMIT??40),exhibitBudgetFile=path.join(process.env.DATA_DIR||path.join(__dirname,'output'),'exhibit-creation-budget.json'),exhibitIssuesFile}={}){
+ exhibitLimit=null,exhibitBudgetFile=path.join(process.env.DATA_DIR||path.join(__dirname,'output'),'exhibit-creation-budget.json'),exhibitIssuesFile}={}){
  const sessions=new Map(),exhibitSessions=new Map();
  const budget=require('./server/exhibit-budget.cjs').createBudget({file:exhibitBudgetFile,limit:exhibitLimit});
  const exhibitIssues=require('./server/exhibit-issues.cjs').createHandler({file:exhibitIssuesFile});
@@ -19,6 +19,11 @@ function createPublicServer({factory=options=>createServer(options),secure=true,
    if(target){res.writeHead(302,{'Location':target,'Cache-Control':'no-store'});return res.end();}
   }
   const local=/^(127\.0\.0\.1|localhost):4180$/.test(req.headers.host||'');
+  if(req.method==='GET'&&url.pathname==='/api/exhibit/availability'&&req.headers.origin==='https://draw-weapon-khu-2026.onrender.com'){
+   res.setHeader('Access-Control-Allow-Origin',req.headers.origin);
+   res.setHeader('Vary','Origin');
+   return json(200,budget.availability());
+  }
   if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{return json(403,{error:'허용되지 않은 출처'});}if(origin.host!==req.headers.host)return json(403,{error:'허용되지 않은 출처'});}
   if(posterRelay&&await posterRelay(req,res,url,json))return;
   if(req.method==='GET'&&url.pathname==='/api/exhibit/availability')return json(200,budget.availability());
