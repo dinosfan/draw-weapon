@@ -2,9 +2,13 @@ const {timingSafeEqual} = require('node:crypto');
 
 const events = new Set(['visit','workshop','connection_failed','craft_started','craft_ready','craft_failed',
   'sample_play','created_play','boss_phase_two','boss_won','dots_all','dots_some','dots_failed']);
+const exhibitDay = new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'});
 
 function createMetrics({url=process.env.EXHIBIT_ISSUES_WEBHOOK_URL, secret=process.env.EXHIBIT_ISSUES_WEBHOOK_SECRET,
-  accessKey=process.env.EXHIBIT_METRICS_KEY, fetchImpl=fetch, log=console.warn}={}) {
+  accessKey=process.env.EXHIBIT_METRICS_KEY, startAt=process.env.EXHIBIT_METRICS_START_AT,
+  now=Date.now, fetchImpl=fetch, log=console.warn}={}) {
+  const starts = startAt ? Date.parse(startAt) : NaN;
+  const firstDay = Number.isFinite(starts) ? exhibitDay.format(starts) : '';
   async function google(payload) {
     if (!/^https:\/\/script\.google\.com\/macros\/s\/[a-zA-Z0-9_-]+\/exec$/.test(url || '') || !/^[a-f0-9]{64}$/.test(secret || '')) throw Error('Metrics storage is unavailable');
     const signal = AbortSignal.timeout(10000);
@@ -31,8 +35,10 @@ function createMetrics({url=process.env.EXHIBIT_ISSUES_WEBHOOK_URL, secret=proce
   }
 
   async function collect(req,res,json) {
+    const receivedAt = now();
     const input = await readBody(req);
     if (!/^[a-f0-9]{32}$/.test(input?.visitor || '') || !events.has(input?.event)) return json(400,{error:'집계 입력 형식 오류'});
+    if (receivedAt < starts) return json(202,{saved:false});
     const payload = {action:'metrics_event',visitor:input.visitor,event:input.event};
     try {
       const data = await google(payload);
@@ -49,9 +55,14 @@ function createMetrics({url=process.env.EXHIBIT_ISSUES_WEBHOOK_URL, secret=proce
     const expected = Buffer.from('Bearer ' + accessKey);
     if (supplied.length !== expected.length || !timingSafeEqual(supplied,expected)) return json(401,{error:'운영자 키를 확인해 주세요.'});
     try {
+      const beforeOpening = now() < starts;
       const data = await google({action:'metrics_summary'});
       if (!Array.isArray(data.days)) throw Error('Invalid metrics summary');
-      return json(200,{days:data.days});
+      const days = data.days.map(day => {
+        if (!beforeOpening && day.date >= firstDay) return day;
+        return Object.fromEntries(Object.keys(day).map(key => [key,key === 'date' ? day.date : 0]));
+      });
+      return json(200,{days});
     } catch { return json(503,{error:'집계에 잠시 연결할 수 없어요.'}); }
   }
   return {collect,dashboard};
