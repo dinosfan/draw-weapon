@@ -50,6 +50,7 @@
     ui('privacy').textContent = '그림 제작은 온라인에서 할 수 있어. 이 파일에서는 예시 무기로 체험할 수 있어.';
   } else if (presentation) ExhibitPresentation.load().catch(() => {});
   if (poster) {
+    if (new URLSearchParams(location.search).get('example') !== '1') window.ExhibitMetrics?.mark('workshop');
     ui('footer-actions').hidden = false;
     ExhibitNotice.availability().then(message => {
       checkingAvailability = false;
@@ -87,6 +88,7 @@
   function blockCreation(message) {
     reconnect = ['EXHIBIT_OFFLINE', 'EXHIBIT_UNAVAILABLE'].some(code => message === ExhibitNotice.blockedMessage(code));
     blocked = reconnect ? '' : message;
+    if (reconnect) window.ExhibitMetrics?.mark('connection_failed');
     ui('privacy').textContent = message + (reconnect ? ' 무기로 만들기를 누르면 연결을 다시 확인해요.' : ' 예시 무기로 보스전에 도전해 보세요.');
     controls();
   }
@@ -171,10 +173,12 @@
         record.resumeEffects = false;
         if (weapon.effectJob) await Craft.EffectJobs.watch(weapon);
       } else await ExhibitPresentation.loadAtlas();
+      window.ExhibitMetrics?.mark('dots_all');
       status('전용 도트 완성!');
     } catch (error) {
       if (error.status >= 400 && error.status < 500) record.resumeEffects = false;
       const rows = record.weapon.effectAtlas?.readyRows?.length;
+      window.ExhibitMetrics?.mark(rows ? 'dots_some' : 'dots_failed');
       status(rows ? `전용 도트 ${rows}/4 완성 · 나머지 기술은 기본 도트로 쓸 수 있어.` :
         '전용 도트를 불러오지 못했어. 기술은 기본 도트로 바로 쓸 수 있어.');
     }
@@ -235,12 +239,15 @@
         ui('privacy').textContent = originalPrivacy;
       }
       say('analysis-status', '네 무기와 기술 4개를 준비하고 있어…');
+      window.ExhibitMetrics?.mark('craft_started');
       const record = await makeWeapon();
+      window.ExhibitMetrics?.mark('craft_ready');
       say('analysis-status', '');
       prepareEffects(record);
       publish(record);
     } catch (error) {
       if (error.name !== 'AbortError') {
+        window.ExhibitMetrics?.mark('craft_failed');
         const message = poster ? ExhibitNotice.blockedMessage(error.code) : '';
         if (message) blockCreation(message);
         say('analysis-status', message ? '그림은 이 화면에 남아 있어요.' : '무기 제작을 마치지 못했어. 그림은 그대로야. 다시 제작하거나 예시로 체험할 수 있어.');

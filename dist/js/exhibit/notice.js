@@ -88,6 +88,7 @@ window.ExhibitNotice = (() => {
       const access = await directAvailability(await availability());
       if (check !== lastCheck) return;
       const {message} = access;
+      if (message === blockedMessages.EXHIBIT_OFFLINE) window.ExhibitMetrics?.mark('connection_failed');
       destination = access.destination;
       draw.disabled = Boolean(message);
       status.hidden = !message;

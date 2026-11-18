@@ -7,6 +7,7 @@ function createPublicServer({factory=options=>createServer(options),secure=true,
  const sessions=new Map(),exhibitSessions=new Map();
  const budget=require('./server/exhibit-budget.cjs').createBudget({file:exhibitBudgetFile,limit:exhibitLimit});
  const exhibitIssues=require('./server/exhibit-issues.cjs').createHandler({file:exhibitIssuesFile});
+ const exhibitMetrics=require('./server/exhibit-metrics.cjs').createMetrics();
  const exhibitEffects=require('./server/exhibit-effects.cjs');
  const server=http.createServer(async(req,res)=>{
   const json=(status,body)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(body));};
@@ -19,6 +20,14 @@ function createPublicServer({factory=options=>createServer(options),secure=true,
    if(target){res.writeHead(302,{'Location':target,'Cache-Control':'no-store'});return res.end();}
   }
   const local=/^(127\.0\.0\.1|localhost):4180$/.test(req.headers.host||'');
+  if(req.method==='POST'&&url.pathname==='/api/exhibit/metrics/event'){
+   const origin=req.headers.origin;
+   if(origin==='https://node.taila8bbe3.ts.net'&&req.headers.host==='draw-weapon-khu-2026.onrender.com'){
+    res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');
+   }else if(origin&&origin!=='https://'+req.headers.host&&origin!=='http://'+req.headers.host)return json(403,{error:'허용되지 않은 출처'});
+   return exhibitMetrics.collect(req,res,json);
+  }
+  if(req.method==='GET'&&url.pathname==='/api/exhibit/metrics/summary')return exhibitMetrics.dashboard(req,res,json);
   if(req.method==='GET'&&url.pathname==='/api/exhibit/availability'&&req.headers.origin==='https://draw-weapon-khu-2026.onrender.com'){
    res.setHeader('Access-Control-Allow-Origin',req.headers.origin);
    res.setHeader('Vary','Origin');
@@ -30,7 +39,7 @@ function createPublicServer({factory=options=>createServer(options),secure=true,
   if(req.method==='POST'&&url.pathname==='/api/exhibit/issues')return exhibitIssues(req,res,json);
   if(url.pathname==='/api/public-info'){let state={};try{state=JSON.parse(fs.readFileSync(path.join(__dirname,'output/public-launch.json'),'utf8'));}catch{}return json(200,{online:true,url:process.env.PUBLIC_ENTRY_URL||process.env.RENDER_EXTERNAL_URL||process.env.PUBLIC_BASE_URL||state.url||null,local,cloud:process.env.RENDER==='true'});}
   if(url.pathname==='/'||url.pathname==='/index.html'){res.writeHead(302,{Location:'/start.html'});return res.end();}
-  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html','/workshop-catch.html','/exhibit.html']);
+  const pages=new Set(['/start.html','/craft.html','/battle.html','/evolve.html','/library.html','/rarity-effects-lab.html','/feedback.html','/workshop-catch.html','/exhibit.html','/exhibit-stats.html']);
   if(!url.pathname.startsWith('/api/')){if(!pages.has(url.pathname)&&!/^\/(?:css|js|assets)\/[a-zA-Z0-9_./-]+$/.test(url.pathname))return json(404,{error:'없는 페이지'});return require('./static.cjs').serveStatic(req,res)||json(404,{error:'없는 파일'});}
   const exhibit=req.headers['x-draw-weapon-mode']==='exhibit',pool=exhibit?exhibitSessions:sessions,now=Date.now();
   if(exhibit&&(url.pathname==='/api/ai/analyze'||url.pathname.startsWith('/api/evolution')||url.pathname==='/api/ai/effects/reset'))return json(404,{error:'전시에서는 사용할 수 없는 기능이야.'});

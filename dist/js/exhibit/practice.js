@@ -18,9 +18,11 @@
         persist();
       }
       if (weapon.effectJob) await Craft.EffectJobs.watch(weapon);
+      window.ExhibitMetrics?.mark(weapon.effectAtlas ? 'dots_all' : 'dots_failed');
       note.textContent = weapon.effectAtlas ? '전용 도트 완성 · 다음 기술부터 적용돼.' : '기본 도트로 모든 기술을 쓸 수 있어.';
     } catch {
       const rows = weapon.effectAtlas?.readyRows?.length || 0;
+      window.ExhibitMetrics?.mark(rows ? 'dots_some' : 'dots_failed');
       note.textContent = rows ? '전용 도트 ' + rows + '/4 완성 · 나머지 기술에는 기본 도트가 나가.' :
         '전용 도트를 불러오지 못했어. 기본 도트로 모든 기술을 쓸 수 있어.';
     } finally {

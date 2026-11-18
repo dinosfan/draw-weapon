@@ -49,6 +49,9 @@
     const token=++revision;animating=true;dialogue.cancel();setMoveMenu(false);lockCommands();
     const index=action.startsWith('move:')?Number(action.slice(5)):-1;
     const move=next.feedback?.prevented?null:index>=0?Craft.Moves.forWeapon(BattlePreview.weapon)[index]:action==='attack'?{damage:BattlePreview.weapon.attack,heal:0}:null;
+    if(exhibit&&move)window.ExhibitMetrics?.mark(BattlePreview.exhibit.sample?'sample_play':'created_play');
+    if(exhibit&&next.feedback?.phaseChange)window.ExhibitMetrics?.mark('boss_phase_two');
+    if(exhibit&&next.ended&&next.enemyHp===0)window.ExhibitMetrics?.mark('boss_won');
     const finalBlow=!exhibit&&BattleFinisher.eligible(BattlePreview.weapon,move,previous,next,BattlePreview.encounters.length-1);
     if(finalBlow)lastFinisher=move.name;
     if(next.enemyHp===0){const ending=next.feedback?.endTurn?.find(e=>e.side==='enemy'&&e.hp===0);lastStrike=ending?Craft.Conditions.definitions[ending.status].label+' 피해':next.feedback?.enemySelfDamage?'혼란 피해':move?.name||'기본 공격';}

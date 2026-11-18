@@ -64,7 +64,7 @@
     if (start.disabled) return;
     if (!example && posterStatus === null) return;
     if (posterStatus) example = true;
-    destination = example ? workshop + '&example=1' : direct || workshop;
+    destination = example ? workshop + '&example=1' : direct ? window.ExhibitMetrics?.carry(direct) || direct : workshop;
     start.disabled = true;
     start.setAttribute('aria-busy', 'true');
     titleContent.forEach(node => { node.inert = true; });

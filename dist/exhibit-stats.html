@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>전시 운영 현황 · 이딴 게 무기?</title>
+  <link rel="stylesheet" href="css/palette.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/exhibit-stats.css">
+  <script src="js/palette.js"></script>
+  <script defer src="js/ui/fluent-emoji-data.js"></script>
+  <script defer src="js/ui/fluent-emoji.js"></script>
+  <script defer src="js/exhibit/stats.js"></script>
+</head>
+<body>
+  <main>
+    <h1>전시 운영 현황</h1>
+    <form id="access">
+      <label for="key">운영자 키</label>
+      <input id="key" type="password" autocomplete="current-password" required>
+      <button>현황 열기</button>
+    </form>
+    <p id="status" role="status"></p>
+    <section id="overview" hidden>
+      <div class="controls">
+        <label for="date">조회 날짜</label>
+        <select id="date"></select>
+        <button id="refresh" type="button">새로고침</button>
+      </div>
+      <dl class="summary" id="summary"></dl>
+      <dl class="details" id="details"></dl>
+      <p class="note">한국 시간 기준으로 하루에 같은 브라우저를 항목별 한 번씩 세어요. 두 방식으로 모두 플레이하면 전체 플레이에는 한 번, 각 방식에는 한 번씩 잡혀요.</p>
+      <p class="note">제작 결과 미확인에는 아직 생성 중인 브라우저와 결과가 기록되기 전에 나간 브라우저가 함께 포함될 수 있어요.</p>
+    </section>
+  </main>
+</body>
+</html>
