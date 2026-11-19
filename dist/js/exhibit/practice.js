@@ -1,5 +1,10 @@
 (() => {
   if (!BattlePreview.exhibit) return;
+  const home = document.getElementById('exhibit-battle-home');
+  if (home) {
+    if (Craft.Exhibit.presentation) home.href += '&presentation=f-ma';
+    home.hidden = false;
+  }
   BattlePreview.watchExhibitEffects = async record => {
     const {weapon, image} = record;
     if (!weapon.effectJob && !record.resumeEffects) return;

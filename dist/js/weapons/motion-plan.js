@@ -1,5 +1,8 @@
 (function(root){
  const anchors=['hand','enemy','self','center'];
+ const anchorAliases={caster:'self',player:'self',opponent:'enemy',weapon:'hand'};
+ const easeAliases={'ease-in':'in','ease-out':'out','ease-in-out':'smooth',easeIn:'in',easeOut:'out',easeInOut:'smooth'};
+ function alias(value,table){return typeof value==='string'&&Object.hasOwn(table,value)?table[value]:value;}
  function number(n,min,max){if(!Number.isFinite(n)||n<min||n>max)throw Error('연출 설계도 수치 형식 오류: '+String(n)+' (허용 '+min+'~'+max+')');return n;}
  function bounded(n,min,max){if(!Number.isFinite(n))return number(n,min,max);return Math.max(min,Math.min(max,n));}
  // Recover formatting drift without replacing the AI-authored silhouette or accepting code.
@@ -26,7 +29,7 @@
    const rawCrop=layer.crop||{x:0,y:0,w:1,h:1},crop={};for(const key of ['x','y','w','h'])crop[key]=number(rawCrop[key],0,1);
    if(crop.w<.05||crop.h<.05||crop.x+crop.w>1.001||crop.y+crop.h>1.001)throw Error('연출 그림 영역 형식 오류');
    let previous=-1;
-   const frames=layer.frames.map(f=>{const ease=f.ease||'linear';if(!anchors.includes(f.a)||!['linear','smooth','in','out'].includes(ease))throw Error('연출 기준점 형식 오류');const t=number(f.t,0,1);if(t<=previous)throw Error('연출 시점 순서 형식 오류');previous=t;return{t,a:f.a,x:number(f.x??0,-.7,.7),y:number(f.y??0,-.7,.7),r:number(f.r??0,-25,25),s:number(f.s??1,.1,3),o:number(f.o??1,0,1),ease};});
+   const frames=layer.frames.map(f=>{const a=alias(f.a??f.anchor,anchorAliases),ease=alias(f.ease||'linear',easeAliases);if(!anchors.includes(a)||!['linear','smooth','in','out'].includes(ease))throw Error('연출 기준점 형식 오류');const t=number(f.t,0,1);if(t<=previous)throw Error('연출 시점 순서 형식 오류');previous=t;return{t,a,x:number(f.x??0,-.7,.7),y:number(f.y??0,-.7,.7),r:number(f.r??0,-25,25),s:number(f.s??1,.1,3),o:number(f.o??1,0,1),ease};});
    const inputGlyph=layer.glyph||layer.glyphs||(layer.source==='effect'&&value.layers.filter(l=>l.source==='effect').length===1?(value.glyph||value.glyphs):'');
    let glyph='';if(inputGlyph)glyph=normalizeGlyph(inputGlyph);
    return{source:layer.source,crop,size:bounded(layer.size??.12,.025,.4),frames,...(glyph?{glyph}:{})};

@@ -107,7 +107,8 @@ function createPosterRelay({origin, fetchImpl = fetch, serveLocal = serveStatic}
     const abort = new AbortController();
     const cancel = () => { if (!res.writableEnded) abort.abort(); };
     res.once('close', cancel);
-    const signal = AbortSignal.any([abort.signal, AbortSignal.timeout(availability ? 10_000 : 12_000)]);
+    const timeout = uploadLimit ? 32_000 : poll ? 16_000 : availability ? 10_000 : 12_000;
+    const signal = AbortSignal.any([abort.signal, AbortSignal.timeout(timeout)]);
     const started = Date.now();
     let uploadOversized = false;
     async function* upload() {
@@ -155,8 +156,9 @@ function createPosterRelay({origin, fetchImpl = fetch, serveLocal = serveStatic}
       if (method === 'HEAD' || !response.body) res.end();
       else await pipeline(Readable.fromWeb(response.body), boundedStream(maxBytes), res, {signal});
     } catch (error) {
-      if (availability && !abort.signal.aborted) {
-        console.warn(JSON.stringify({event:'exhibit-relay-unavailable',
+      if ((availability || uploadLimit || poll) && !abort.signal.aborted && !uploadOversized) {
+        const step = availability ? 'availability' : uploadLimit ? 'submit' : 'poll';
+        console.warn(JSON.stringify({event:'exhibit-relay-unavailable',step,
           elapsedMs:Date.now()-started, cause:error.cause?.code || error.name}));
       }
       if (uploadLimit) req.resume();

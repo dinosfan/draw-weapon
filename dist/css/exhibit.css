@@ -202,6 +202,8 @@
 .live-battle.exhibit-live-battle .game-shell { margin-block: 0; }
 .live-battle.exhibit-live-battle .move-button { min-height: 44px; }
 .exhibit-live-battle #stage-counter { display: inline-block; white-space: nowrap; }
+#exhibit-battle-home { display: inline-flex; align-items: center; min-height: 36px; white-space: nowrap; }
+#exhibit-battle-home:focus-visible { outline-color: var(--color-paper); }
 .exhibit-practice-result {
   padding: 12px;
   border-top: 2px solid var(--color-ink);
@@ -229,6 +231,9 @@
 @media (max-width: 700px) {
   .live-battle.exhibit-live-battle .arena { height: clamp(275px, 47svh, 360px); }
   .live-battle.exhibit-live-battle .dialogue-text { font-size: 15px; }
+}
+@media (max-width: 420px) {
+  .exhibit-live-battle .scene-label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .exhibit-reveal:not([hidden]) .exhibit-art-paper { animation: none; }
