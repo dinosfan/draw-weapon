@@ -1,5 +1,27 @@
 const{test}=require('node:test'),assert=require('node:assert/strict'),http=require('node:http'),{createPublicServer}=require('../public-server.cjs');
 
+test('cloud presentation pages and artwork load without the PC or the analysis service', async () => {
+  const pcOrigin = 'https://offline.example.ts.net';
+  const server = createPublicServer({entryOrigin:pcOrigin, posterRelay:() => false, factory:() => assert.fail('Unexpected analysis session')});
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const base = 'http://127.0.0.1:' + server.address().port;
+  try {
+    for (const path of ['/exhibit.html','/exhibit.html?presentation=f-ma','/start.html?mode=exhibit&presentation=f-ma',
+      '/exhibit.html?screen=workshop&presentation=f-ma','/battle.html?mode=exhibit&presentation=f-ma',
+      '/assets/presentation/fish.json','/assets/presentation/fish-atlas.png']) {
+      const response = await fetch(base + path,{redirect:'manual'});
+      assert.equal(response.status,200,path);
+      assert.equal(response.headers.get('location'),null,path);
+      await response.arrayBuffer();
+    }
+    const main = await fetch(base + '/start.html',{redirect:'manual'});
+    assert.equal(main.headers.get('location'),pcOrigin + '/start.html');
+  } finally {
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+  }
+});
+
 test('the exhibit opens without a session and its API requests get a separate visitor session', async () => {
   let instances = 0;
   const server = createPublicServer({secure:false, factory:() => {
@@ -13,6 +35,10 @@ test('the exhibit opens without a session and its API requests get a separate vi
     assert.equal(page.status, 200);
     assert.equal(page.headers.get('set-cookie'), null);
     await page.text();
+    const invalid = await fetch(base + '/api/unknown', {headers:{'X-Draw-Weapon-Mode':'exhibit'}});
+    assert.equal(invalid.status, 404);
+    assert.equal(invalid.headers.get('set-cookie'), null);
+    assert.equal(instances, 0);
     const game = await fetch(base + '/api/status');
     const gameCookie = game.headers.get('set-cookie').split(';')[0];
     assert.equal(await game.text(), '1');

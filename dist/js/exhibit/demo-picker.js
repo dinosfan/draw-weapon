@@ -15,7 +15,7 @@ window.ExhibitDemoPicker = (() => {
 
   async function loadWeapon(id) {
     if (id === formula.id) {
-      const [weapon, artwork] = await Promise.all([ExhibitPresentation.load(), formulaArtwork()]);
+      const [weapon, artwork] = await Promise.all([ExhibitPresentation.loadFormula(), formulaArtwork()]);
       return {...weapon, artwork};
     }
     const pack = await GameDemo.pack(id);

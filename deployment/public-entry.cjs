@@ -5,17 +5,15 @@ function fixedEntryTarget(origin, requestUrl, {hostPoster = false} = {}) {
   const { pathname, searchParams } = requestUrl;
 
   if (pathname === '/exhibit.html') {
-    const presentation = searchParams.get('presentation') === 'f-ma';
-    if (hostPoster && !presentation) return null;
+    if (hostPoster) return null;
     const workshop = searchParams.get('screen') === 'workshop' ? '?screen=workshop' : '';
-    return origin + '/exhibit.html' + workshop + (hostPoster && presentation ? (workshop ? '&' : '?') + 'presentation=f-ma' : '');
+    return origin + '/exhibit.html' + workshop;
   }
 
   if (['/', '/index.html', '/start.html'].includes(pathname)) {
     const exhibit = searchParams.get('mode') === 'exhibit' ? '?mode=exhibit' : '';
-    const presentation = exhibit && searchParams.get('presentation') === 'f-ma';
-    if (hostPoster && exhibit && !presentation) return null;
-    return origin + '/start.html' + exhibit + (hostPoster && presentation ? '&presentation=f-ma' : '');
+    if (hostPoster && exhibit) return null;
+    return origin + '/start.html' + exhibit;
   }
 
   return null;
